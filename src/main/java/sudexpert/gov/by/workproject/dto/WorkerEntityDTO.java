@@ -1,0 +1,81 @@
+package sudexpert.gov.by.workproject.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
+import sudexpert.gov.by.workproject.dto.validation.OnCreate;
+import sudexpert.gov.by.workproject.dto.validation.OnUpdate;
+import sudexpert.gov.by.workproject.model.*;
+
+import java.util.Set;
+
+public record WorkerEntityDTO(
+        @NotNull(message = "", groups = OnUpdate.class)
+        @Schema(description = "id", example = "2")
+        Long id,
+
+        @Schema(description = "Имя", example = "Иван")
+        @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
+        String name,
+
+        @Schema(description = "Фамилия", example = "Иванов")
+        @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
+        String surname,
+
+        @Schema(description = "Отчество", example = "Иванович")
+        String patronymicName,
+
+        @Schema(description = "Должность", example = "Эксперт")
+        @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
+        String jobTitle,
+
+        @Schema(description = "")
+        Set<Train> trains,
+
+        @Schema(description = "")
+        Set<Category> categories,
+
+        @Schema(description = "")
+        Set<ECC> eccs,
+
+        @Schema(description = "")
+        Set<Qualification> qualifications,
+
+        @Schema(description = "")
+        Set<Vacation> vacations,
+
+        @Schema(description = "Находится ли в отпуске", example = "true")
+        @NotNull(message = "", groups = OnUpdate.class)
+        boolean isVacated,
+
+        @Schema(description = "Будет ли в отпуске в ближайшие 3 месяца", example = "true")
+        @NotNull(message = "", groups = OnUpdate.class)
+        boolean isVacatedIn3Months,
+
+        @Schema(description = "Будет ли категория в следующем году", example = "true")
+        @NotNull(message = "", groups = OnUpdate.class)
+        boolean isCategoryNextYear,
+
+        @Schema(description = "Стажировка в следующем месяце", example = "true")
+        @NotNull(message = "", groups = OnUpdate.class)
+        boolean isTrainNextMonth,
+
+        @Schema(description = "Будет ли ЭКК в следующием месяце", example = "true")
+        @NotNull(message = "", groups = OnUpdate.class)
+        boolean isEccNextMonth,
+
+        @Schema(description = "Будет ли повышение квалификации в следующем месяце", example = "true")
+        @NotNull(message = "", groups = OnUpdate.class)
+        boolean isQualificationNextMonth,
+
+        @Schema(description = "Будет ли категория в следующих 3 месяцев", example = "true")
+        @NotNull(message = "", groups = OnUpdate.class)
+        boolean isCategoryNext3Month
+) {
+
+
+}
+
