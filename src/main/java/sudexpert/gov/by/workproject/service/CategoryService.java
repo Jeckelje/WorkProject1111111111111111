@@ -1,6 +1,5 @@
 package sudexpert.gov.by.workproject.service;
 
-import org.springframework.stereotype.Service;
 import sudexpert.gov.by.workproject.dto.CategoryDTO;
 
 import java.util.List;

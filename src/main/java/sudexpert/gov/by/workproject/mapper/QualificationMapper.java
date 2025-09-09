@@ -9,11 +9,11 @@ import sudexpert.gov.by.workproject.model.Qualification;
 @Mapper(componentModel = "spring")
 public interface QualificationMapper {
 
-
     QualificationDTO toDTO(Qualification qualification);
 
     Qualification toEntity(QualificationDTO qualificationDTO);
 
     @Mapping(target = "id", ignore = true)
     void updateQualificationFromRequest(QualificationDTO qualificationDTO, @MappingTarget Qualification qualification);
+
 }

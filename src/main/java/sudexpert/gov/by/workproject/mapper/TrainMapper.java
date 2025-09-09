@@ -9,11 +9,11 @@ import sudexpert.gov.by.workproject.model.Train;
 @Mapper(componentModel = "spring")
 public interface TrainMapper {
 
-
     TrainDTO toDTO(Train train);
 
     Train toEntity(TrainDTO trainDTO);
 
     @Mapping(target = "id", ignore = true)
     void updateTrainFromRequest(TrainDTO trainDTO, @MappingTarget Train train);
+
 }
