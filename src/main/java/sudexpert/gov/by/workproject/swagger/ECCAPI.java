@@ -55,7 +55,7 @@ public interface ECCAPI {
     @Operation(summary = "Get ECCs by worker id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ECCs retrieved successfully", content = @Content(schema = @Schema(implementation = ECCDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Category not found", content = @Content(schema = @Schema(implementation = AppError.class))),
+            @ApiResponse(responseCode = "404", description = "ECCs not found", content = @Content(schema = @Schema(implementation = AppError.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
     })
     List<ECCDTO> getECCSByWorkerId(@PathVariable Long workerId);
