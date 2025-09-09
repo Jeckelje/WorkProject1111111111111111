@@ -10,60 +10,61 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
-import sudexpert.gov.by.workproject.dto.TrainDTO;
+import sudexpert.gov.by.workproject.dto.ECCDTO;
 import sudexpert.gov.by.workproject.dto.error.AppError;
 import sudexpert.gov.by.workproject.dto.validation.OnCreate;
 
 import java.util.List;
 
-@Tag(name = "Контроллер Стажировок", description = "Train API")
-public interface TrainAPI {
-    @Operation(summary = "Create train")
+@Tag(name = "Контроллер ЭКК", description = "ECC API")
+public interface ECCAPI {
+
+    @Operation(summary = "Create ECC")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Train created successfully", content = @Content(schema = @Schema(implementation = TrainDTO.class))),
+            @ApiResponse(responseCode = "201", description = "ECC created successfully", content = @Content(schema = @Schema(implementation = ECCDTO.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content(schema = @Schema(implementation = AppError.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
     })
-    TrainDTO createTrain(@RequestBody @Validated(OnCreate.class) TrainDTO trainDTO);
+    ECCDTO createEcc(@RequestBody @Validated(OnCreate.class) ECCDTO eccdto);
 
-    @Operation(summary = "Update train")
+    @Operation(summary = "Update ECC")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Train updated successfully", content = @Content(schema = @Schema(implementation = TrainDTO.class))),
+            @ApiResponse(responseCode = "200", description = "ECC updated successfully", content = @Content(schema = @Schema(implementation = ECCDTO.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content(schema = @Schema(implementation = AppError.class))),
+            @ApiResponse(responseCode = "404", description = "ECC not found", content = @Content(schema = @Schema(implementation = AppError.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
+    })
+    ECCDTO updateEcc(@PathVariable Long id, @RequestBody @Valid ECCDTO eccdto);
+
+    @Operation(summary = "Delete ECC")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "ECC deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "ECC not found", content = @Content(schema = @Schema(implementation = AppError.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
+    })
+    void deleteEcc(@PathVariable Long id);
+
+    @Operation(summary = "Get ECC by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "ECC retrieved successfully", content = @Content(schema = @Schema(implementation = ECCDTO.class))),
+            @ApiResponse(responseCode = "404", description = "ECC not found", content = @Content(schema = @Schema(implementation = AppError.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
+    })
+    ECCDTO getEccById(@PathVariable Long id);
+
+    @Operation(summary = "Get ECCs by worker id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "ECCs retrieved successfully", content = @Content(schema = @Schema(implementation = ECCDTO.class))),
             @ApiResponse(responseCode = "404", description = "Category not found", content = @Content(schema = @Schema(implementation = AppError.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
     })
-    TrainDTO updateTrain(@PathVariable Long id, @RequestBody @Valid TrainDTO trainDTO);
+    List<ECCDTO> getECCSByWorkerId(@PathVariable Long workerId);
 
-    @Operation(summary = "Delete train")
+    @Operation(summary = "Get all ECCs")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Train deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Train not found", content = @Content(schema = @Schema(implementation = AppError.class))),
+            @ApiResponse(responseCode = "200", description = "ECCs retrieved successfully", content = @Content(schema = @Schema(implementation = ECCDTO.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
     })
-    void deleteTrain(@PathVariable Long id);
-
-    @Operation(summary = "Get train by id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Train retrieved successfully", content = @Content(schema = @Schema(implementation = TrainDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Train not found", content = @Content(schema = @Schema(implementation = AppError.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
-    })
-    TrainDTO getTrainById(@PathVariable Long id);
-
-    @Operation(summary = "Get trains by worker id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Trains retrieved successfully", content = @Content(schema = @Schema(implementation = TrainDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Category not found", content = @Content(schema = @Schema(implementation = AppError.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
-    })
-    List<TrainDTO> getTrainsByWorkerId(@PathVariable Long workerId);
-
-    @Operation(summary = "Get all trains")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Trains retrieved successfully", content = @Content(schema = @Schema(implementation = TrainDTO.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
-    })
-    List<TrainDTO> getAllTrains();
+    List<ECCDTO> getAllECCS();
 
 }
