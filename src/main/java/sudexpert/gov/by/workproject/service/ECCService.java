@@ -16,6 +16,6 @@ public interface ECCService {
 
     List<ECCDTO> getAllEcc();
 
-    List<ECCDTO> getEccByWorkerId(Long workerId);
+    List<ECCDTO> getEccsByWorkerId(Long workerId);
 
 }

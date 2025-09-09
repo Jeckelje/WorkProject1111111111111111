@@ -27,6 +27,11 @@ public class GlobalExceptionHandler {
         return buildErrorResponse("Некорректные данные в запросе.", HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<AppError> handleIllegalArgument(IllegalArgumentException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class) // общий обработчик
     public ResponseEntity<AppError> handleGeneralException(Exception ex) {
         return buildErrorResponse("Произошла внутренняя ошибка. Пожалуйста, попробуйте позже.",

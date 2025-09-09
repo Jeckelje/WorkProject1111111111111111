@@ -10,59 +10,59 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
-import sudexpert.gov.by.workproject.dto.CategoryDTO;
+import sudexpert.gov.by.workproject.dto.TrainDTO;
 import sudexpert.gov.by.workproject.dto.error.AppError;
 import sudexpert.gov.by.workproject.dto.validation.OnCreate;
 
 import java.util.List;
 
-@Tag(name = "Контроллер Категорий", description = "Category API")
-public interface CategoryAPI {
-    @Operation(summary = "Create category")
+@Tag(name = "Контроллер Стажировок", description = "Train API")
+public interface TrainAPI {
+    @Operation(summary = "Create train")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Category created successfully", content = @Content(schema = @Schema(implementation = CategoryDTO.class))),
+            @ApiResponse(responseCode = "201", description = "Train created successfully", content = @Content(schema = @Schema(implementation = TrainDTO.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content(schema = @Schema(implementation = AppError.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
     })
-    CategoryDTO createCategory(@RequestBody @Validated(OnCreate.class) CategoryDTO categoryDTO);
+    TrainDTO createTrain(@RequestBody @Validated(OnCreate.class) TrainDTO trainDTO);
 
-    @Operation(summary = "Update category")
+    @Operation(summary = "Update train")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Category updated successfully", content = @Content(schema = @Schema(implementation = CategoryDTO.class))),
+            @ApiResponse(responseCode = "200", description = "Train updated successfully", content = @Content(schema = @Schema(implementation = TrainDTO.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content(schema = @Schema(implementation = AppError.class))),
             @ApiResponse(responseCode = "404", description = "Category not found", content = @Content(schema = @Schema(implementation = AppError.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
     })
-    CategoryDTO updateCategory(@PathVariable Long id, @RequestBody @Valid CategoryDTO categoryDTO);
+    TrainDTO updateTrain(@PathVariable Long id, @RequestBody @Valid TrainDTO trainDTO);
 
-    @Operation(summary = "Delete category")
+    @Operation(summary = "Delete train")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Category deleted successfully"),
+            @ApiResponse(responseCode = "204", description = "Train deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Train not found", content = @Content(schema = @Schema(implementation = AppError.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
+    })
+    void deleteTrain(@PathVariable Long id);
+
+    @Operation(summary = "Get train by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Train retrieved successfully", content = @Content(schema = @Schema(implementation = TrainDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Train not found", content = @Content(schema = @Schema(implementation = AppError.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
+    })
+    TrainDTO getTrainById(@PathVariable Long id);
+
+    @Operation(summary = "Get trains by worker id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Trains retrieved successfully", content = @Content(schema = @Schema(implementation = TrainDTO.class))),
             @ApiResponse(responseCode = "404", description = "Category not found", content = @Content(schema = @Schema(implementation = AppError.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
     })
-    void deleteCategory(@PathVariable Long id);
+    List<TrainDTO> getTrainsByWorkerId(@PathVariable Long workerId);
 
-    @Operation(summary = "Get category by id")
+    @Operation(summary = "Get all trains")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Category retrieved successfully", content = @Content(schema = @Schema(implementation = CategoryDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Category not found", content = @Content(schema = @Schema(implementation = AppError.class))),
+            @ApiResponse(responseCode = "200", description = "Books retrieved successfully", content = @Content(schema = @Schema(implementation = TrainDTO.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
     })
-    CategoryDTO getCategoryById(@PathVariable Long id);
-
-    @Operation(summary = "Get category by worker id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Category retrieved successfully", content = @Content(schema = @Schema(implementation = CategoryDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Category not found", content = @Content(schema = @Schema(implementation = AppError.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
-    })
-    CategoryDTO getCategoryByWorkerId(@PathVariable Long workerId);
-
-    @Operation(summary = "Get all categories")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Books retrieved successfully", content = @Content(schema = @Schema(implementation = CategoryDTO.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
-    })
-    List<CategoryDTO> getAllCategories();
+    List<TrainDTO> getAllTrains();
 }
