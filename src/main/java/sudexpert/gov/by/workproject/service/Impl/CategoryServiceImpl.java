@@ -42,14 +42,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDTO getByWorkerId(Long workerId) {
+    public CategoryDTO getCategoryByWorkerId(Long workerId) {
         Category category = findCategoryByWorkerIdOrThrow(workerId);
         return categoryMapper.toDTO(category);
     }
 
     @Override
-    public CategoryDTO getById(Long id) {
-        return null;
+    public CategoryDTO getCategoryById(Long id) {
+        Category category = findCategoryByIdOrThrow(id);
+        return categoryMapper.toDTO(category);
     }
 
     @Override

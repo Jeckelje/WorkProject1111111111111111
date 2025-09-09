@@ -10,9 +10,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 @OpenAPIDefinition(
         info = @Info(
-                title = "Book Storage Service API",
+                title = "Work project API",
                 version = "1.0",
-                description = "API for managing books storage"
+                description = "API for managing workers"
         ),
         servers = @Server(
                 url = "http://localhost:8080",
