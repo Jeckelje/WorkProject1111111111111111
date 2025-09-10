@@ -28,4 +28,6 @@ public interface WorkerEntityService {
 
     WorkerEntityDTO changeIsQualificationNextMonth(Long id, Boolean isQualificationNextMonth);
 
+    WorkerEntityDTO changeIsBday5(Long id, Boolean isBday5);
+
 }

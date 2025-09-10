@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -90,6 +91,14 @@ public class WorkerEntity {
     @Column(name = "is_category_next_3_month")
     Boolean isCategoryNext3Month;
 
+    @Schema(description = "Кратен ли день рождения 5", example = "true")
+    @Column(name = "is_bday_5")
+    Boolean isBday5;
+
+    @Schema(description = "Кратен ли день рождения 5", example = "true")
+    @Column(name = "is_bday_5")
+    LocalDate bDay;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,5 +120,6 @@ public class WorkerEntity {
         if (isEccNextMonth == null) isEccNextMonth = false;
         if (isQualificationNextMonth == null) isQualificationNextMonth = false;
         if (isCategoryNext3Month == null) isCategoryNext3Month = false;
+        if (isBday5 == null) isBday5 = false;
     }
 }

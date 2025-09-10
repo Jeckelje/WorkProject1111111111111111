@@ -1,10 +1,12 @@
 package sudexpert.gov.by.workproject.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import sudexpert.gov.by.workproject.dto.validation.OnCreate;
 import sudexpert.gov.by.workproject.dto.validation.OnUpdate;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 public record WorkerEntityDTO(
@@ -68,7 +70,15 @@ public record WorkerEntityDTO(
 
         @Schema(description = "Будет ли категория в следующих 3 месяцев", example = "true")
         @NotNull(message = "", groups = OnUpdate.class)
-        Boolean isCategoryNext3Month
+        Boolean isCategoryNext3Month,
+
+        @Schema(description = "Кратен ли день рождения 5", example = "true")
+@NotNull(groups = {OnUpdate.class, OnCreate.class})
+                Boolean isBday5,
+
+        @Schema(description = "Кратен ли день рождения 5", example = "true")
+        @NotNull(message = "", groups = OnUpdate.class)
+        LocalDate bDay
 ) {
 
 

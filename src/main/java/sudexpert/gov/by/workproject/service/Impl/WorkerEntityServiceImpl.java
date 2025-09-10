@@ -119,5 +119,17 @@ public class WorkerEntityServiceImpl implements WorkerEntityService {
         return workerEntityMapper.toDTO((workerEntityRepository.save(workerEntity)));
     }
 
+    @Override
+    public WorkerEntityDTO changeIsBday5(Long id, Boolean isBday5) {
+
+        WorkerEntity workerEntity = workerEntityRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Worker with id " + id + " not found"));
+        workerEntity.setIsBday5(isBday5);
+        WorkerEntityDTO workerEntityDTO = workerEntityMapper.toDTO(workerEntity);
+        workerEntityMapper.updateWorkerEntityFromRequest(workerEntityDTO, workerEntity);
+
+        return workerEntityMapper.toDTO((workerEntityRepository.save(workerEntity)));
+    }
+
 
 }

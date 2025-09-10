@@ -119,4 +119,12 @@ public class WorkerEntityController {
         return workerEntityService.changeIsVacatedIn3Months(id, isVacatedIn3Months);
     }
 
+    @PutMapping("/changeIsBday5/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Change is vacated in 3 months")
+    @Transactional
+    public WorkerEntityDTO changeIsBday5(@PathVariable Long id, @RequestBody @NotNull Boolean isBday5) {
+        return workerEntityService.changeIsBday5(id, isBday5);
+    }
+
 }
