@@ -16,4 +16,7 @@ public interface WorkerEntityMapper {
 
     @Mapping(target = "id", ignore = true)
     void updateWorkerEntityFromRequest(WorkerEntityDTO workerEntityDTO, @MappingTarget WorkerEntity workerEntity);
+
+    @Mapping(target = "id", ignore = true)
+    void updateWorkerEntityFromRequest(WorkerEntity workerEntityNew, @MappingTarget WorkerEntity workerEntity);
 }

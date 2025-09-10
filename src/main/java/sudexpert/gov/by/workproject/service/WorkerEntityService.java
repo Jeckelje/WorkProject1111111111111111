@@ -16,4 +16,16 @@ public interface WorkerEntityService {
 
     void deleteWorkerEntity(Long id);
 
+    WorkerEntityDTO changeIsVacated(Long id, Boolean isVacated);
+
+    WorkerEntityDTO changeIsVacatedIn3Months(Long id, Boolean isVacated);
+
+    WorkerEntityDTO changeIsCategoryNextYear(Long id, Boolean isCategoryNextYear);
+
+    WorkerEntityDTO changeIsEccNextMonth(Long id, Boolean isEccNextMonth);
+
+    WorkerEntityDTO changeIsCategoryInNext3Months(Long id, Boolean isCategoryInNext3Months);
+
+    WorkerEntityDTO changeIsQualificationNextMonth(Long id, Boolean isQualificationNextMonth);
+
 }
