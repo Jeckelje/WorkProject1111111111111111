@@ -3,43 +3,60 @@ package sudexpert.gov.by.workproject.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "category")
 @Schema(description = "Category entity info")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "Id", example = "3")
-    private Long id;
+    Long id;
 
-    @Column(name = "worker_id")
+    @Column(name = "worker_id",insertable = false, updatable = false)
     @Schema(description = "Id работника", example = "2")
-    private Long workerId;
+    Long workerId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "worker_id", nullable = false)
+    WorkerEntity worker;
 
     @Column(name = "category_title")
     @Schema(description = "Название категории", example = "Получение квалификации эксперта")
-    private String title;
+    String title;
 
     @Column(name = "category_start_date")
     @Schema(description = "Дата получения категории", example = "2024-09-18")
-    private LocalDate start;
+    LocalDate start;
 
     @Column(name = "category_end_date")
     @Schema(description = "Дата окончания категории", example = "2026-11-21")
-    private LocalDate end;
+    LocalDate end;
 
     @Column(name = "description")
     @Schema(description = "Описание категории (если нужно)", example = "...")
-    private String description;
+    String description;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Category that)) return false;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : System.identityHashCode(this);
+    }
 
 }

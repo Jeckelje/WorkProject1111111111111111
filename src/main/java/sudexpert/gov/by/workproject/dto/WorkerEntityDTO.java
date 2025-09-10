@@ -1,14 +1,9 @@
 package sudexpert.gov.by.workproject.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import sudexpert.gov.by.workproject.dto.validation.OnCreate;
 import sudexpert.gov.by.workproject.dto.validation.OnUpdate;
-import sudexpert.gov.by.workproject.model.*;
 
 import java.util.Set;
 
@@ -33,47 +28,47 @@ public record WorkerEntityDTO(
         String jobTitle,
 
         @Schema(description = "")
-        Set<Train> trains,
+        Set<TrainDTO> trains,
 
         @Schema(description = "")
-        Set<Category> categories,
+        Set<CategoryDTO> categories,
 
         @Schema(description = "")
-        Set<ECC> eccs,
+        Set<ECCDTO> eccs,
 
         @Schema(description = "")
-        Set<Qualification> qualifications,
+        Set<QualificationDTO> qualifications,
 
         @Schema(description = "")
-        Set<Vacation> vacations,
+        Set<VacationDTO> vacations,
 
         @Schema(description = "Находится ли в отпуске", example = "true")
         @NotNull(message = "", groups = OnUpdate.class)
-        boolean isVacated,
+        Boolean isVacated,
 
         @Schema(description = "Будет ли в отпуске в ближайшие 3 месяца", example = "true")
         @NotNull(message = "", groups = OnUpdate.class)
-        boolean isVacatedIn3Months,
+        Boolean isVacatedIn3Months,
 
         @Schema(description = "Будет ли категория в следующем году", example = "true")
         @NotNull(message = "", groups = OnUpdate.class)
-        boolean isCategoryNextYear,
+        Boolean isCategoryNextYear,
 
         @Schema(description = "Стажировка в следующем месяце", example = "true")
         @NotNull(message = "", groups = OnUpdate.class)
-        boolean isTrainNextMonth,
+        Boolean isTrainNextMonth,
 
         @Schema(description = "Будет ли ЭКК в следующием месяце", example = "true")
         @NotNull(message = "", groups = OnUpdate.class)
-        boolean isEccNextMonth,
+        Boolean isEccNextMonth,
 
         @Schema(description = "Будет ли повышение квалификации в следующем месяце", example = "true")
         @NotNull(message = "", groups = OnUpdate.class)
-        boolean isQualificationNextMonth,
+        Boolean isQualificationNextMonth,
 
         @Schema(description = "Будет ли категория в следующих 3 месяцев", example = "true")
         @NotNull(message = "", groups = OnUpdate.class)
-        boolean isCategoryNext3Month
+        Boolean isCategoryNext3Month
 ) {
 
 

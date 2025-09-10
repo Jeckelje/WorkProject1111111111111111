@@ -1,7 +1,9 @@
 package sudexpert.gov.by.workproject.service.Impl;
 
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import sudexpert.gov.by.workproject.dto.TrainDTO;
 import sudexpert.gov.by.workproject.error.ErrorMessages;
@@ -15,10 +17,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TrainServiceImpl implements TrainService {
 
-    private final TrainMapper trainMapper;
-    private final TrainRepository trainRepository;
+    TrainMapper trainMapper;
+    TrainRepository trainRepository;
 
 
     @Override

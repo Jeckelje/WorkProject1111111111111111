@@ -12,15 +12,15 @@ CREATE TABLE IF NOT EXISTS workers_schema.workers (
                                                       id BIGINT PRIMARY KEY DEFAULT nextval('workers_schema.workers_id_seq'),
                                                       name VARCHAR(255),
                                                       surname VARCHAR(255),
-                                                      patronomicName VARCHAR(255),
+                                                      patronomic_name VARCHAR(255),
                                                       job_title VARCHAR(255),
-                                                      isVacated BOOLEAN DEFAULT FALSE,
-                                                      isVacatedIn3Months BOOLEAN DEFAULT FALSE,
-                                                      isCategoryNextYear BOOLEAN DEFAULT FALSE,
-                                                      isTrainNextMonth BOOLEAN DEFAULT FALSE,
-                                                      isEccNextMonth BOOLEAN DEFAULT FALSE,
-                                                      isQualificationNextMonth BOOLEAN DEFAULT FALSE,
-                                                      isCategoryNext3Month BOOLEAN DEFAULT FALSE
+                                                      is_vacated BOOLEAN DEFAULT FALSE,
+                                                      is_vacated_in_3_months BOOLEAN DEFAULT FALSE,
+                                                      is_category_next_year BOOLEAN DEFAULT FALSE,
+                                                      is_train_next_month BOOLEAN DEFAULT FALSE,
+                                                      is_ecc_next_month BOOLEAN DEFAULT FALSE,
+                                                      is_qualification_next_month BOOLEAN DEFAULT FALSE,
+                                                      is_category_next_3_month BOOLEAN DEFAULT FALSE
 );
 
 -- Очистка существующих данных workers (если нужно перезаполнить)
@@ -30,7 +30,7 @@ TRUNCATE TABLE workers_schema.workers RESTART IDENTITY CASCADE;
 ALTER SEQUENCE workers_schema.workers_id_seq RESTART WITH 1;
 
 -- Вставка тестовых данных workers
-INSERT INTO workers_schema.workers (name, surname, patronomicName, job_title, isVacated, isVacatedIn3Months, isCategoryNextYear, isTrainNextMonth, isEccNextMonth, isQualificationNextMonth, isCategoryNext3Month) VALUES
+INSERT INTO workers_schema.workers (name, surname, patronomic_name, job_title, is_vacated, is_vacated_in_3_months, is_category_next_year, is_train_next_month, is_ecc_next_month, is_qualification_next_month, is_category_next_3_month) VALUES
                                                                                                                                                                                                                        ('Иван', 'Иванов', 'Иванович', 'Ведущий эксперт', false, true, false, true, false, true, false),
                                                                                                                                                                                                                        ('Петр', 'Петров', 'Петрович', 'Старший эксперт', true, false, true, false, true, false, true),
                                                                                                                                                                                                                        ('Мария', 'Сидорова', 'Алексеевна', 'Главный эксперт', false, false, true, true, false, false, true),
@@ -42,15 +42,15 @@ COMMENT ON TABLE workers_schema.workers IS 'Таблица для хранени
 COMMENT ON COLUMN workers_schema.workers.id IS 'Уникальный идентификатор сотрудника';
 COMMENT ON COLUMN workers_schema.workers.name IS 'Имя сотрудника';
 COMMENT ON COLUMN workers_schema.workers.surname IS 'Фамилия сотрудника';
-COMMENT ON COLUMN workers_schema.workers.patronomicName IS 'Отчество сотрудника';
+COMMENT ON COLUMN workers_schema.workers.patronomic_name IS 'Отчество сотрудника';
 COMMENT ON COLUMN workers_schema.workers.job_title IS 'Должность сотрудника';
-COMMENT ON COLUMN workers_schema.workers.isVacated IS 'Находится ли в отпуске';
-COMMENT ON COLUMN workers_schema.workers.isVacatedIn3Months IS 'Будет ли в отпуске в ближайшие 3 месяца';
-COMMENT ON COLUMN workers_schema.workers.isCategoryNextYear IS 'Будет ли категория в следующем году';
-COMMENT ON COLUMN workers_schema.workers.isTrainNextMonth IS 'Стажировка в следующем месяце';
-COMMENT ON COLUMN workers_schema.workers.isEccNextMonth IS 'Будет ли ЭКК в следующем месяце';
-COMMENT ON COLUMN workers_schema.workers.isQualificationNextMonth IS 'Будет ли повышение квалификации в следующем месяце';
-COMMENT ON COLUMN workers_schema.workers.isCategoryNext3Month IS 'Будет ли категория в следующих 3 месяцев';
+COMMENT ON COLUMN workers_schema.workers.is_vacated IS 'Находится ли в отпуске';
+COMMENT ON COLUMN workers_schema.workers.is_vacated_in_3_months IS 'Будет ли в отпуске в ближайшие 3 месяца';
+COMMENT ON COLUMN workers_schema.workers.is_category_next_year IS 'Будет ли категория в следующем году';
+COMMENT ON COLUMN workers_schema.workers.is_train_next_month IS 'Стажировка в следующем месяце';
+COMMENT ON COLUMN workers_schema.workers.is_ecc_next_month IS 'Будет ли ЭКК в следующем месяце';
+COMMENT ON COLUMN workers_schema.workers.is_qualification_next_month IS 'Будет ли повышение квалификации в следующем месяце';
+COMMENT ON COLUMN workers_schema.workers.is_category_next_3_month IS 'Будет ли категория в следующих 3 месяцев';
 
 -- Создание последовательности для генерации ID vacation (если еще не создана)
 CREATE SEQUENCE IF NOT EXISTS workers_schema.vacation_id_seq;

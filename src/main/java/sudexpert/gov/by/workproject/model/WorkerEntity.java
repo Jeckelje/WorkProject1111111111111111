@@ -3,92 +3,113 @@ package sudexpert.gov.by.workproject.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "workers")
 @Schema(description = "Worker Entity Info.")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "id", example = "2")
-    private Long id;
+    Long id;
 
     @Schema(description = "Имя", example = "Иван")
     @Column(name = "name")
-    private String name;
+    String name;
 
     @Schema(description = "Фамилия", example = "Иванов")
     @Column(name = "surname")
-    private String surname;
+    String surname;
 
     @Schema(description = "Отчество", example = "Иванович")
-    @Column(name = "patronomicName")
-    private String patronymicName;
+    @Column(name = "patronomic_name")
+    String patronymicName;
 
     @Schema(description = "Должность", example = "Эксперт")
     @Column(name = "job_title")
-    private String jobTitle;
+    String jobTitle;
 
     //@ElementCollection(targetClass = Train.class)
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "worker_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Schema(description = "")
-    private Set<Train> trains;
+    Set<Train> trains;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "worker_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Schema(description = "")
-    private Set<Category> categories;
+    Set<Category> categories;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "worker_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Schema(description = "")
-    private Set<ECC> eccs;
+    Set<ECC> eccs;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "worker_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Schema(description = "")
-    private Set<Qualification> qualifications;
+    Set<Qualification> qualifications;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "worker_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Schema(description = "")
-    private Set<Vacation> vacations;
+    Set<Vacation> vacations;
 
     @Schema(description = "Находится ли в отпуске", example = "true")
-    @Column(name = "isVacated")
-    private boolean isVacated;
+    @Column(name = "is_vacated")
+    @ColumnDefault("false")
+    Boolean isVacated;
 
     @Schema(description = "Будет ли в отпуске в ближайшие 3 месяца", example = "true")
-    @Column(name = "isVacatedIn3Months")
-    private boolean isVacatedIn3Months;
+    @Column(name = "is_vacated_in_3_months")
+    Boolean isVacatedIn3Months;
 
     @Schema(description = "Будет ли категория в следующем году", example = "true")
-    @Column(name = "isCategoryNextYear")
-    private boolean isCategoryNextYear;
+    @Column(name = "is_category_next_year")
+    Boolean isCategoryNextYear;
 
     @Schema(description = "Стажировка в следующем месяце", example = "true")
-    @Column(name = "isTrainNextMonth")
-    private boolean isTrainNextMonth;
+    @Column(name = "is_train_next_month")
+    Boolean isTrainNextMonth;
 
     @Schema(description = "Будет ли ЭКК в следующием месяце", example = "true")
-    @Column(name = "isEccNextMonth")
-    private boolean isEccNextMonth;
+    @Column(name = "is_ecc_next_month")
+    Boolean isEccNextMonth;
 
     @Schema(description = "Будет ли повышение квалификации в следующем месяце", example = "true")
-    @Column(name = "isQualificationNextMonth")
-    private boolean isQualificationNextMonth;
+    @Column(name = "is_qualification_next_month")
+    Boolean isQualificationNextMonth;
 
     @Schema(description = "Будет ли категория в следующих 3 месяцев", example = "true")
-    @Column(name = "isCategoryNext3Month")
-    private boolean isCategoryNext3Month;
+    @Column(name = "is_category_next_3_month")
+    Boolean isCategoryNext3Month;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WorkerEntity that)) return false;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : System.identityHashCode(this);
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (isVacated == null) isVacated = false;
+        if (isVacatedIn3Months == null) isVacatedIn3Months = false;
+        if (isCategoryNextYear == null) isCategoryNextYear = false;
+        if (isTrainNextMonth == null) isTrainNextMonth = false;
+        if (isEccNextMonth == null) isEccNextMonth = false;
+        if (isQualificationNextMonth == null) isQualificationNextMonth = false;
+        if (isCategoryNext3Month == null) isCategoryNext3Month = false;
+    }
 }

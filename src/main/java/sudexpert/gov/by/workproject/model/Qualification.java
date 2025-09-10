@@ -3,9 +3,11 @@ package sudexpert.gov.by.workproject.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
@@ -15,31 +17,36 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Table(name = "qualification")
 @Schema(description = "Qualification entity info")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Qualification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "Id", example = "3")
-    private Long id;
+    Long id;
 
-    @Column(name = "worker_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "worker_id", nullable = false)
+    WorkerEntity worker;
+
+    @Column(name = "worker_id",insertable = false, updatable = false)
     @Schema(description = "Id работника", example = "2")
-    private Long workerId;
+    Long workerId;
 
     @Column(name = "qualification_title")
     @Schema(description = "Название квалификации", example = "Получение квалификации эксперта")
-    private String title;
+    String title;
 
     @Column(name = "qualification_start_date")
     @Schema(description = "Дата получения квалификации", example = "2023-10-23")
-    private LocalDate start;
+    LocalDate start;
 
     @Column(name = "qualification_end_date")
     @Schema(description = "Дата окончания квалификации", example = "2026-09-30")
-    private LocalDate end;
+    LocalDate end;
 
     @Column(name = "description")
     @Schema(description = "Описание квалификации (если нужно)", example = "...")
-    private String description;
+    String description;
 
 }

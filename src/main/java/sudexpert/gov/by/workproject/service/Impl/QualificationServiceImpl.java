@@ -1,13 +1,14 @@
 package sudexpert.gov.by.workproject.service.Impl;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import sudexpert.gov.by.workproject.dto.QualificationDTO;
 import sudexpert.gov.by.workproject.error.ErrorMessages;
 import sudexpert.gov.by.workproject.exception.ResourceNotFoundException;
 import sudexpert.gov.by.workproject.mapper.QualificationMapper;
 import sudexpert.gov.by.workproject.model.Qualification;
-import sudexpert.gov.by.workproject.model.Train;
 import sudexpert.gov.by.workproject.repository.QualificationRepository;
 import sudexpert.gov.by.workproject.service.QualificationService;
 
@@ -15,10 +16,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class QualificationServiceImpl implements QualificationService {
 
-    private final QualificationMapper qualificationMapper;
-    private final QualificationRepository qualificationRepository;
+    QualificationMapper qualificationMapper;
+    QualificationRepository qualificationRepository;
 
 
     @Override

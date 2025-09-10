@@ -1,6 +1,8 @@
 package sudexpert.gov.by.workproject.service.Impl;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import sudexpert.gov.by.workproject.dto.ECCDTO;
 import sudexpert.gov.by.workproject.error.ErrorMessages;
@@ -15,10 +17,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ECCServiceImpl implements ECCService {
 
-    private final ECCRepository eccRepository;
-    private final ECCMapper eccMapper;
+    ECCRepository eccRepository;
+    ECCMapper eccMapper;
 
 
     @Override

@@ -1,6 +1,8 @@
 package sudexpert.gov.by.workproject.controller;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -17,10 +19,11 @@ import java.util.List;
 @RequestMapping("api/vacation")
 @RequiredArgsConstructor
 @Validated
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VacationController implements VacationAPI {
 
-    private final VacationService vacationService;
-    private final ServerProperties serverProperties;
+    VacationService vacationService;
+    ServerProperties serverProperties;
 
 
     @PostMapping

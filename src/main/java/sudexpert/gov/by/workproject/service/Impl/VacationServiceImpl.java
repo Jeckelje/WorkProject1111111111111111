@@ -1,12 +1,13 @@
 package sudexpert.gov.by.workproject.service.Impl;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import sudexpert.gov.by.workproject.dto.VacationDTO;
 import sudexpert.gov.by.workproject.error.ErrorMessages;
 import sudexpert.gov.by.workproject.exception.ResourceNotFoundException;
 import sudexpert.gov.by.workproject.mapper.VacationMapper;
-import sudexpert.gov.by.workproject.model.Train;
 import sudexpert.gov.by.workproject.model.Vacation;
 import sudexpert.gov.by.workproject.repository.VacationRepository;
 import sudexpert.gov.by.workproject.service.VacationService;
@@ -16,10 +17,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VacationServiceImpl implements VacationService {
 
-    private final VacationMapper vacationMapper;
-    private final VacationRepository vacationRepository;
+    VacationMapper vacationMapper;
+    VacationRepository vacationRepository;
 
 
     @Override

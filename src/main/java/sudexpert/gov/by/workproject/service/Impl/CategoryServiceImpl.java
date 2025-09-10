@@ -1,11 +1,13 @@
 package sudexpert.gov.by.workproject.service.Impl;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import sudexpert.gov.by.workproject.dto.CategoryDTO;
 import sudexpert.gov.by.workproject.error.ErrorMessages;
-import sudexpert.gov.by.workproject.mapper.CategoryMapper;
 import sudexpert.gov.by.workproject.exception.ResourceNotFoundException;
+import sudexpert.gov.by.workproject.mapper.CategoryMapper;
 import sudexpert.gov.by.workproject.model.Category;
 import sudexpert.gov.by.workproject.repository.CategoryRepository;
 import sudexpert.gov.by.workproject.service.CategoryService;
@@ -14,10 +16,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CategoryServiceImpl implements CategoryService {
 
-    private final CategoryMapper categoryMapper;
-    private final CategoryRepository categoryRepository;
+    CategoryMapper categoryMapper;
+    CategoryRepository categoryRepository;
 
 
     @Override
@@ -69,8 +72,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private Category findCategoryByWorkerIdOrThrow(Long workerId) {
-        Category category =categoryRepository.findCategoryByWorkerId(workerId);
-        if(category == null){
+        Category category = categoryRepository.findCategoryByWorkerId(workerId);
+        if (category == null) {
             throw new ResourceNotFoundException(
                     String.format(ErrorMessages.RESOURCE_NOT_FOUND_BY_CUSTOMER_NAME_MESSAGE, "Category for worker", workerId)
             );

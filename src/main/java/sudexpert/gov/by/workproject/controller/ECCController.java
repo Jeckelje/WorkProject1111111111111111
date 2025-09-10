@@ -1,6 +1,8 @@
 package sudexpert.gov.by.workproject.controller;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +18,10 @@ import java.util.List;
 @RequestMapping("api/ecc")
 @RequiredArgsConstructor
 @Validated
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ECCController implements ECCAPI {
 
-    private final ECCService eccService;
+    ECCService eccService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -1,6 +1,8 @@
 package sudexpert.gov.by.workproject.service.Impl;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import sudexpert.gov.by.workproject.dto.WorkerEntityDTO;
 import sudexpert.gov.by.workproject.exception.ResourceNotFoundException;
@@ -13,13 +15,15 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class WorkerEntityServiceImpl implements WorkerEntityService {
 
-    private final WorkerEntityMapper workerEntityMapper;
-    private final WorkerEntityRepository workerEntityRepository;
+    WorkerEntityMapper workerEntityMapper;
+    WorkerEntityRepository workerEntityRepository;
 
     @Override
     public WorkerEntityDTO createWorkerEntity(WorkerEntityDTO workerEntityDTO) {
+
         return workerEntityMapper.toDTO(workerEntityRepository.save(workerEntityMapper.toEntity(workerEntityDTO)));
     }
 
@@ -35,7 +39,7 @@ public class WorkerEntityServiceImpl implements WorkerEntityService {
     @Override
     public WorkerEntityDTO getWorkerEntityById(Long id) {
         return workerEntityMapper.toDTO(workerEntityRepository.findById(id)
-                .orElseThrow(() -> new  ResourceNotFoundException("")));
+                .orElseThrow(() -> new ResourceNotFoundException("")));
     }
 
     @Override
@@ -54,9 +58,9 @@ public class WorkerEntityServiceImpl implements WorkerEntityService {
     public WorkerEntityDTO changeIsVacated(Long id, Boolean isVacated) {
         WorkerEntity workerEntity = workerEntityRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Worker with id " + id + " not found"));
-        workerEntity.setVacated(isVacated);
-        workerEntityMapper.updateWorkerEntityFromRequest(workerEntity, workerEntity);
-
+        workerEntity.setIsVacated(isVacated);
+       WorkerEntityDTO workerEntityDTO = workerEntityMapper.toDTO(workerEntity);
+        //return  workerEntityMapper.toDTO(workerEntityRepository.save(workerEntity));
         return workerEntityMapper.toDTO((workerEntityRepository.save(workerEntity)));
     }
 
@@ -64,26 +68,31 @@ public class WorkerEntityServiceImpl implements WorkerEntityService {
     public WorkerEntityDTO changeIsVacatedIn3Months(Long id, Boolean isVacated) {
         WorkerEntity workerEntity = workerEntityRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Worker with id " + id + " not found"));
-        workerEntity.setVacatedIn3Months(isVacated);
-        workerEntityMapper.updateWorkerEntityFromRequest(workerEntity, workerEntity);
+        workerEntity.setIsVacatedIn3Months(isVacated);
+        WorkerEntityDTO workerEntityDTO = workerEntityMapper.toDTO(workerEntity);
+        workerEntityMapper.updateWorkerEntityFromRequest(workerEntityDTO, workerEntity);
 
-        return workerEntityMapper.toDTO((workerEntityRepository.save(workerEntity)));    }
+        return workerEntityMapper.toDTO((workerEntityRepository.save(workerEntity)));
+    }
 
     @Override
     public WorkerEntityDTO changeIsCategoryNextYear(Long id, Boolean isCategoryNextYear) {
         WorkerEntity workerEntity = workerEntityRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Worker with id " + id + " not found"));
-        workerEntity.setCategoryNextYear(isCategoryNextYear);
-        workerEntityMapper.updateWorkerEntityFromRequest(workerEntity, workerEntity);
+        workerEntity.setIsCategoryNextYear(isCategoryNextYear);
+        WorkerEntityDTO workerEntityDTO = workerEntityMapper.toDTO(workerEntity);
+        workerEntityMapper.updateWorkerEntityFromRequest(workerEntityDTO, workerEntity);
 
-        return workerEntityMapper.toDTO((workerEntityRepository.save(workerEntity)));    }
+        return workerEntityMapper.toDTO((workerEntityRepository.save(workerEntity)));
+    }
 
     @Override
     public WorkerEntityDTO changeIsEccNextMonth(Long id, Boolean isEccNextMonth) {
         WorkerEntity workerEntity = workerEntityRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Worker with id " + id + " not found"));
-        workerEntity.setEccNextMonth(isEccNextMonth);
-        workerEntityMapper.updateWorkerEntityFromRequest(workerEntity, workerEntity);
+        workerEntity.setIsEccNextMonth(isEccNextMonth);
+        WorkerEntityDTO workerEntityDTO = workerEntityMapper.toDTO(workerEntity);
+        workerEntityMapper.updateWorkerEntityFromRequest(workerEntityDTO, workerEntity);
 
         return workerEntityMapper.toDTO((workerEntityRepository.save(workerEntity)));
     }
@@ -92,8 +101,9 @@ public class WorkerEntityServiceImpl implements WorkerEntityService {
     public WorkerEntityDTO changeIsCategoryInNext3Months(Long id, Boolean isCategoryInNext3Months) {
         WorkerEntity workerEntity = workerEntityRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Worker with id " + id + " not found"));
-        workerEntity.setCategoryNext3Month(isCategoryInNext3Months);
-        workerEntityMapper.updateWorkerEntityFromRequest(workerEntity, workerEntity);
+        workerEntity.setIsCategoryNext3Month(isCategoryInNext3Months);
+        WorkerEntityDTO workerEntityDTO = workerEntityMapper.toDTO(workerEntity);
+        workerEntityMapper.updateWorkerEntityFromRequest(workerEntityDTO, workerEntity);
 
         return workerEntityMapper.toDTO((workerEntityRepository.save(workerEntity)));
     }
@@ -102,8 +112,9 @@ public class WorkerEntityServiceImpl implements WorkerEntityService {
     public WorkerEntityDTO changeIsQualificationNextMonth(Long id, Boolean isQualificationNextMonth) {
         WorkerEntity workerEntity = workerEntityRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Worker with id " + id + " not found"));
-        workerEntity.setQualificationNextMonth(isQualificationNextMonth);
-        workerEntityMapper.updateWorkerEntityFromRequest(workerEntity, workerEntity);
+        workerEntity.setIsQualificationNextMonth(isQualificationNextMonth);
+        WorkerEntityDTO workerEntityDTO = workerEntityMapper.toDTO(workerEntity);
+        workerEntityMapper.updateWorkerEntityFromRequest(workerEntityDTO, workerEntity);
 
         return workerEntityMapper.toDTO((workerEntityRepository.save(workerEntity)));
     }

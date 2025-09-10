@@ -22,7 +22,7 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
-public class WorkProjectApplication {
+public class    WorkProjectApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WorkProjectApplication.class, args);
