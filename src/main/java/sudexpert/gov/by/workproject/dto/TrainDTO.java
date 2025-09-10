@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 public record TrainDTO(
 @Schema(description = "Id", example = "3")
-@NotNull(message = "",groups = OnUpdate.class)
+@NotNull(message = "",groups = {OnUpdate.class})
 Long id,
 
 @Schema(description = "Id работника", example = "2")

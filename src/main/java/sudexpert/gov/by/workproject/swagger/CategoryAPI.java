@@ -16,7 +16,7 @@ import sudexpert.gov.by.workproject.dto.validation.OnCreate;
 
 import java.util.List;
 
-@Tag(name = "Category Controller", description = "Category API")
+@Tag(name = "Контроллер Категорий", description = "Category API")
 public interface CategoryAPI {
     @Operation(summary = "Create category")
     @ApiResponses(value = {
@@ -61,7 +61,7 @@ public interface CategoryAPI {
 
     @Operation(summary = "Get all categories")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Books retrieved successfully", content = @Content(schema = @Schema(implementation = CategoryDTO.class))),
+            @ApiResponse(responseCode = "200", description = "Categories retrieved successfully", content = @Content(schema = @Schema(implementation = CategoryDTO.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
     })
     List<CategoryDTO> getAllCategories();
