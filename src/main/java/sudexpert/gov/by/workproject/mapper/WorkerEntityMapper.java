@@ -1,8 +1,5 @@
 package sudexpert.gov.by.workproject.mapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,32 +7,44 @@ import org.mapstruct.MappingTarget;
 import sudexpert.gov.by.workproject.dto.WorkerEntityDTO;
 import sudexpert.gov.by.workproject.model.WorkerEntity;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class,ECCMapper.class,QualificationMapper.class,TrainMapper.class,VacationMapper.class},imports = {java.util.stream.Collectors.class})
+@Mapper(
+        componentModel = "spring",
+        uses = {
+                CategoryMapper.class,
+                ECCMapper.class,
+                QualificationMapper.class,
+                TrainMapper.class,
+                VacationMapper.class
+        }
+)
 public interface WorkerEntityMapper {
 
-
-    @Mapping(target = "categories", expression = "java(workerEntity.getCategories() == null ? Set.of() : workerEntity.getCategories().stream().map(categoryMapper::toDTO).collect(Collectors.toSet()))")
-    @Mapping(target = "trains", expression = "java(workerEntity.getTrains() == null ? Set.of() : workerEntity.getTrains().stream().map(trainMapper::toDTO).collect(Collectors.toSet()))")
-    @Mapping(target = "eccs", expression = "java(workerEntity.getEccs() == null ? Set.of() : workerEntity.getEccs().stream().map(eCCMapper::toDTO).collect(Collectors.toSet()))")
-    @Mapping(target = "qualifications", expression = "java(workerEntity.getQualifications() == null ? Set.of() : workerEntity.getQualifications().stream().map(qualificationMapper::toDTO).collect(Collectors.toSet()))")
-    @Mapping(target = "vacations", expression = "java(workerEntity.getVacations() == null ? Set.of() : workerEntity.getVacations().stream().map(vacationMapper::toDTO).collect(Collectors.toSet()))")
+    // ✅ MapStruct сам вызовет categoryMapper.toDTO, trainMapper.toDTO и т.д.
     WorkerEntityDTO toDTO(WorkerEntity workerEntity);
 
+    // при создании - коллекции игнорируем
+    @Mapping(target = "categories", ignore = true)
+    @Mapping(target = "trains", ignore = true)
+    @Mapping(target = "eccs", ignore = true)
+    @Mapping(target = "qualifications", ignore = true)
+    @Mapping(target = "vacations", ignore = true)
     WorkerEntity toEntity(WorkerEntityDTO workerEntityDTO);
 
+    // при обновлении - тоже игнорируем
+    @Mapping(target = "categories", ignore = true)
+    @Mapping(target = "trains", ignore = true)
+    @Mapping(target = "eccs", ignore = true)
+    @Mapping(target = "qualifications", ignore = true)
+    @Mapping(target = "vacations", ignore = true)
     @Mapping(target = "id", ignore = true)
+    void updateWorkerEntityFromRequest(
+            WorkerEntityDTO workerEntityDTO,
+            @MappingTarget WorkerEntity workerEntity
+    );
 
-    void updateWorkerEntityFromRequest(WorkerEntityDTO workerEntityDTO, @MappingTarget WorkerEntity workerEntity);
-
-    static <T> Set<T> safeCopy(Set<T> set) {
-        return set == null ? Set.of() : new HashSet<>(set); // безопасная копия
-    }
-
+    // привязка "обратно" к воркеру
     @AfterMapping
-    default void linkCategories(@MappingTarget WorkerEntity worker) {
+    default void linkCollections(@MappingTarget WorkerEntity worker) {
         if (worker.getCategories() != null) {
             worker.getCategories().forEach(c -> c.setWorker(worker));
         }
@@ -51,4 +60,5 @@ public interface WorkerEntityMapper {
         if (worker.getQualifications() != null) {
             worker.getQualifications().forEach(c -> c.setWorker(worker));
         }
-}}
+    }
+}

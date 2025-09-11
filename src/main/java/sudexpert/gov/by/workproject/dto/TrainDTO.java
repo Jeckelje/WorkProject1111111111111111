@@ -5,35 +5,32 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import sudexpert.gov.by.workproject.dto.validation.OnCreate;
 import sudexpert.gov.by.workproject.dto.validation.OnUpdate;
+import sudexpert.gov.by.workproject.model.Train;
 
 import java.time.LocalDate;
 
+
+@Schema(implementation = Train.class)
 public record TrainDTO(
-@Schema(description = "Id", example = "3")
-@NotNull(message = "",groups = {OnUpdate.class})
-Long id,
 
-@Schema(description = "Id работника", example = "2")
-@NotNull(message = "",groups = {OnUpdate.class, OnCreate.class})
-Long workerId,
+        @NotNull(message = "", groups = {OnUpdate.class})
+        Long id,
 
-@Schema(description = "Название категории", example = "Получение квалификации эксперта")
-@NotEmpty(message = "",groups = {OnCreate.class, OnUpdate.class})
-String title,
+        @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
+        Long workerId,
 
-@Schema(description = "Дата получения категории", example = "2024-09-18")
-@NotNull(message = "",groups = {OnUpdate.class, OnCreate.class})
-LocalDate start,
+        @NotEmpty(message = "", groups = {OnCreate.class, OnUpdate.class})
+        String title,
 
-@Schema(description = "Дата окончания категории", example = "2026-11-21")
-@NotNull(message = "",groups = {OnUpdate.class, OnCreate.class})
-LocalDate end,
+        @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
+        LocalDate start,
 
-@Schema(description = "Описание категории (если нужно)", example = "...")
-@NotEmpty(message = "",groups = {OnCreate.class, OnUpdate.class})
-String description
-)
-{
+        @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
+        LocalDate end,
+
+        @NotEmpty(message = "", groups = {OnCreate.class, OnUpdate.class})
+        String description
+) {
     public TrainDTO {
         if (start != null && end != null && end.isBefore(start)) {
             throw new IllegalArgumentException("Planned completion date cannot be earlier than the start date.");

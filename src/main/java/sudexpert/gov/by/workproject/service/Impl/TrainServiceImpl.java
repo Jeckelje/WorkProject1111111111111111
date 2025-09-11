@@ -1,6 +1,7 @@
 package sudexpert.gov.by.workproject.service.Impl;
 
 
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -9,9 +10,11 @@ import sudexpert.gov.by.workproject.dto.TrainDTO;
 import sudexpert.gov.by.workproject.error.ErrorMessages;
 import sudexpert.gov.by.workproject.exception.ResourceNotFoundException;
 import sudexpert.gov.by.workproject.mapper.TrainMapper;
+import sudexpert.gov.by.workproject.mapper.WorkerEntityMapper;
 import sudexpert.gov.by.workproject.model.Train;
 import sudexpert.gov.by.workproject.repository.TrainRepository;
 import sudexpert.gov.by.workproject.service.TrainService;
+import sudexpert.gov.by.workproject.service.WorkerEntityService;
 
 import java.util.List;
 
@@ -22,11 +25,18 @@ public class TrainServiceImpl implements TrainService {
 
     TrainMapper trainMapper;
     TrainRepository trainRepository;
+    WorkerEntityService workerEntityService;
+    WorkerEntityMapper workerEntityMapper;
 
 
     @Override
+    @Transactional
     public TrainDTO createTrain(TrainDTO trainDTO) {
-        return trainMapper.toDTO(trainRepository.save(trainMapper.toEntity(trainDTO)));
+
+        Train train=trainMapper.toEntity(trainDTO);
+        train.setWorker(workerEntityMapper.toEntity(workerEntityService.getWorkerEntityById(trainDTO.workerId())));
+       //train.setWorkerId(trainDTO.workerId());
+        return trainMapper.toDTO(trainRepository.save(train));
     }
 
     @Override
@@ -46,7 +56,7 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     public void deleteTrain(Long id) {
-        Train train = findTrainByIdOrThrow(id);
+        findTrainByIdOrThrow(id);
         trainRepository.deleteById(id);
     }
 
