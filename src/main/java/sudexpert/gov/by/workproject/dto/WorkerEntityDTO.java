@@ -72,11 +72,11 @@ public record WorkerEntityDTO(
         Boolean isCategoryNext3Month,
 
         @Schema(description = "Кратен ли день рождения 5", example = "true")
-        @NotNull(groups = {OnUpdate.class, OnCreate.class})
+        @NotNull(groups = {OnUpdate.class})
                 Boolean isBday5,
 
         @Schema(description = "Кратен ли день рождения 5", example = "true")
-        @NotNull(message = "", groups = OnUpdate.class)
+        @NotNull(message = "", groups = {OnUpdate.class,OnCreate.class})
         LocalDate bDay
 ) {
 

@@ -9,7 +9,7 @@ import sudexpert.gov.by.workproject.dto.error.AppError;
 
 import java.time.LocalDateTime;
 
-//@RestControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)

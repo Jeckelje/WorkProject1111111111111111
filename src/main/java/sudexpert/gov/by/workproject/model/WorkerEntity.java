@@ -34,7 +34,7 @@ public class WorkerEntity {
     String surname;
 
     @Schema(description = "Отчество", example = "Иванович")
-    @Column(name = "patronomic_name")
+    @Column(name = "patronymic_name")
     String patronymicName;
 
     @Schema(description = "Должность", example = "Эксперт")
@@ -43,23 +43,23 @@ public class WorkerEntity {
 
     //@ElementCollection(targetClass = Train.class)
     @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Schema(description = "")
+    @Schema(description = "Стажировки")
     Set<Train> trains;
 
     @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Schema(description = "")
+    @Schema(description = "Категория")
     Set<Category> categories;
 
     @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Schema(description = "")
+    @Schema(description = "ЭКК")
     Set<ECC> eccs;
 
     @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Schema(description = "")
+    @Schema(description = "Повышение квалификации")
     Set<Qualification> qualifications;
 
     @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Schema(description = "")
+    @Schema(description = "Отпуск")
     Set<Vacation> vacations;
 
     @Schema(description = "Находится ли в отпуске", example = "true")
@@ -92,11 +92,11 @@ public class WorkerEntity {
     Boolean isCategoryNext3Month;
 
     @Schema(description = "Кратен ли день рождения 5", example = "true")
-    @Column(name = "is_bday_5")
+    @Column(name = "is_bday5")
     Boolean isBday5;
 
     @Schema(description = "Кратен ли день рождения 5", example = "true")
-    @Column(name = "is_bday_5")
+    @Column(name = "b_day")
     LocalDate bDay;
 
     @Override

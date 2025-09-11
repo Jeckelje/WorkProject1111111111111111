@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "users_view")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -23,7 +23,7 @@ public class User {
     @Schema(description = "id", example = "2")
     Long id;
 
-    @Schema(description = "username", example = "John")
+    @Schema(description = "Логин", example = "")
     String username;
 
     @Schema(description = "Password", example = "password")
