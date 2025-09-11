@@ -1,7 +1,6 @@
 package sudexpert.gov.by.workproject.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import sudexpert.gov.by.workproject.dto.validation.OnCreate;
 import sudexpert.gov.by.workproject.dto.validation.OnUpdate;
@@ -29,19 +28,19 @@ public record WorkerEntityDTO(
         @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
         String jobTitle,
 
-        @Schema(description = "")
+        @Schema(description = "Стажировка")
         Set<TrainDTO> trains,
 
-        @Schema(description = "")
+        @Schema(description = "Категория")
         Set<CategoryDTO> categories,
 
-        @Schema(description = "")
+        @Schema(description = "ЭКК")
         Set<ECCDTO> eccs,
 
-        @Schema(description = "")
+        @Schema(description = "Повышение квалификации")
         Set<QualificationDTO> qualifications,
 
-        @Schema(description = "")
+        @Schema(description = "Отпуск")
         Set<VacationDTO> vacations,
 
         @Schema(description = "Находится ли в отпуске", example = "true")
@@ -73,7 +72,7 @@ public record WorkerEntityDTO(
         Boolean isCategoryNext3Month,
 
         @Schema(description = "Кратен ли день рождения 5", example = "true")
-@NotNull(groups = {OnUpdate.class, OnCreate.class})
+        @NotNull(groups = {OnUpdate.class, OnCreate.class})
                 Boolean isBday5,
 
         @Schema(description = "Кратен ли день рождения 5", example = "true")
