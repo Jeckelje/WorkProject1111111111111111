@@ -8,9 +8,11 @@ import sudexpert.gov.by.workproject.dto.CategoryDTO;
 import sudexpert.gov.by.workproject.error.ErrorMessages;
 import sudexpert.gov.by.workproject.exception.ResourceNotFoundException;
 import sudexpert.gov.by.workproject.mapper.CategoryMapper;
+import sudexpert.gov.by.workproject.mapper.WorkerEntityMapper;
 import sudexpert.gov.by.workproject.model.Category;
 import sudexpert.gov.by.workproject.repository.CategoryRepository;
 import sudexpert.gov.by.workproject.service.CategoryService;
+import sudexpert.gov.by.workproject.service.WorkerEntityService;
 
 import java.util.List;
 
@@ -21,11 +23,16 @@ public class CategoryServiceImpl implements CategoryService {
 
     CategoryMapper categoryMapper;
     CategoryRepository categoryRepository;
+    WorkerEntityService workerEntityService;
+    WorkerEntityMapper workerEntityMapper;
 
 
     @Override
     public CategoryDTO createCategory(CategoryDTO createCategoryDTO) {
-        return categoryMapper.toDTO(categoryRepository.save(categoryMapper.toEntity(createCategoryDTO)));
+        Category category = categoryMapper.toEntity(createCategoryDTO);
+        category.setWorker(workerEntityMapper.toEntity(workerEntityService.getWorkerEntityById(createCategoryDTO.workerId())));
+        //train.setWorkerId(trainDTO.workerId());
+        return categoryMapper.toDTO(categoryRepository.save(category));
     }
 
 

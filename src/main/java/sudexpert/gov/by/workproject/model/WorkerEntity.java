@@ -99,6 +99,10 @@
         @Column(name = "b_day")
         LocalDate birthDay;
 
+        @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @Schema(description = "Регалии")
+        Set<Achievement> achievements;
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;

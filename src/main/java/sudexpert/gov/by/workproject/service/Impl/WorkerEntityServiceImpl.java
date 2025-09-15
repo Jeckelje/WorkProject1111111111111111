@@ -59,7 +59,7 @@ public class WorkerEntityServiceImpl implements WorkerEntityService {
         WorkerEntity workerEntity = workerEntityRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Worker with id " + id + " not found"));
         workerEntity.setIsVacated(isVacated);
-       WorkerEntityDTO workerEntityDTO = workerEntityMapper.toDTO(workerEntity);
+        WorkerEntityDTO workerEntityDTO = workerEntityMapper.toDTO(workerEntity);
         //return  workerEntityMapper.toDTO(workerEntityRepository.save(workerEntity));
         return workerEntityMapper.toDTO((workerEntityRepository.save(workerEntity)));
     }

@@ -8,9 +8,11 @@ import sudexpert.gov.by.workproject.dto.VacationDTO;
 import sudexpert.gov.by.workproject.error.ErrorMessages;
 import sudexpert.gov.by.workproject.exception.ResourceNotFoundException;
 import sudexpert.gov.by.workproject.mapper.VacationMapper;
+import sudexpert.gov.by.workproject.mapper.WorkerEntityMapper;
 import sudexpert.gov.by.workproject.model.Vacation;
 import sudexpert.gov.by.workproject.repository.VacationRepository;
 import sudexpert.gov.by.workproject.service.VacationService;
+import sudexpert.gov.by.workproject.service.WorkerEntityService;
 
 import java.util.List;
 
@@ -22,11 +24,15 @@ public class VacationServiceImpl implements VacationService {
 
     VacationMapper vacationMapper;
     VacationRepository vacationRepository;
-
+    WorkerEntityService workerEntityService;
+    WorkerEntityMapper workerEntityMapper;
 
     @Override
     public VacationDTO createVacation(VacationDTO vacationDTO) {
-        return vacationMapper.toDTO(vacationRepository.save(vacationMapper.toEntity(vacationDTO)));
+        Vacation vacation = vacationMapper.toEntity(vacationDTO);
+        vacation.setWorker(workerEntityMapper.toEntity(workerEntityService.getWorkerEntityById(vacationDTO.workerId())));
+        //train.setWorkerId(trainDTO.workerId());
+        return vacationMapper.toDTO(vacationRepository.save(vacation));
     }
 
     @Override

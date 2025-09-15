@@ -4,7 +4,7 @@ import sudexpert.gov.by.workproject.dto.TrainDTO;
 
 import java.util.List;
 
-public interface TrainService {
+public interface  TrainService {
 
     TrainDTO createTrain(TrainDTO trainDTO);
 

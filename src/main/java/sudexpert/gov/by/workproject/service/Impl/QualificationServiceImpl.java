@@ -8,9 +8,11 @@ import sudexpert.gov.by.workproject.dto.QualificationDTO;
 import sudexpert.gov.by.workproject.error.ErrorMessages;
 import sudexpert.gov.by.workproject.exception.ResourceNotFoundException;
 import sudexpert.gov.by.workproject.mapper.QualificationMapper;
+import sudexpert.gov.by.workproject.mapper.WorkerEntityMapper;
 import sudexpert.gov.by.workproject.model.Qualification;
 import sudexpert.gov.by.workproject.repository.QualificationRepository;
 import sudexpert.gov.by.workproject.service.QualificationService;
+import sudexpert.gov.by.workproject.service.WorkerEntityService;
 
 import java.util.List;
 
@@ -21,11 +23,16 @@ public class QualificationServiceImpl implements QualificationService {
 
     QualificationMapper qualificationMapper;
     QualificationRepository qualificationRepository;
+    WorkerEntityService workerEntityService;
+    WorkerEntityMapper workerEntityMapper;
 
 
     @Override
     public QualificationDTO createQualification(QualificationDTO qualificationDTO) {
-        return qualificationMapper.toDTO(qualificationRepository.save(qualificationMapper.toEntity(qualificationDTO)));
+        Qualification qualification = qualificationMapper.toEntity(qualificationDTO);
+        qualification.setWorker(workerEntityMapper.toEntity(workerEntityService.getWorkerEntityById(qualificationDTO.workerId())));
+        //train.setWorkerId(trainDTO.workerId());
+        return qualificationMapper.toDTO(qualificationRepository.save(qualification));
     }
 
     @Override

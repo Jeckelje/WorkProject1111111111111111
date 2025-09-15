@@ -14,19 +14,19 @@ import java.time.LocalDate;
     Long id,
 
     @NotNull(message = "",groups = {OnUpdate.class, OnCreate.class})
-     Long workerId,
+    Long workerId,
 
     @NotEmpty(message = "",groups = {OnCreate.class, OnUpdate.class})
-     String title,
+    String title,
+
+    @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
+    LocalDate start,
 
     @NotNull(message = "",groups = {OnUpdate.class, OnCreate.class})
-     LocalDate start,
-
-    @NotNull(message = "",groups = {OnUpdate.class, OnCreate.class})
-     LocalDate end,
+    LocalDate end,
 
     @NotEmpty(message = "",groups = {OnCreate.class, OnUpdate.class})
-     String description
+    String description
 )
      {
          public CategoryDTO{

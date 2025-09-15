@@ -1,3 +1,5 @@
+drop schema if exists workers_schema cascade;
+
 -- Создание схемы workers_schema (если еще не создана)
 CREATE SCHEMA IF NOT EXISTS workers_schema;
 
@@ -240,3 +242,40 @@ COMMENT ON COLUMN workers_schema.category.category_title IS 'Название к
 COMMENT ON COLUMN workers_schema.category.category_start_date IS 'Дата получения категории';
 COMMENT ON COLUMN workers_schema.category.category_end_date IS 'Дата окончания категории';
 COMMENT ON COLUMN workers_schema.category.description IS 'Описание категории';
+
+
+-- Создание последовательности для генерации ID achievements (если еще не создана)
+CREATE SEQUENCE IF NOT EXISTS workers_schema.achievements_id_seq;
+
+-- Создание таблицы achievements (если не существует)
+CREATE TABLE IF NOT EXISTS workers_schema.achievements (
+                                                           id BIGINT PRIMARY KEY DEFAULT nextval('workers_schema.achievements_id_seq'),
+                                                           worker_id BIGINT NOT NULL,
+                                                           description TEXT,
+                                                           achievement_date DATE,
+                                                           CONSTRAINT fk_achievements_worker
+                                                               FOREIGN KEY (worker_id)
+                                                                   REFERENCES workers_schema.workers(id)
+                                                                   ON DELETE CASCADE
+);
+
+-- Создание индекса для ускорения выборки по worker_id
+CREATE INDEX IF NOT EXISTS idx_achievements_worker_id ON workers_schema.achievements(worker_id);
+
+-- Очистка существующих данных achievements (если нужно перезаполнить)
+TRUNCATE TABLE workers_schema.achievements RESTART IDENTITY;
+
+-- Вставка тестовых данных achievements
+INSERT INTO workers_schema.achievements (worker_id, description, achievement_date) VALUES
+                                                                                       (1, 'Почетная грамота за выдающиеся достижения', '2023-09-18'),
+                                                                                       (2, 'Благодарность за успешное выполнение сложного проекта', '2024-01-25'),
+                                                                                       (3, 'Награда за инновации в работе', '2024-05-10'),
+                                                                                       (4, 'Сертификат за участие в международной конференции', '2024-03-12'),
+                                                                                       (5, 'Премия за высокие показатели в работе отдела', '2024-07-01');
+
+-- Комментарии к таблице и колонкам achievements
+COMMENT ON TABLE workers_schema.achievements IS 'Таблица для хранения достижений (регалий) сотрудников';
+COMMENT ON COLUMN workers_schema.achievements.id IS 'Уникальный идентификатор достижения';
+COMMENT ON COLUMN workers_schema.achievements.worker_id IS 'ID сотрудника (внешний ключ)';
+COMMENT ON COLUMN workers_schema.achievements.description IS 'Описание достижения';
+COMMENT ON COLUMN workers_schema.achievements.achievement_date IS 'Дата получения достижения';

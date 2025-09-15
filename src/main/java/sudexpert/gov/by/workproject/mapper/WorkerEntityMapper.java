@@ -14,7 +14,8 @@ import sudexpert.gov.by.workproject.model.WorkerEntity;
                 ECCMapper.class,
                 QualificationMapper.class,
                 TrainMapper.class,
-                VacationMapper.class
+                VacationMapper.class,
+                AchievementMapper.class
         }
 )
 public interface WorkerEntityMapper {
@@ -28,6 +29,7 @@ public interface WorkerEntityMapper {
     @Mapping(target = "eccs", ignore = true)
     @Mapping(target = "qualifications", ignore = true)
     @Mapping(target = "vacations", ignore = true)
+    @Mapping(target = "achievements", ignore = true)
     WorkerEntity toEntity(WorkerEntityDTO workerEntityDTO);
 
     // при обновлении - тоже игнорируем
@@ -37,6 +39,7 @@ public interface WorkerEntityMapper {
     @Mapping(target = "qualifications", ignore = true)
     @Mapping(target = "vacations", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "achievements", ignore = true)
     void updateWorkerEntityFromRequest(
             WorkerEntityDTO workerEntityDTO,
             @MappingTarget WorkerEntity workerEntity

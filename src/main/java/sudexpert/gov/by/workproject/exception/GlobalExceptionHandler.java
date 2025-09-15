@@ -2,6 +2,7 @@ package sudexpert.gov.by.workproject.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,6 +31,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<AppError> handleIllegalArgument(IllegalArgumentException ex) {
         return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<AppError>  handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){
+        return  buildErrorResponse("АШИБКА!!!!!!!!!!!!!!!!",HttpStatus.I_AM_A_TEAPOT);
     }
 
     @ExceptionHandler(Exception.class) // общий обработчик

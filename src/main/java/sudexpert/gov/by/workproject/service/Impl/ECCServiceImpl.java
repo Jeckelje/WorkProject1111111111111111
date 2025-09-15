@@ -8,10 +8,11 @@ import sudexpert.gov.by.workproject.dto.ECCDTO;
 import sudexpert.gov.by.workproject.error.ErrorMessages;
 import sudexpert.gov.by.workproject.exception.ResourceNotFoundException;
 import sudexpert.gov.by.workproject.mapper.ECCMapper;
+import sudexpert.gov.by.workproject.mapper.WorkerEntityMapper;
 import sudexpert.gov.by.workproject.model.ECC;
-import sudexpert.gov.by.workproject.model.Train;
 import sudexpert.gov.by.workproject.repository.ECCRepository;
 import sudexpert.gov.by.workproject.service.ECCService;
+import sudexpert.gov.by.workproject.service.WorkerEntityService;
 
 import java.util.List;
 
@@ -22,11 +23,15 @@ public class ECCServiceImpl implements ECCService {
 
     ECCRepository eccRepository;
     ECCMapper eccMapper;
-
+    WorkerEntityService workerEntityService;
+    WorkerEntityMapper workerEntityMapper;
 
     @Override
     public ECCDTO createEcc(ECCDTO eccdto) {
-        return eccMapper.toDTO(eccRepository.save(eccMapper.toEntity(eccdto)));
+        ECC ecc = eccMapper.toEntity(eccdto);
+        ecc.setWorker(workerEntityMapper.toEntity(workerEntityService.getWorkerEntityById(eccdto.workerId())));
+        //train.setWorkerId(trainDTO.workerId());
+        return eccMapper.toDTO(eccRepository.save(ecc));
     }
 
     @Override

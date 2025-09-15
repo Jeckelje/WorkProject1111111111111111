@@ -32,10 +32,9 @@ public class TrainServiceImpl implements TrainService {
     @Override
     @Transactional
     public TrainDTO createTrain(TrainDTO trainDTO) {
-
-        Train train=trainMapper.toEntity(trainDTO);
+        Train train = trainMapper.toEntity(trainDTO);
         train.setWorker(workerEntityMapper.toEntity(workerEntityService.getWorkerEntityById(trainDTO.workerId())));
-       //train.setWorkerId(trainDTO.workerId());
+        //train.setWorkerId(trainDTO.workerId());
         return trainMapper.toDTO(trainRepository.save(train));
     }
 
