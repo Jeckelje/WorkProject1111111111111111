@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Сотрудники</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+
+<h1 class="text-3xl font-bold text-gray-800 mb-6">Сотрудники</h1>
+
+<div class="grid grid-cols-2 gap-6">
+    <div th:each="worker : ${workers}"
+         class="bg-white shadow-lg rounded-2xl p-6 border border-gray-200">
+        <!-- ФИО -->
+        <h2 class="text-xl font-bold text-gray-800 mb-2"
+            th:text="${worker.surname + ' ' + worker.name + ' ' + worker.patronymicName}"></h2>
+
+        <!-- Должность -->
+        <p class="text-gray-600 mb-2" th:text="${worker.jobTitle}"></p>
+
+        <!-- День рождения -->
+        <p class="text-gray-700 mb-4">
+            🎂 День рождения:
+            <span th:text="${#temporals.format(worker.birthDay, 'dd.MM.yyyy')}"></span>
+
+        </p>
+
+        <!-- Флажки -->
+        <div>
+            <h3 class="text-sm font-semibold text-gray-700 mb-1">Флаги:</h3>
+            <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                <li th:if="${worker.isVacated}">Находится в отпуске</li>
+                <li th:if="${worker.isVacatedIn3Months}">Будет в отпуске в ближайшие 3 месяца</li>
+                <li th:if="${worker.isCategoryNextYear}">Будет категория в следующем году</li>
+                <li th:if="${worker.isTrainNextMonth}">Стажировка в следующем месяце</li>
+                <li th:if="${worker.isEccNextMonth}">ЭКК в следующем месяце</li>
+                <li th:if="${worker.isQualificationNextMonth}">Повышение квалификации в следующем месяце</li>
+                <li th:if="${worker.isCategoryNext3Month}">Категория в ближайшие 3 месяца</li>
+                <li th:if="${worker.isBday5}">День рождения кратен 5</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

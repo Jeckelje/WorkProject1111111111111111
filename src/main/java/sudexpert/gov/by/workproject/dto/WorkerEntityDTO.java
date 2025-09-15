@@ -14,7 +14,6 @@ import java.util.Set;
 @Schema(implementation = WorkerEntity.class)
 public record WorkerEntityDTO(
 
-        @NotNull(message = "", groups = OnUpdate.class)
         Long id,
 
         @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
@@ -27,6 +26,10 @@ public record WorkerEntityDTO(
 
         @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
         String jobTitle,
+
+
+        @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
+        LocalDate birthDay,
 
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         Set<TrainDTO> trains,
@@ -43,32 +46,30 @@ public record WorkerEntityDTO(
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         Set<VacationDTO> vacations,
 
-        @NotNull(message = "", groups = OnUpdate.class)
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         Boolean isVacated,
 
-        @NotNull(message = "", groups = OnUpdate.class)
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         Boolean isVacatedIn3Months,
 
-        @NotNull(message = "", groups = OnUpdate.class)
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         Boolean isCategoryNextYear,
 
-        @NotNull(message = "", groups = OnUpdate.class)
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         Boolean isTrainNextMonth,
 
-        @NotNull(message = "", groups = OnUpdate.class)
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         Boolean isEccNextMonth,
 
-        @NotNull(message = "", groups = OnUpdate.class)
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         Boolean isQualificationNextMonth,
 
-        @NotNull(message = "", groups = OnUpdate.class)
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         Boolean isCategoryNext3Month,
 
-        @NotNull(groups = {OnUpdate.class})
-        Boolean isBday5,
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        Boolean isBday5
 
-        @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
-        LocalDate birthDay
 ) {
 
 

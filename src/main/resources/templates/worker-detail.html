@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали сотрудника</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        .status-true { color: green; font-weight: bold; }
+        .status-false { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <a href="/workers/view" class="btn btn-secondary mb-3">Назад к списку</a>
+
+    <h1 th:text="${worker.name} + ' ' + ${worker.surname}">ФИО</h1>
+    <div class="card">
+        <div class="card-body">
+            <p>Отчество: <span th:text="${worker.patronymicName}">Отчество</span></p>
+            <p>Должность: <span th:text="${worker.jobTitle}">Должность</span></p>
+            <p>День рождения: <span th:text="${worker.birthDay}">2024-09-18</span></p>
+            <p>В отпуске: <span th:text="${worker.isVacated} ? 'Да' : 'Нет'"
+                                th:classappend="${worker.isVacated} ? 'status-true' : 'status-false'">Нет</span></p>
+            <p>Будет в отпуске в ближайшие 3 месяца: <span th:text="${worker.isVacatedIn3Months} ? 'Да' : 'Нет'"
+                                                           th:classappend="${worker.isVacatedIn3Months} ? 'status-true' : 'status-false'">Нет</span></p>
+            <p>Категория в следующем году: <span th:text="${worker.isCategoryNextYear} ? 'Да' : 'Нет'"
+                                                 th:classappend="${worker.isCategoryNextYear} ? 'status-true' : 'status-false'">Нет</span></p>
+            <p>Категория в следующие 3 месяца: <span th:text="${worker.isCategoryNext3Month} ? 'Да' : 'Нет'"
+                                                     th:classappend="${worker.isCategoryNext3Month} ? 'status-true' : 'status-false'">Нет</span></p>
+            <p>Стажировка в следующем месяце: <span th:text="${worker.isTrainNextMonth} ? 'Да' : 'Нет'"
+                                                    th:classappend="${worker.isTrainNextMonth} ? 'status-true' : 'status-false'">Нет</span></p>
+            <p>ЭКК в следующем месяце: <span th:text="${worker.isEccNextMonth} ? 'Да' : 'Нет'"
+                                             th:classappend="${worker.isEccNextMonth} ? 'status-true' : 'status-false'">Нет</span></p>
+            <p>Повышение квалификации в следующем месяце: <span th:text="${worker.isQualificationNextMonth} ? 'Да' : 'Нет'"
+                                                                th:classappend="${worker.isQualificationNextMonth} ? 'status-true' : 'status-false'">Нет</span></p>
+            <p>День рождения кратен 5: <span th:text="${worker.isBday5} ? 'Да' : 'Нет'"
+                                             th:classappend="${worker.isBday5} ? 'status-true' : 'status-false'">Нет</span></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

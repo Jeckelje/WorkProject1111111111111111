@@ -17,6 +17,12 @@ spring:
       hibernate.default_schema: workers_schema
   jmx:
     enabled: false
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false
 logging:
   level:
     org.hibernate.SQL: DEBUG

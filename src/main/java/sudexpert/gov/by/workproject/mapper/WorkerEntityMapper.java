@@ -30,6 +30,14 @@ public interface WorkerEntityMapper {
     @Mapping(target = "qualifications", ignore = true)
     @Mapping(target = "vacations", ignore = true)
     @Mapping(target = "achievements", ignore = true)
+    @Mapping(target = "isVacated", ignore = true)
+    @Mapping(target = "isVacatedIn3Months", ignore = true)
+    @Mapping(target = "isCategoryNextYear", ignore = true)
+    @Mapping(target = "isTrainNextMonth", ignore = true)
+    @Mapping(target = "isEccNextMonth", ignore = true)
+    @Mapping(target = "isQualificationNextMonth", ignore = true)
+    @Mapping(target = "isCategoryNext3Month", ignore = true)
+    @Mapping(target = "isBday5", ignore = true)
     WorkerEntity toEntity(WorkerEntityDTO workerEntityDTO);
 
     // при обновлении - тоже игнорируем
@@ -40,6 +48,14 @@ public interface WorkerEntityMapper {
     @Mapping(target = "vacations", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "achievements", ignore = true)
+    @Mapping(target = "isVacated", ignore = true)
+    @Mapping(target = "isVacatedIn3Months", ignore = true)
+    @Mapping(target = "isCategoryNextYear", ignore = true)
+    @Mapping(target = "isTrainNextMonth", ignore = true)
+    @Mapping(target = "isEccNextMonth", ignore = true)
+    @Mapping(target = "isQualificationNextMonth", ignore = true)
+    @Mapping(target = "isCategoryNext3Month", ignore = true)
+    @Mapping(target = "isBday5", ignore = true)
     void updateWorkerEntityFromRequest(
             WorkerEntityDTO workerEntityDTO,
             @MappingTarget WorkerEntity workerEntity
