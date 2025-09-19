@@ -18,4 +18,8 @@ public interface VacationService {
 
     List<VacationDTO> getVacationsByWorkerId(Long workerId);
 
+    VacationDTO getNearestVacationForWorker(Long workerId);
+
+    VacationDTO getNowOnVacationForWorker(Long workerId);
+
 }

@@ -71,6 +71,30 @@ public class VacationServiceImpl implements VacationService {
                 .map(vacationMapper::toDTO).toList();
     }
 
+    @Override
+    public VacationDTO getNearestVacationForWorker(Long workerId) {
+        List<Vacation> vacations = vacationRepository.findVacationsByWorkerId(workerId);
+
+        return vacations.stream()
+                .filter(v -> v.getStart() != null && v.getStart().isAfter(java.time.LocalDate.now()))
+                .min((v1, v2) -> v1.getStart().compareTo(v2.getStart())) // ближайший по дате начала
+                .map(vacationMapper::toDTO)
+                .orElse(null);
+    }
+
+    @Override
+    public VacationDTO getNowOnVacationForWorker(Long workerId) {
+        List<Vacation> vacations = vacationRepository.findVacationsByWorkerId(workerId);
+
+        return vacations.stream()
+                .filter(v -> v.getStart() != null && v.getEnd() != null
+                        && !java.time.LocalDate.now().isBefore(v.getStart())
+                        && !java.time.LocalDate.now().isAfter(v.getEnd()))
+                .findFirst() // или min по дате начала, если нужно ближайший отпуск
+                .map(vacationMapper::toDTO)
+                .orElse(null);
+    }
+
     //---------------------------------------------------------------------------------------------------------
     private Vacation findVacationByIdOrThrow(Long id) {
         return vacationRepository.findById(id)
@@ -87,4 +111,5 @@ public class VacationServiceImpl implements VacationService {
         }
         return vacations;
     }
+
 }
