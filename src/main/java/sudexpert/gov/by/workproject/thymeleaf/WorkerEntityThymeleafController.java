@@ -71,5 +71,62 @@ public class WorkerEntityThymeleafController {
         return "worker-detail"; // worker-detail.html
     }
 
+    // Отображение формы добавления нового сотрудника
+    @GetMapping("/workers/add")
+    public String addWorkerForm(Model model) {
+        model.addAttribute("worker", new WorkerEntityDTO(
+                null,
+                "",
+                "",
+                "",
+                "",
+                LocalDate.now(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "" // department
+        ));
+        return "worker-form"; // worker-form.html
+    }
+
+    // Сохранение нового сотрудника
+    @PostMapping("/workers/save")
+    public String saveWorker(@ModelAttribute("worker") WorkerEntityDTO workerDTO) {
+        workerEntityService.createWorkerEntity(workerDTO); // Используем существующий метод
+        return "redirect:/workers/view";
+    }
+
+    // Отобразить форму редактирования
+    @GetMapping("/workers/edit/{workerId}")
+    public String editWorkerForm(@PathVariable Long workerId, Model model) {
+        WorkerEntityDTO worker = workerEntityService.getWorkerEntityById(workerId);
+        model.addAttribute("worker", worker);
+        return "worker-form"; // используем ту же форму, что и для добавления
+    }
+
+    // Сохранение изменений после редактирования
+    @PostMapping("/workers/edit/{workerId}")
+    public String saveEditedWorker(@PathVariable Long workerId,
+                                   @ModelAttribute("worker") WorkerEntityDTO workerDTO) {
+        workerEntityService.updateWorkerEntity(workerId, workerDTO);
+        return "redirect:/workers/view/" + workerId;
+    }
+
+    // Удаление сотрудника
+    @PostMapping("/workers/delete/{workerId}")
+    public String deleteWorker(@PathVariable Long workerId) {
+        workerEntityService.deleteWorkerEntity(workerId);
+        return "redirect:/workers/view";
+    }
 
 }

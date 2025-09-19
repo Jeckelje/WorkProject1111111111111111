@@ -135,5 +135,23 @@
     </table>
 </div>
 
+<!-- Кнопки редактирования и удаления -->
+<div class="flex gap-4 mt-6">
+    <!-- Редактировать -->
+    <a th:href="@{/workers/edit/{workerId}(workerId=${worker.id})}"
+       class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+        ✏️ Редактировать
+    </a>
+
+    <!-- Удалить -->
+    <form th:action="@{/workers/delete/{workerId}(workerId=${worker.id})}" method="post"
+          onsubmit="return confirm('Вы уверены, что хотите удалить этого сотрудника?');">
+        <button type="submit"
+                class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
+            🗑️ Удалить
+        </button>
+    </form>
+</div>
+
 </body>
 </html>
