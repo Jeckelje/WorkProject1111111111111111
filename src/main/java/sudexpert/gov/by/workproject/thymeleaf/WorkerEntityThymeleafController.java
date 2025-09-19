@@ -33,9 +33,10 @@ public class WorkerEntityThymeleafController {
     public String viewAllWorkers(@RequestParam(required = false) String search,
                                  @RequestParam(required = false) String sort,
                                  @RequestParam(required = false) String job,
+                                 @RequestParam(required = false) String department,
                                  Model model) {
 
-        List<WorkerEntityDTO> workers = workerEntityService.getFilteredWorkers(search, sort, job);
+        List<WorkerEntityDTO> workers = workerEntityService.getFilteredWorkers(search, sort, job, department);
         model.addAttribute("workers", workers);
 
         Map<Long, LocalDate> lastCategoryEndDates = new HashMap<>();
@@ -49,9 +50,11 @@ public class WorkerEntityThymeleafController {
         model.addAttribute("search", search);
         model.addAttribute("sort", sort);
         model.addAttribute("job", job);
+        model.addAttribute("department", department);
 
         return "workers"; // workers.html
     }
+
 
     /**
      * Страница одного сотрудника

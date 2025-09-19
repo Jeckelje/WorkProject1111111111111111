@@ -137,9 +137,10 @@ public class WorkerEntityServiceImpl implements WorkerEntityService {
     }
 
     @Override
-    public List<WorkerEntityDTO> getFilteredWorkers(String search, String sort, String job) {
+    public List<WorkerEntityDTO> getFilteredWorkers(String search, String sort, String job, String department) {
         Specification<WorkerEntity> spec = Specification.where(hasNameLike(search))
-                .and(hasJobTitle(job));
+                .and(hasJobTitle(job))
+                .and(hasDepartment(department)); // 🔹 новый фильтр по отделу
 
         Sort sortObj = Sort.unsorted();
 
@@ -147,6 +148,8 @@ public class WorkerEntityServiceImpl implements WorkerEntityService {
             sortObj = Sort.by("surname");
         } else if ("jobTitle".equals(sort)) {
             sortObj = Sort.by("jobTitle");
+        } else if ("department".equals(sort)) { // 🔹 сортировка по отделу
+            sortObj = Sort.by("department");
         } else if ("birthDay".equals(sort)) {
             sortObj = Sort.by("birthDay");
         } else if ("isVacated".equals(sort)) {
@@ -166,15 +169,12 @@ public class WorkerEntityServiceImpl implements WorkerEntityService {
         } else if ("isBday5".equals(sort)) {
             spec = spec.and(hasFlag("isBday5"));
         }
-        else if ("department".equals(sort)) {
-            sortObj = Sort.by("department");
-        }
-
 
         return workerEntityRepository.findAll(spec, sortObj)
                 .stream()
                 .map(workerEntityMapper::toDTO)
                 .toList();
     }
+
 
 }

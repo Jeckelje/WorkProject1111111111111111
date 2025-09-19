@@ -30,6 +30,6 @@ public interface WorkerEntityService {
 
     WorkerEntityDTO changeIsBday5(Long id, Boolean isBday5);
 
-    List<WorkerEntityDTO> getFilteredWorkers(String search, String sort, String job);
+    List<WorkerEntityDTO> getFilteredWorkers(String search, String sort, String job, String department);
 
 }
