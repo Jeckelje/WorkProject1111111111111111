@@ -65,7 +65,7 @@ public class QualificationServiceImpl implements QualificationService {
 
     @Override
     public List<QualificationDTO> getQualificationsByWorkerId(Long workerId) {
-        List<Qualification> qualifications = findQualificationsByWorkerIdOrThrow(workerId);
+        List<Qualification> qualifications = qualificationRepository.findQualificationsByWorkerId(workerId);
         return qualifications.stream()
                 .map(qualificationMapper::toDTO).toList();
     }

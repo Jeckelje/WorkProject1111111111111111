@@ -52,7 +52,7 @@ public class AchievementServiceImpl implements AchievementService {
 
     @Override
     public List<AchievementDTO> getAchievementsByWorkerId(Long workerId) {
-        List<Achievement> achievements = findAchievementsByWorkerIdOrThrow(workerId);
+        List<Achievement> achievements = achievementRepository.findAchievementsByWorkerId(workerId);
         return achievements.stream().map(achievementMapper::toDTO).toList();
     }
 

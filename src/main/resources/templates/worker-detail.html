@@ -1,42 +1,126 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Детали сотрудника</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <style>
-        .status-true { color: green; font-weight: bold; }
-        .status-false { color: red; font-weight: bold; }
-    </style>
+    <title>Карточка сотрудника</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<div class="container mt-4">
-    <a href="/workers/view" class="btn btn-secondary mb-3">Назад к списку</a>
+<body class="bg-gray-100 min-h-screen p-6">
 
-    <h1 th:text="${worker.name} + ' ' + ${worker.surname}">ФИО</h1>
-    <div class="card">
-        <div class="card-body">
-            <p>Отчество: <span th:text="${worker.patronymicName}">Отчество</span></p>
-            <p>Должность: <span th:text="${worker.jobTitle}">Должность</span></p>
-            <p>День рождения: <span th:text="${worker.birthDay}">2024-09-18</span></p>
-            <p>В отпуске: <span th:text="${worker.isVacated} ? 'Да' : 'Нет'"
-                                th:classappend="${worker.isVacated} ? 'status-true' : 'status-false'">Нет</span></p>
-            <p>Будет в отпуске в ближайшие 3 месяца: <span th:text="${worker.isVacatedIn3Months} ? 'Да' : 'Нет'"
-                                                           th:classappend="${worker.isVacatedIn3Months} ? 'status-true' : 'status-false'">Нет</span></p>
-            <p>Категория в следующем году: <span th:text="${worker.isCategoryNextYear} ? 'Да' : 'Нет'"
-                                                 th:classappend="${worker.isCategoryNextYear} ? 'status-true' : 'status-false'">Нет</span></p>
-            <p>Категория в следующие 3 месяца: <span th:text="${worker.isCategoryNext3Month} ? 'Да' : 'Нет'"
-                                                     th:classappend="${worker.isCategoryNext3Month} ? 'status-true' : 'status-false'">Нет</span></p>
-            <p>Стажировка в следующем месяце: <span th:text="${worker.isTrainNextMonth} ? 'Да' : 'Нет'"
-                                                    th:classappend="${worker.isTrainNextMonth} ? 'status-true' : 'status-false'">Нет</span></p>
-            <p>ЭКК в следующем месяце: <span th:text="${worker.isEccNextMonth} ? 'Да' : 'Нет'"
-                                             th:classappend="${worker.isEccNextMonth} ? 'status-true' : 'status-false'">Нет</span></p>
-            <p>Повышение квалификации в следующем месяце: <span th:text="${worker.isQualificationNextMonth} ? 'Да' : 'Нет'"
-                                                                th:classappend="${worker.isQualificationNextMonth} ? 'status-true' : 'status-false'">Нет</span></p>
-            <p>День рождения кратен 5: <span th:text="${worker.isBday5} ? 'Да' : 'Нет'"
-                                             th:classappend="${worker.isBday5} ? 'status-true' : 'status-false'">Нет</span></p>
-        </div>
-    </div>
+<h1 class="text-3xl font-bold text-gray-800 mb-6">Карточка сотрудника</h1>
+
+<!-- Кнопка "Назад к списку" -->
+<div class="mt-2 mb-6">
+    <a th:href="@{/workers/view}"
+       class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">
+        ← Назад к списку
+    </a>
 </div>
+
+<div class="bg-white shadow-lg rounded-2xl p-6 border border-gray-200 mb-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-2"
+        th:text="${worker.surname + ' ' + worker.name + ' ' + worker.patronymicName}"></h2>
+    <p class="text-gray-600 mb-2" th:text="${worker.jobTitle}"></p>
+
+    <p class="text-gray-700 mb-4">
+        🎂 День рождения:
+        <span th:text="${#temporals.format(worker.birthDay, 'dd.MM.yyyy')}"></span>
+        (<span th:text="${#temporals.createNow().year - worker.birthDay.year}"></span>)
+    </p>
+
+    <p th:if="${lastCategoryEndDates[worker.id] != null}"
+       th:text="'Категория до: ' + ${#temporals.format(lastCategoryEndDates[worker.id], 'dd.MM.yyyy')}"
+       th:classappend="
+       ${#temporals.createNow().until(lastCategoryEndDates[worker.id]).years >= 3} ? 'text-green-600' :
+       ${#temporals.createNow().until(lastCategoryEndDates[worker.id]).years == 2} ? 'text-yellow-500' :
+       ${#temporals.createNow().until(lastCategoryEndDates[worker.id]).years <= 1} ? 'text-red-600' : ''
+   "
+    ></p>
+</div>
+
+<!-- Кнопки -->
+<div class="grid grid-cols-3 gap-4 mb-8">
+    <a th:href="@{/workers/view/{workerId}/achievements(workerId=${worker.id})}"
+       class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg text-center">Достижения</a>
+
+    <a th:href="@{/workers/view/{workerId}/categories(workerId=${worker.id})}"
+       class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-center">Категории</a>
+
+    <a th:href="@{/workers/view/{workerId}/ecc(workerId=${worker.id})}"
+       class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg text-center">ЭКК</a>
+
+    <a th:href="@{/workers/view/{workerId}/qualifications(workerId=${worker.id})}"
+       class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg text-center">Повыш. квалификации</a>
+
+    <a th:href="@{/workers/view/{workerId}/trains(workerId=${worker.id})}"
+       class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-lg text-center">Стажировки</a>
+
+    <a th:href="@{/workers/view/{workerId}/vacations(workerId=${worker.id})}"
+       class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg text-center">Отпуска</a>
+</div>
+
+<!-- Флаги / События -->
+<div class="bg-white shadow-md rounded-xl p-4 border border-gray-200 mb-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-3">События</h3>
+    <table class="w-full text-sm text-center border border-gray-300">
+        <thead>
+        <tr class="bg-gray-200">
+            <th class="px-3 py-2 border border-gray-300">Событие</th>
+            <th class="px-3 py-2 border border-gray-300">Активно</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="px-3 py-2 border border-gray-300 text-left">Находится в отпуске</td>
+            <td class="px-3 py-2 border border-gray-300"
+                th:classappend="${worker.isVacated} ? 'bg-yellow-200' : 'bg-gray-100'"
+                th:text="${worker.isVacated ? 'Да' : 'Нет'}"></td>
+        </tr>
+        <tr>
+            <td class="px-3 py-2 border border-gray-300 text-left">Будет в отпуске в ближайшие 3 месяца</td>
+            <td class="px-3 py-2 border border-gray-300"
+                th:classappend="${worker.isVacatedIn3Months} ? 'bg-yellow-200' : 'bg-gray-100'"
+                th:text="${worker.isVacatedIn3Months ? 'Да' : 'Нет'}"></td>
+        </tr>
+        <tr>
+            <td class="px-3 py-2 border border-gray-300 text-left">Повышение категории в ближайшие 365 дней</td>
+            <td class="px-3 py-2 border border-gray-300"
+                th:classappend="${worker.isCategoryNextYear} ? 'bg-yellow-200' : 'bg-gray-100'"
+                th:text="${worker.isCategoryNextYear ? 'Да' : 'Нет'}"></td>
+        </tr>
+        <tr>
+            <td class="px-3 py-2 border border-gray-300 text-left">Стажировка в ближайшие 30 дней</td>
+            <td class="px-3 py-2 border border-gray-300"
+                th:classappend="${worker.isTrainNextMonth} ? 'bg-yellow-200' : 'bg-gray-100'"
+                th:text="${worker.isTrainNextMonth ? 'Да' : 'Нет'}"></td>
+        </tr>
+        <tr>
+            <td class="px-3 py-2 border border-gray-300 text-left">ЭКК в ближайшие 30 дней</td>
+            <td class="px-3 py-2 border border-gray-300"
+                th:classappend="${worker.isEccNextMonth} ? 'bg-yellow-200' : 'bg-gray-100'"
+                th:text="${worker.isEccNextMonth ? 'Да' : 'Нет'}"></td>
+        </tr>
+        <tr>
+            <td class="px-3 py-2 border border-gray-300 text-left">Повышение квалификации в ближайшие 30 дней</td>
+            <td class="px-3 py-2 border border-gray-300"
+                th:classappend="${worker.isQualificationNextMonth} ? 'bg-yellow-200' : 'bg-gray-100'"
+                th:text="${worker.isQualificationNextMonth ? 'Да' : 'Нет'}"></td>
+        </tr>
+        <tr>
+            <td class="px-3 py-2 border border-gray-300 text-left">Категория в ближайшие 3 месяца</td>
+            <td class="px-3 py-2 border border-gray-300"
+                th:classappend="${worker.isCategoryNext3Month} ? 'bg-yellow-200' : 'bg-gray-100'"
+                th:text="${worker.isCategoryNext3Month ? 'Да' : 'Нет'}"></td>
+        </tr>
+        <tr>
+            <td class="px-3 py-2 border border-gray-300 text-left">День рождения кратен 5</td>
+            <td class="px-3 py-2 border border-gray-300"
+                th:classappend="${worker.isBday5} ? 'bg-yellow-200' : 'bg-gray-100'"
+                th:text="${worker.isBday5 ? 'Да' : 'Нет'}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>

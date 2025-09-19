@@ -16,6 +16,6 @@ public interface VacationService {
 
     List<VacationDTO> getAllVacations();
 
-    List<VacationDTO> getVacationByWorkerId(Long workerId);
+    List<VacationDTO> getVacationsByWorkerId(Long workerId);
 
 }

@@ -13,10 +13,12 @@ public interface CategoryService {
 
     void deleteCategory(Long id);
 
-    CategoryDTO getCategoryByWorkerId(Long workerId);
+    List<CategoryDTO> getCategoriesByWorkerId(Long workerId);
 
     CategoryDTO getCategoryById(Long id);
 
     List<CategoryDTO> getAllCategories();
+
+    CategoryDTO getLastCategoryForWorker(Long workerId);
 
 }

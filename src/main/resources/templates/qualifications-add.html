@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить квалификацию</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+
+<h1 class="text-3xl font-bold text-gray-800 mb-6">
+    Добавить квалификацию сотруднику: <span th:text="${qualification.workerId}"></span>
+</h1>
+
+<form th:action="@{/workers/view/{workerId}/qualifications/add(workerId=${qualification.workerId})}"
+      th:object="${qualification}" method="post"
+      onsubmit="return validateDates()"
+      class="bg-white p-6 rounded-xl shadow-md w-1/2">
+
+    <label class="block mb-2 font-semibold text-gray-700">Название квалификации</label>
+    <input type="text" th:field="*{title}" placeholder="Например: Квалификация ЭРУ"
+           class="w-full border rounded-lg px-3 py-2 mb-4 shadow-sm" required>
+
+    <label class="block mb-2 font-semibold text-gray-700">Дата получения</label>
+    <input type="date" id="startDate" th:field="*{start}"
+           class="w-full border rounded-lg px-3 py-2 mb-4 shadow-sm" required>
+
+    <label class="block mb-2 font-semibold text-gray-700">Дата окончания</label>
+    <input type="date" id="endDate" th:field="*{end}"
+           class="w-full border rounded-lg px-3 py-2 mb-4 shadow-sm" required>
+
+    <label class="block mb-2 font-semibold text-gray-700">Описание</label>
+    <textarea th:field="*{description}" placeholder="(необязательно)"
+              class="w-full border rounded-lg px-3 py-2 mb-4 shadow-sm"></textarea>
+
+    <div class="flex gap-4 mt-4">
+        <button type="submit"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition">
+            💾 Сохранить
+        </button>
+        <a th:href="@{/workers/view/{workerId}/qualifications(workerId=${qualification.workerId})}"
+           class="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition">
+            ❌ Отмена
+        </a>
+    </div>
+</form>
+
+<script>
+    function validateDates() {
+        const start = document.getElementById("startDate").value;
+        const end = document.getElementById("endDate").value;
+        if (start && end && new Date(end) < new Date(start)) {
+            alert("Дата окончания квалификации не может быть раньше даты получения!");
+            return false;
+        }
+        return true;
+    }
+</script>
+
+</body>
+</html>

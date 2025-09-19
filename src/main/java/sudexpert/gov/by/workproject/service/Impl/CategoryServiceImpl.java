@@ -14,6 +14,7 @@ import sudexpert.gov.by.workproject.repository.CategoryRepository;
 import sudexpert.gov.by.workproject.service.CategoryService;
 import sudexpert.gov.by.workproject.service.WorkerEntityService;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -52,9 +53,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDTO getCategoryByWorkerId(Long workerId) {
-        Category category = findCategoryByWorkerIdOrThrow(workerId);
-        return categoryMapper.toDTO(category);
+    public List<CategoryDTO> getCategoriesByWorkerId(Long workerId) {
+        List<Category> categories = categoryRepository.findCategoriesByWorkerId(workerId);
+        return categories.stream()
+                .map(categoryMapper::toDTO).toList();
     }
 
     @Override
@@ -70,6 +72,13 @@ public class CategoryServiceImpl implements CategoryService {
                 .toList();
     }
 
+    public CategoryDTO getLastCategoryForWorker(Long workerId) {
+        return categoryMapper.toDTO(categoryRepository.findCategoriesByWorkerId(workerId).stream()
+                .max(Comparator.comparing(Category::getEnd))
+                .orElse(null));
+
+    }
+
     //---------------------------------------------------------------------------------------------------------
     private Category findCategoryByIdOrThrow(Long id) {
         return categoryRepository.findById(id)
@@ -78,13 +87,5 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
-    private Category findCategoryByWorkerIdOrThrow(Long workerId) {
-        Category category = categoryRepository.findCategoryByWorkerId(workerId);
-        if (category == null) {
-            throw new ResourceNotFoundException(
-                    String.format(ErrorMessages.RESOURCE_NOT_FOUND_BY_CUSTOMER_NAME_MESSAGE, "Category for worker", workerId)
-            );
-        }
-        return category;
-    }
+
 }

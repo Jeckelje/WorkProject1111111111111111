@@ -9,9 +9,44 @@
 
 <h1 class="text-3xl font-bold text-gray-800 mb-6">Сотрудники</h1>
 
+<!-- 🔎 Форма поиска и сортировки -->
+<form method="get" th:action="@{/workers/view}" class="mb-6 flex gap-4 items-center">
+    <input type="text" name="search" th:value="${search}" placeholder="Поиск по фамилии..."
+           class="border rounded-lg px-4 py-2 w-1/3 shadow-sm">
+    <input type="text" name="job" th:value="${job}" placeholder="Фильтр по должности..."
+           class="border rounded-lg px-4 py-2 w-1/4 shadow-sm">
+    <select name="sort" class="border rounded-lg px-4 py-2 shadow-sm">
+        <option value="">Без сортировки</option>
+        <option value="surname" th:selected="${sort == 'surname'}">По фамилии</option>
+        <option value="jobTitle" th:selected="${sort == 'jobTitle'}">По должности</option>
+        <option value="birthDay" th:selected="${sort == 'birthDay'}">По дате рождения</option>
+        <option value="isVacated" th:selected="${sort == 'isVacated'}">По отпуску</option>
+        <option value="isVacatedIn3Months" th:selected="${sort == 'isVacatedIn3Months'}">По отпуску в 3 мес.</option>
+        <option value="isCategoryNextYear" th:selected="${sort == 'isCategoryNextYear'}">По категории в след. году
+        </option>
+        <option value="isTrainNextMonth" th:selected="${sort == 'isTrainNextMonth'}">По стажировке</option>
+        <option value="isEccNextMonth" th:selected="${sort == 'isEccNextMonth'}">По ЭКК</option>
+        <option value="isQualificationNextMonth" th:selected="${sort == 'isQualificationNextMonth'}">По квалификации
+        </option>
+        <option value="isCategoryNext3Month" th:selected="${sort == 'isCategoryNext3Month'}">По категории в 3 мес.
+        </option>
+        <option value="isBday5" th:selected="${sort == 'isBday5'}">По юбилею (5 лет)</option>
+    </select>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition">
+        Применить
+    </button>
+    <a href="/workers/view" class="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition">
+        Сбросить
+    </a>
+</form>
+
+<!-- 📋 Список сотрудников -->
 <div class="grid grid-cols-2 gap-6">
-    <div th:each="worker : ${workers}"
-         class="bg-white shadow-lg rounded-2xl p-6 border border-gray-200">
+    <a th:each="worker : ${workers}"
+       th:href="@{/workers/view/{workerId}(workerId=${worker.id})}"
+       class="block bg-white shadow-lg rounded-2xl p-6 border border-gray-200 hover:shadow-xl transition duration-300"
+       >
+
         <!-- ФИО -->
         <h2 class="text-xl font-bold text-gray-800 mb-2"
             th:text="${worker.surname + ' ' + worker.name + ' ' + worker.patronymicName}"></h2>
@@ -19,28 +54,53 @@
         <!-- Должность -->
         <p class="text-gray-600 mb-2" th:text="${worker.jobTitle}"></p>
 
-        <!-- День рождения -->
-        <p class="text-gray-700 mb-4">
+        <!-- День рождения + возраст -->
+        <p class="text-gray-700 mb-2">
             🎂 День рождения:
             <span th:text="${#temporals.format(worker.birthDay, 'dd.MM.yyyy')}"></span>
-
+            (<span th:text="${#temporals.createNow().year - worker.birthDay.year}"></span>)
         </p>
 
+        <p th:if="${lastCategoryEndDates[worker.id] != null}"
+           th:with="daysLeft=${T(java.time.temporal.ChronoUnit).DAYS.between(#temporals.createToday(), lastCategoryEndDates[worker.id])},
+            colorClass=${daysLeft > 1095 ? 'bg-green-100 text-green-800 p-2 rounded-lg' : (daysLeft > 730 ? 'bg-yellow-100 text-yellow-800 p-2 rounded-lg' : 'bg-red-100 text-red-800 p-2 rounded-lg')}"
+           th:classappend="${colorClass}"
+           class="text-gray-700 mb-2">
+            🏆 Дата окончания категории:
+            <span th:text="${#temporals.format(lastCategoryEndDates[worker.id], 'dd.MM.yyyy')}"></span>
+            (<span th:text="${daysLeft}"></span> дней до сдачи)
+        </p>
         <!-- Флажки -->
         <div>
-            <h3 class="text-sm font-semibold text-gray-700 mb-1">Флаги:</h3>
-            <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
-                <li th:if="${worker.isVacated}">Находится в отпуске</li>
-                <li th:if="${worker.isVacatedIn3Months}">Будет в отпуске в ближайшие 3 месяца</li>
-                <li th:if="${worker.isCategoryNextYear}">Будет категория в следующем году</li>
-                <li th:if="${worker.isTrainNextMonth}">Стажировка в следующем месяце</li>
-                <li th:if="${worker.isEccNextMonth}">ЭКК в следующем месяце</li>
-                <li th:if="${worker.isQualificationNextMonth}">Повышение квалификации в следующем месяце</li>
-                <li th:if="${worker.isCategoryNext3Month}">Категория в ближайшие 3 месяца</li>
-                <li th:if="${worker.isBday5}">День рождения кратен 5</li>
+            <h3 class="text-base font-semibold text-gray-800 mb-2">Активные события:</h3>
+            <ul class="space-y-2 text-base">
+                <li th:if="${worker.isVacated}">
+                    <span class="inline-block bg-blue-100 text-blue-800 font-medium px-3 py-1 rounded-lg shadow">🌴 В отпуске</span>
+                </li>
+                <li th:if="${worker.isVacatedIn3Months}">
+                    <span class="inline-block bg-green-100 text-green-800 font-medium px-3 py-1 rounded-lg shadow">📅 Отпуск в ближайшие 3 месяца</span>
+                </li>
+                <li th:if="${worker.isCategoryNextYear}">
+                    <span class="inline-block bg-yellow-100 text-yellow-800 font-medium px-3 py-1 rounded-lg shadow">🏅 Категория в следующем году</span>
+                </li>
+                <li th:if="${worker.isTrainNextMonth}">
+                    <span class="inline-block bg-red-100 text-red-800 font-medium px-3 py-1 rounded-lg shadow">🧑‍🎓 Стажировка в следующем месяце</span>
+                </li>
+                <li th:if="${worker.isEccNextMonth}">
+                    <span class="inline-block bg-red-200 text-red-900 font-bold px-3 py-1 rounded-lg shadow">⚠️ ЭКК в следующем месяце</span>
+                </li>
+                <li th:if="${worker.isQualificationNextMonth}">
+                    <span class="inline-block bg-red-100 text-red-800 font-medium px-3 py-1 rounded-lg shadow">📖 Повышение квалификации</span>
+                </li>
+                <li th:if="${worker.isCategoryNext3Month}">
+                    <span class="inline-block bg-orange-100 text-orange-800 font-medium px-3 py-1 rounded-lg shadow">🔶 Категория в ближайшие 3 месяца</span>
+                </li>
+                <li th:if="${worker.isBday5}">
+                    <span class="inline-block bg-purple-100 text-purple-800 font-medium px-3 py-1 rounded-lg shadow">🎉 Юбилейный день рождения (5 лет)</span>
+                </li>
             </ul>
         </div>
-    </div>
+    </a>
 </div>
 
 </body>

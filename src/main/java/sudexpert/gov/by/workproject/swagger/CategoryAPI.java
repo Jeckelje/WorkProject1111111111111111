@@ -51,13 +51,13 @@ public interface CategoryAPI {
     })
     CategoryDTO getCategoryById(@PathVariable Long id);
 
-    @Operation(summary = "Get category by worker id")
+    @Operation(summary = "Get categories by worker id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Category retrieved successfully", content = @Content(schema = @Schema(implementation = CategoryDTO.class))),
             @ApiResponse(responseCode = "404", description = "Category not found", content = @Content(schema = @Schema(implementation = AppError.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = AppError.class)))
     })
-    CategoryDTO getCategoryByWorkerId(@PathVariable Long workerId);
+    List<CategoryDTO> getCategoriesByWorkerId(@PathVariable Long workerId);
 
     @Operation(summary = "Get all categories")
     @ApiResponses(value = {

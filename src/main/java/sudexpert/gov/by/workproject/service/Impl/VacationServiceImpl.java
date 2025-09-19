@@ -9,6 +9,7 @@ import sudexpert.gov.by.workproject.error.ErrorMessages;
 import sudexpert.gov.by.workproject.exception.ResourceNotFoundException;
 import sudexpert.gov.by.workproject.mapper.VacationMapper;
 import sudexpert.gov.by.workproject.mapper.WorkerEntityMapper;
+import sudexpert.gov.by.workproject.model.Achievement;
 import sudexpert.gov.by.workproject.model.Vacation;
 import sudexpert.gov.by.workproject.repository.VacationRepository;
 import sudexpert.gov.by.workproject.service.VacationService;
@@ -64,8 +65,8 @@ public class VacationServiceImpl implements VacationService {
     }
 
     @Override
-    public List<VacationDTO> getVacationByWorkerId(Long workerId) {
-        List<Vacation> vacations = findVacationsByWorkerIdOrThrow(workerId);
+    public List<VacationDTO> getVacationsByWorkerId(Long workerId) {
+        List<Vacation> vacations = vacationRepository.findVacationsByWorkerId(workerId);
         return vacations.stream()
                 .map(vacationMapper::toDTO).toList();
     }

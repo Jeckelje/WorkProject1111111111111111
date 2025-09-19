@@ -60,7 +60,7 @@ public class VacationController implements VacationAPI {
     @ResponseStatus(HttpStatus.OK)
     @Override
     public List<VacationDTO> getVacationsByWorkerId(@PathVariable Long workerId) {
-        return vacationService.getVacationByWorkerId(workerId);
+        return vacationService.getVacationsByWorkerId(workerId);
     }
 
     @GetMapping

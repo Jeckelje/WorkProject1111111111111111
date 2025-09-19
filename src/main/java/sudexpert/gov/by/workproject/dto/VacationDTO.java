@@ -27,7 +27,6 @@ public record VacationDTO(
         @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
         LocalDate end,
 
-        @NotEmpty(message = "", groups = {OnCreate.class, OnUpdate.class})
         String description
 ) {
     public VacationDTO {

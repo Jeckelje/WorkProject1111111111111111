@@ -68,7 +68,7 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     public List<TrainDTO> getTrainsByWorkerId(Long workerId) {
-        List<Train> trains = findTrainsByWorkerIdOrThrow(workerId);
+        List<Train> trains = trainRepository.findTrainsByWorkerId(workerId);
         return trains.stream()
                 .map(trainMapper::toDTO).toList();
     }

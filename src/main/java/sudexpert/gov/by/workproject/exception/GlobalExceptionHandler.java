@@ -2,6 +2,7 @@ package sudexpert.gov.by.workproject.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     // ==== КАСТОМНЫЕ ИСКЛЮЧЕНИЯ ====
@@ -110,6 +112,7 @@ public class GlobalExceptionHandler {
     // ==== FALLBACK ====
     @ExceptionHandler(Exception.class)
     public ResponseEntity<AppError> handleGeneralException(Exception ex) {
+        log.error("ПИЗДА");
         return buildErrorResponse("Произошла непредвиденная ошибка: " + ex.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -11,9 +11,8 @@ import java.time.LocalDate;
 
 @Schema(implementation = Achievement.class)
 public record AchievementDTO(
-
         @NotNull(message = "", groups = OnUpdate.class)
-        Long id,
+        Long id, // обязательно только для обновления
 
         @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
         Long workerId,
@@ -23,6 +22,4 @@ public record AchievementDTO(
 
         @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
         LocalDate date
-
-) {
-}
+) {}

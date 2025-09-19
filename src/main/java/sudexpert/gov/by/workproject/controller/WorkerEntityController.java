@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import sudexpert.gov.by.workproject.dto.WorkerEntityDTO;
 import sudexpert.gov.by.workproject.dto.validation.OnCreate;
 import sudexpert.gov.by.workproject.dto.validation.OnUpdate;
+import sudexpert.gov.by.workproject.mapper.WorkerEntityMapper;
 import sudexpert.gov.by.workproject.service.WorkerEntityService;
 import sudexpert.gov.by.workproject.swagger.WorkerEntityAPI;
 
@@ -22,6 +23,8 @@ import java.util.List;
 public class WorkerEntityController implements WorkerEntityAPI {
 
     WorkerEntityService workerEntityService;
+    WorkerEntityMapper  workerEntityMapper;
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -49,6 +52,7 @@ public class WorkerEntityController implements WorkerEntityAPI {
     @ResponseStatus(HttpStatus.OK)
     @Override
     public WorkerEntityDTO getWorkerById(@PathVariable Long id) {
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n "+ workerEntityMapper.toEntity(workerEntityService.getWorkerEntityById(id)).toString());
         return workerEntityService.getWorkerEntityById(id);
     }
 

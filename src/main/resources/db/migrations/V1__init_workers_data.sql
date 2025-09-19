@@ -1,15 +1,12 @@
 drop schema if exists workers_schema cascade;
 
--- Создание схемы workers_schema (если еще не создана)
+-- Создание схемы
 CREATE SCHEMA IF NOT EXISTS workers_schema;
-
--- Установка пути поиска для текущей сессии (опционально, для удобства)
 SET search_path TO workers_schema, public;
 
--- Создание последовательности для генерации ID workers (если еще не создана)
+-- workers
 CREATE SEQUENCE IF NOT EXISTS workers_schema.workers_id_seq;
 
--- Создание таблицы workers (если не существует)
 CREATE TABLE IF NOT EXISTS workers_schema.workers (
                                                       id BIGINT PRIMARY KEY DEFAULT nextval('workers_schema.workers_id_seq'),
                                                       name VARCHAR(255) NOT NULL,
@@ -27,46 +24,49 @@ CREATE TABLE IF NOT EXISTS workers_schema.workers (
                                                       b_day DATE
 );
 
--- Очистка существующих данных workers (если нужно перезаполнить)
 TRUNCATE TABLE workers_schema.workers RESTART IDENTITY CASCADE;
-
--- После TRUNCATE TABLE workers_schema.workers
 ALTER SEQUENCE workers_schema.workers_id_seq RESTART WITH 1;
 
--- Вставка тестовых данных workers
+-- 10 сотрудников, флаги выставлены по событиям
 INSERT INTO workers_schema.workers
 (name, surname, patronymic_name, job_title,
  is_vacated, is_vacated_in_3_months, is_category_next_year,
  is_train_next_month, is_ecc_next_month, is_qualification_next_month,
  is_category_next_3_month, is_bday5, b_day)
 VALUES
-    ('Иван', 'Иванов', 'Иванович', 'Ведущий эксперт', false, true, false, true, false, true, false, false, '1990-05-20'),
-    ('Петр', 'Петров', 'Петрович', 'Старший эксперт', true, false, true, false, true, false, true, true, '1985-07-10'),
-    ('Мария', 'Сидорова', 'Алексеевна', 'Главный эксперт', false, false, true, true, false, false, true, false, '1992-12-01'),
-    ('Анна', 'Смирнова', 'Сергеевна', 'Эксперт', true, true, false, false, true, true, false, true, '1995-09-14'),
-    ('Сергей', 'Кузнецов', 'Васильевич', 'Младший эксперт', false, true, true, false, false, true, true, false, '1988-03-03');
+    ('Иван', 'Иванов', 'Иванович', 'Ведущий эксперт',
+     false, false, false, false, false, false, false, false, '1990-05-20'),
 
--- Комментарий к таблице и колонкам workers
-COMMENT ON TABLE workers_schema.workers IS 'Таблица для хранения данных о сотрудниках';
-COMMENT ON COLUMN workers_schema.workers.id IS 'Уникальный идентификатор сотрудника';
-COMMENT ON COLUMN workers_schema.workers.name IS 'Имя сотрудника';
-COMMENT ON COLUMN workers_schema.workers.surname IS 'Фамилия сотрудника';
-COMMENT ON COLUMN workers_schema.workers.patronymic_name IS 'Отчество сотрудника';
-COMMENT ON COLUMN workers_schema.workers.job_title IS 'Должность сотрудника';
-COMMENT ON COLUMN workers_schema.workers.is_vacated IS 'Находится ли в отпуске';
-COMMENT ON COLUMN workers_schema.workers.is_vacated_in_3_months IS 'Будет ли в отпуске в ближайшие 3 месяца';
-COMMENT ON COLUMN workers_schema.workers.is_category_next_year IS 'Будет ли категория в следующем году';
-COMMENT ON COLUMN workers_schema.workers.is_train_next_month IS 'Стажировка в следующем месяце';
-COMMENT ON COLUMN workers_schema.workers.is_ecc_next_month IS 'Будет ли ЭКК в следующем месяце';
-COMMENT ON COLUMN workers_schema.workers.is_qualification_next_month IS 'Будет ли повышение квалификации в следующем месяце';
-COMMENT ON COLUMN workers_schema.workers.is_category_next_3_month IS 'Будет ли категория в следующих 3 месяцев';
-COMMENT ON COLUMN workers_schema.workers.is_bday5 IS 'Кратен ли день рождения 5';
-COMMENT ON COLUMN workers_schema.workers.b_day IS 'Дата рождения сотрудника';
+    ('Петр', 'Петров', 'Петрович', 'Старший эксперт',
+     true, true, true, true, true, true, true, true, '1985-07-10'),
 
--- Создание последовательности для генерации ID vacation (если еще не создана)
+    ('Мария', 'Сидорова', 'Алексеевна', 'Главный эксперт',
+     false, false, true, false, false, false, false, false, '1992-12-01'),
+
+    ('Анна', 'Смирнова', 'Сергеевна', 'Эксперт',
+     false, false, false, true, false, false, false, true, '1995-09-14'),
+
+    ('Сергей', 'Кузнецов', 'Васильевич', 'Младший эксперт',
+     false, false, false, false, true, false, false, false, '1988-03-03'),
+
+    ('Ольга', 'Морозова', 'Игоревна', 'Эксперт',
+     false, false, false, false, false, true, false, false, '1991-11-25'),
+
+    ('Алексей', 'Волков', 'Степанович', 'Старший эксперт',
+     false, false, false, false, false, false, true, false, '1987-06-15'),
+
+    ('Татьяна', 'Мельникова', 'Андреевна', 'Ведущий эксперт',
+     false, true, false, false, true, false, false, false, '1993-09-05'),
+
+    ('Николай', 'Федоров', 'Дмитриевич', 'Эксперт',
+     false, false, false, false, false, false, false, false, '1989-04-18'),
+
+    ('Елена', 'Громова', 'Александровна', 'Главный эксперт',
+     false, true, false, false, false, false, false, false, '1994-02-28');
+
+----------------------------------------------------
+-- vacation
 CREATE SEQUENCE IF NOT EXISTS workers_schema.vacation_id_seq;
-
--- Создание таблицы vacation (если не существует)
 CREATE TABLE IF NOT EXISTS workers_schema.vacation (
                                                        id BIGINT PRIMARY KEY DEFAULT nextval('workers_schema.vacation_id_seq'),
                                                        worker_id BIGINT NOT NULL,
@@ -74,41 +74,21 @@ CREATE TABLE IF NOT EXISTS workers_schema.vacation (
                                                        vacation_start_date DATE,
                                                        vacation_end_date DATE,
                                                        description TEXT,
-                                                       CONSTRAINT fk_vacation_worker
-                                                           FOREIGN KEY (worker_id)
-                                                               REFERENCES workers_schema.workers(id)
-                                                               ON DELETE CASCADE
+                                                       CONSTRAINT fk_vacation_worker FOREIGN KEY (worker_id)
+                                                           REFERENCES workers_schema.workers(id) ON DELETE CASCADE
 );
 
--- Создание индекса для улучшения производительности запросов по worker_id
-CREATE INDEX IF NOT EXISTS idx_vacation_worker_id ON workers_schema.vacation(worker_id);
-
--- Очистка существующих данных vacation (если нужно перезаполнить)
 TRUNCATE TABLE workers_schema.vacation RESTART IDENTITY;
 
--- Вставка тестовых данных для отпусков (используем ID из только что вставленных workers)
 INSERT INTO workers_schema.vacation (worker_id, vacation_title, vacation_start_date, vacation_end_date, description) VALUES
-                                                                                                                         (1, 'Плановый ежегодный оплачиваемый отпуск', '2024-07-01', '2024-07-28', 'Ежегодный отпуск по графику'),
-                                                                                                                         (1, 'Дополнительный отпуск', '2024-12-15', '2024-12-22', 'Дополнительные дни за ненормированный рабочий день'),
-                                                                                                                         (2, 'Отпуск по семейным обстоятельствам', '2024-08-10', '2024-08-20', 'Неоплачиваемый отпуск'),
-                                                                                                                         (3, 'Ежегодный отпуск', '2024-06-01', '2024-06-28', 'Летний отпуск'),
-                                                                                                                         (4, 'Учебный отпуск', '2024-09-01', '2024-09-14', 'Отпуск для сдачи сессии'),
-                                                                                                                         (5, 'Творческий отпуск', '2024-10-01', '2024-10-31', 'Отпуск для написания научной работы'),
-                                                                                                                         (2, 'Ежегодный отпуск', '2024-11-01', '2024-11-28', 'Осенний отпуск');
+                                                                                                                         (1, 'Ежегодный отпуск', '2025-09-01', '2025-09-25', 'Текущий отпуск'),
+                                                                                                                         (2, 'Плановый отпуск', '2025-07-10', '2025-08-25', 'Будущий отпуск через 3 месяца'),
+                                                                                                                         (5, 'Осенний отпуск', '2025-10-05', '2025-10-20', 'Отдых в октябре'),
+                                                                                                                         (10, 'Зимний отпуск', '2025-12-15', '2025-12-31', 'Новый год');
 
--- Комментарий к таблице и колонкам vacation
-COMMENT ON TABLE workers_schema.vacation IS 'Таблица для хранения данных об отпусках сотрудников';
-COMMENT ON COLUMN workers_schema.vacation.id IS 'Уникальный идентификатор отпуска';
-COMMENT ON COLUMN workers_schema.vacation.worker_id IS 'ID сотрудника (внешний ключ)';
-COMMENT ON COLUMN workers_schema.vacation.vacation_title IS 'Название/тип отпуска';
-COMMENT ON COLUMN workers_schema.vacation.vacation_start_date IS 'Дата начала отпуска';
-COMMENT ON COLUMN workers_schema.vacation.vacation_end_date IS 'Дата окончания отпуска';
-COMMENT ON COLUMN workers_schema.vacation.description IS 'Описание отпуска';
-
--- Создание последовательности для генерации ID train (если еще не создана)
+----------------------------------------------------
+-- train
 CREATE SEQUENCE IF NOT EXISTS workers_schema.train_id_seq;
-
--- Создание таблицы train (если не существует)
 CREATE TABLE IF NOT EXISTS workers_schema.train (
                                                     id BIGINT PRIMARY KEY DEFAULT nextval('workers_schema.train_id_seq'),
                                                     worker_id BIGINT NOT NULL,
@@ -116,31 +96,20 @@ CREATE TABLE IF NOT EXISTS workers_schema.train (
                                                     train_start_date DATE,
                                                     train_end_date DATE,
                                                     description TEXT,
-                                                    CONSTRAINT fk_train_worker
-                                                        FOREIGN KEY (worker_id)
-                                                            REFERENCES workers_schema.workers(id)
-                                                            ON DELETE CASCADE
+                                                    CONSTRAINT fk_train_worker FOREIGN KEY (worker_id)
+                                                        REFERENCES workers_schema.workers(id) ON DELETE CASCADE
 );
 
--- Создание индекса для улучшения производительности запросов по worker_id
-CREATE INDEX IF NOT EXISTS idx_train_worker_id ON workers_schema.train(worker_id);
-
--- Очистка существующих данных train (если нужно перезаполнить)
 TRUNCATE TABLE workers_schema.train RESTART IDENTITY;
 
--- Вставка тестовых данных для стажировок
 INSERT INTO workers_schema.train (worker_id, train_title, train_start_date, train_end_date, description) VALUES
-                                                                                                             (1, 'Плановая стажировка', '2024-01-15', '2024-01-30', 'Ежегодная плановая стажировка по технике безопасности'),
-                                                                                                             (1, 'Специализированная стажировка', '2024-03-10', '2024-03-20', 'Стажировка по новому оборудованию'),
-                                                                                                             (2, 'Вводная стажировка', '2024-02-01', '2024-02-15', 'Стажировка для новых сотрудников'),
-                                                                                                             (3, 'Повышение квалификации', '2024-04-05', '2024-04-12', 'Стажировка по новым методикам работы'),
-                                                                                                             (4, 'Межотделенческая стажировка', '2024-05-20', '2024-05-25', 'Обмен опытом между отделами'),
-                                                                                                             (5, 'Спецкурс по программному обеспечению', '2024-06-10', '2024-06-14', 'Обучение работе с новым ПО'),
-                                                                                                             (2, 'Стажировка у партнеров', '2024-07-01', '2024-07-05', 'Выездная стажировка у компаний-партнеров');
--- Создание последовательности для генерации ID qualification (если еще не создана)
-CREATE SEQUENCE IF NOT EXISTS workers_schema.qualification_id_seq;
+                                                                                                             (4, 'Вводная стажировка', '2025-10-01', '2025-10-07', 'Стажировка в следующем месяце'),
+                                                                                                             (6, 'Курс повышения квалификации', '2025-09-20', '2025-09-30', 'Учебная стажировка'),
+                                                                                                             (9, 'Обучение новому ПО', '2025-11-10', '2025-11-20', 'Курс без флагов');
 
--- Создание таблицы qualification (если не существует)
+----------------------------------------------------
+-- qualification
+CREATE SEQUENCE IF NOT EXISTS workers_schema.qualification_id_seq;
 CREATE TABLE IF NOT EXISTS workers_schema.qualification (
                                                             id BIGINT PRIMARY KEY DEFAULT nextval('workers_schema.qualification_id_seq'),
                                                             worker_id BIGINT NOT NULL,
@@ -148,63 +117,40 @@ CREATE TABLE IF NOT EXISTS workers_schema.qualification (
                                                             qualification_start_date DATE,
                                                             qualification_end_date DATE,
                                                             description TEXT,
-                                                            CONSTRAINT fk_qualification_worker
-                                                                FOREIGN KEY (worker_id)
-                                                                    REFERENCES workers_schema.workers(id)
-                                                                    ON DELETE CASCADE
+                                                            CONSTRAINT fk_qualification_worker FOREIGN KEY (worker_id)
+                                                                REFERENCES workers_schema.workers(id) ON DELETE CASCADE
 );
 
--- Создание индекса для улучшения производительности запросов по worker_id
-CREATE INDEX IF NOT EXISTS idx_qualification_worker_id ON workers_schema.qualification(worker_id);
-
--- Очистка существующих данных qualification (если нужно перезаполнить)
 TRUNCATE TABLE workers_schema.qualification RESTART IDENTITY;
 
--- Вставка тестовых данных для квалификаций
 INSERT INTO workers_schema.qualification (worker_id, qualification_title, qualification_start_date, qualification_end_date, description) VALUES
-                                                                                                                                             (1, 'Получение квалификации эксперта', '2023-10-23', '2026-09-30', 'Основная профессиональная квалификация'),
-                                                                                                                                             (1, 'Повышение категории', '2024-03-15', '2027-03-14', 'Переход на высшую категорию'),
-                                                                                                                                             (2, 'Сертификация по ISO 9001', '2023-05-10', '2026-05-09', 'Международная сертификация качества'),
-                                                                                                                                             (3, 'Квалификация ведущего специалиста', '2024-01-20', '2027-01-19', 'Присвоение квалификации ведущего специалиста'),
-                                                                                                                                             (4, 'Профессиональная переподготовка', '2023-11-01', '2026-10-31', 'Переподготовка по новому направлению'),
-                                                                                                                                             (5, 'Сертификация по охране труда', '2024-02-05', '2027-02-04', 'Курс повышения квалификации по охране труда'),
-                                                                                                                                             (2, 'Квалификация аудитора', '2023-08-12', '2026-08-11', 'Получение квалификации внутреннего аудитора');
--- Создание последовательности для генерации ID ECC (если еще не создана)
-CREATE SEQUENCE IF NOT EXISTS workers_schema.ecc_id_seq;
+                                                                                                                                             (3, 'Основная квалификация', '2024-01-01', '2027-01-01', 'Долгосрочная квалификация'),
+                                                                                                                                             (6, 'Повышение квалификации', '2025-09-18', '2025-09-25', 'Событие в следующем месяце'),
+                                                                                                                                             (8, 'Аттестация', '2025-11-01', '2025-11-10', 'Просто событие');
 
--- Создание таблицы ECC (если не существует)
-CREATE TABLE IF NOT EXISTS workers_schema.ECC (
+----------------------------------------------------
+-- ecc
+CREATE SEQUENCE IF NOT EXISTS workers_schema.ecc_id_seq;
+CREATE TABLE IF NOT EXISTS workers_schema.ecc (
                                                   id BIGINT PRIMARY KEY DEFAULT nextval('workers_schema.ecc_id_seq'),
                                                   worker_id BIGINT NOT NULL,
                                                   ecc_title VARCHAR(255),
                                                   ecc_start_date DATE,
                                                   ecc_end_date DATE,
                                                   description TEXT,
-                                                  CONSTRAINT fk_ecc_worker
-                                                      FOREIGN KEY (worker_id)
-                                                          REFERENCES workers_schema.workers(id)
-                                                          ON DELETE CASCADE
+                                                  CONSTRAINT fk_ecc_worker FOREIGN KEY (worker_id)
+                                                      REFERENCES workers_schema.workers(id) ON DELETE CASCADE
 );
 
--- Создание индекса для улучшения производительности запросов по worker_id
-CREATE INDEX IF NOT EXISTS idx_ecc_worker_id ON workers_schema.ECC(worker_id);
+TRUNCATE TABLE workers_schema.ecc RESTART IDENTITY;
 
--- Очистка существующих данных ECC (если нужно перезаполнить)
-TRUNCATE TABLE workers_schema.ECC RESTART IDENTITY;
+INSERT INTO workers_schema.ecc (worker_id, ecc_title, ecc_start_date, ecc_end_date, description) VALUES
+                                                                                                     (5, 'Проверка знаний', '2025-09-20', '2025-09-25', 'ЭКК в следующем месяце'),
+                                                                                                     (7, 'Регулярная аттестация', '2026-03-01', '2026-03-05', 'Событие без флага');
 
--- Вставка тестовых данных для ЭКК
-INSERT INTO workers_schema.ECC (worker_id, ecc_title, ecc_start_date, ecc_end_date, description) VALUES
-                                                                                                     (1, 'Плановая внеочередная проверка знаний', '2024-09-23', '2024-09-30', 'Ежегодная плановая проверка знаний'),
-                                                                                                     (1, 'Внеплановая проверка по новым нормативам', '2024-11-15', '2024-11-20', 'Проверка знаний новых нормативных документов'),
-                                                                                                     (2, 'Очередная аттестация', '2024-10-10', '2024-10-15', 'Регулярная аттестация сотрудника'),
-                                                                                                     (3, 'Внеочередная проверка после отпуска', '2024-08-01', '2024-08-05', 'Проверка знаний после длительного отсутствия'),
-                                                                                                     (4, 'Проверка знаний по технике безопасности', '2024-12-05', '2024-12-10', 'Ежегодная проверка знаний ТБ'),
-                                                                                                     (5, 'Аттестация на соответствие должности', '2024-07-20', '2024-07-25', 'Проверка профессиональных знаний'),
-                                                                                                     (2, 'Внеплановая проверка по итогам года', '2024-12-20', '2024-12-25', 'Итоговая проверка знаний за год');
--- Создание последовательности для генерации ID category (если еще не создана)
+----------------------------------------------------
+-- category
 CREATE SEQUENCE IF NOT EXISTS workers_schema.category_id_seq;
-
--- Создание таблицы category (если не существует)
 CREATE TABLE IF NOT EXISTS workers_schema.category (
                                                        id BIGINT PRIMARY KEY DEFAULT nextval('workers_schema.category_id_seq'),
                                                        worker_id BIGINT NOT NULL,
@@ -212,70 +158,42 @@ CREATE TABLE IF NOT EXISTS workers_schema.category (
                                                        category_start_date DATE,
                                                        category_end_date DATE,
                                                        description TEXT,
-                                                       CONSTRAINT fk_category_worker
-                                                           FOREIGN KEY (worker_id)
-                                                               REFERENCES workers_schema.workers(id)
-                                                               ON DELETE CASCADE
+                                                       CONSTRAINT fk_category_worker FOREIGN KEY (worker_id)
+                                                           REFERENCES workers_schema.workers(id) ON DELETE CASCADE
 );
 
--- Создание индекса для улучшения производительности запросов по worker_id
-CREATE INDEX IF NOT EXISTS idx_category_worker_id ON workers_schema.category(worker_id);
-
--- Очистка существующих данных category (если нужно перезаполнить)
 TRUNCATE TABLE workers_schema.category RESTART IDENTITY;
 
--- Вставка тестовых данных для категорий
 INSERT INTO workers_schema.category (worker_id, category_title, category_start_date, category_end_date, description) VALUES
-                                                                                                                         (1, 'Высшая категория эксперта', '2024-09-18', '2026-11-21', 'Присвоение высшей квалификационной категории'),
-                                                                                                                         (1, 'Первая категория специалиста', '2023-05-15', '2025-05-14', 'Первая квалификационная категория'),
-                                                                                                                         (2, 'Вторая категория эксперта', '2024-03-10', '2026-03-09', 'Вторая квалификационная категория'),
-                                                                                                                         (3, 'Высшая категория ведущего специалиста', '2024-01-20', '2026-01-19', 'Высшая категория по основной специальности'),
-                                                                                                                         (4, 'Первая категория младшего эксперта', '2023-11-01', '2025-10-31', 'Первая категория для младшего персонала'),
-                                                                                                                         (5, 'Специалист высшей категории', '2024-02-05', '2026-02-04', 'Высшая категория с правом проведения экспертиз'),
-                                                                                                                         (2, 'Категория главного эксперта', '2023-08-12', '2025-08-11', 'Присвоение категории главного эксперта');
+                                                                                                                         (3, 'Высшая категория', '2025-01-01', '2026-12-31', 'Категория в следующем году'),
+                                                                                                                         (7, 'Первая категория', '2025-11-15', '2027-11-14', 'Категория через 3 месяца'),
+                                                                                                                         (9, 'Вторая категория', '2024-05-10', '2026-05-09', 'Без флага');
 
--- Комментарий к таблице и колонкам category
-COMMENT ON TABLE workers_schema.category IS 'Таблица для хранения данных о категориях сотрудников';
-COMMENT ON COLUMN workers_schema.category.id IS 'Уникальный идентификатор категории';
-COMMENT ON COLUMN workers_schema.category.worker_id IS 'ID сотрудника (внешний ключ)';
-COMMENT ON COLUMN workers_schema.category.category_title IS 'Название категории';
-COMMENT ON COLUMN workers_schema.category.category_start_date IS 'Дата получения категории';
-COMMENT ON COLUMN workers_schema.category.category_end_date IS 'Дата окончания категории';
-COMMENT ON COLUMN workers_schema.category.description IS 'Описание категории';
-
-
--- Создание последовательности для генерации ID achievements (если еще не создана)
+----------------------------------------------------
+-- achievements
 CREATE SEQUENCE IF NOT EXISTS workers_schema.achievements_id_seq;
-
--- Создание таблицы achievements (если не существует)
 CREATE TABLE IF NOT EXISTS workers_schema.achievements (
                                                            id BIGINT PRIMARY KEY DEFAULT nextval('workers_schema.achievements_id_seq'),
                                                            worker_id BIGINT NOT NULL,
                                                            description TEXT,
                                                            achievement_date DATE,
-                                                           CONSTRAINT fk_achievements_worker
-                                                               FOREIGN KEY (worker_id)
-                                                                   REFERENCES workers_schema.workers(id)
-                                                                   ON DELETE CASCADE
+                                                           CONSTRAINT fk_achievements_worker FOREIGN KEY (worker_id)
+                                                               REFERENCES workers_schema.workers(id) ON DELETE CASCADE
 );
 
--- Создание индекса для ускорения выборки по worker_id
-CREATE INDEX IF NOT EXISTS idx_achievements_worker_id ON workers_schema.achievements(worker_id);
-
--- Очистка существующих данных achievements (если нужно перезаполнить)
 TRUNCATE TABLE workers_schema.achievements RESTART IDENTITY;
 
--- Вставка тестовых данных achievements
 INSERT INTO workers_schema.achievements (worker_id, description, achievement_date) VALUES
-                                                                                       (1, 'Почетная грамота за выдающиеся достижения', '2023-09-18'),
-                                                                                       (2, 'Благодарность за успешное выполнение сложного проекта', '2024-01-25'),
-                                                                                       (3, 'Награда за инновации в работе', '2024-05-10'),
-                                                                                       (4, 'Сертификат за участие в международной конференции', '2024-03-12'),
-                                                                                       (5, 'Премия за высокие показатели в работе отдела', '2024-07-01');
-
--- Комментарии к таблице и колонкам achievements
-COMMENT ON TABLE workers_schema.achievements IS 'Таблица для хранения достижений (регалий) сотрудников';
-COMMENT ON COLUMN workers_schema.achievements.id IS 'Уникальный идентификатор достижения';
-COMMENT ON COLUMN workers_schema.achievements.worker_id IS 'ID сотрудника (внешний ключ)';
-COMMENT ON COLUMN workers_schema.achievements.description IS 'Описание достижения';
-COMMENT ON COLUMN workers_schema.achievements.achievement_date IS 'Дата получения достижения';
+                                                                                       (1, 'Почетная грамота', '2024-09-18'),
+                                                                                       (1, 'Почетная грамота1', '2024-09-19'),
+                                                                                       (1, 'Почетная грамота2', '2024-09-20'),
+                                                                                       (1, 'Почетная грамота3', '2024-09-21'),
+                                                                                       (1, 'Почетная грамота4', '2024-09-22'),
+                                                                                       (3, 'Награда за инновации', '2025-05-10'),
+                                                                                       (4, 'Сертификат на конференции', '2025-03-12'),
+                                                                                       (5, 'Премия отдела', '2025-07-01'),
+                                                                                       (6, 'Лучший наставник', '2025-08-15'),
+                                                                                       (7, 'Отметка за квалификацию', '2025-09-05'),
+                                                                                       (8, 'Приз за научную работу', '2025-11-11'),
+                                                                                       (9, 'Диплом молодого специалиста', '2025-04-22'),
+                                                                                       (10, 'Награда руководства', '2025-06-30');

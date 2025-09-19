@@ -57,8 +57,8 @@ public class CategoryController implements CategoryAPI {
     @GetMapping("/worker/{workerId}")
     @ResponseStatus(HttpStatus.OK)
     @Override
-    public CategoryDTO getCategoryByWorkerId(@PathVariable Long workerId) {
-        return categoryService.getCategoryByWorkerId(workerId);
+    public List<CategoryDTO> getCategoriesByWorkerId(@PathVariable Long workerId) {
+        return categoryService.getCategoriesByWorkerId(workerId);
     }
 
     @GetMapping

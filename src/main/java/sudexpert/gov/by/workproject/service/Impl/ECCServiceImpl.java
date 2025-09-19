@@ -64,7 +64,7 @@ public class ECCServiceImpl implements ECCService {
 
     @Override
     public List<ECCDTO> getEccsByWorkerId(Long workerId) {
-        List<ECC> eccs = findECCSByWorkerIdOrThrow(workerId);
+        List<ECC> eccs = eccRepository.findECCSByWorkerId(workerId);
         return eccs.stream()
                 .map(eccMapper::toDTO).toList();
     }
