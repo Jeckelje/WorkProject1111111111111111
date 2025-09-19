@@ -25,17 +25,22 @@
     <p class="text-gray-700 mb-4">
         🎂 День рождения:
         <span th:text="${#temporals.format(worker.birthDay, 'dd.MM.yyyy')}"></span>
-        (<span th:text="${#temporals.createNow().year - worker.birthDay.year}"></span>)
+        (<span th:text="${#temporals.createNow().year - worker.birthDay.year}"></span> лет)
     </p>
 
-    <p th:if="${lastCategoryEndDates[worker.id] != null}"
-       th:text="'Категория до: ' + ${#temporals.format(lastCategoryEndDates[worker.id], 'dd.MM.yyyy')}"
-       th:classappend="
-       ${#temporals.createNow().until(lastCategoryEndDates[worker.id]).years >= 3} ? 'text-green-600' :
-       ${#temporals.createNow().until(lastCategoryEndDates[worker.id]).years == 2} ? 'text-yellow-500' :
-       ${#temporals.createNow().until(lastCategoryEndDates[worker.id]).years <= 1} ? 'text-red-600' : ''
-   "
-    ></p>
+    <!-- Количество дней до конца категории -->
+    <p th:if="${lastCategoryEndDate != null}"
+       th:with="daysLeft=${T(java.time.temporal.ChronoUnit).DAYS.between(#temporals.createToday(), lastCategoryEndDate)},
+        colorClass=${daysLeft > 1095 ? 'bg-green-100 text-green-800 p-2 rounded-lg'
+                  : (daysLeft > 730 ? 'bg-yellow-100 text-yellow-800 p-2 rounded-lg'
+                  : 'bg-red-100 text-red-800 p-2 rounded-lg')}"
+       th:classappend="${colorClass}"
+       class="text-gray-700 mb-2">
+        🏆 Дата окончания категории:
+        <span th:text="${#temporals.format(lastCategoryEndDate, 'dd.MM.yyyy')}"></span>
+        (<span th:text="${daysLeft}"></span> дней до сдачи)
+    </p>
+
 </div>
 
 <!-- Кнопки -->
