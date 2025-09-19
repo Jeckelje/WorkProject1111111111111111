@@ -105,6 +105,10 @@ public class WorkerEntity {
     @Schema(description = "Регалии")
     Set<Achievement> achievements;
 
+    @Schema(description = "Отдел", example = "Экспертиз компьютерных средств и технологий, лингвистических и фоноскопических экспертиз")
+    @Column(name = "department")
+    String department;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

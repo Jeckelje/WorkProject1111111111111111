@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import sudexpert.gov.by.workproject.model.WorkerEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -13,4 +14,7 @@ public interface WorkerEntityRepository extends JpaRepository<WorkerEntity, Long
 
     @EntityGraph(attributePaths = {"categories", "trains", "eccs", "qualifications", "vacations"})
     Optional<WorkerEntity> findById(Long id);
+
+
+    List<WorkerEntity> findByDepartment(String department);
 }

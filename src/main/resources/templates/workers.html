@@ -8,28 +8,27 @@
 <body class="bg-gray-100 min-h-screen p-6">
 
 <h1 class="text-3xl font-bold text-gray-800 mb-6">Сотрудники</h1>
-
 <!-- 🔎 Форма поиска и сортировки -->
 <form method="get" th:action="@{/workers/view}" class="mb-6 flex gap-4 items-center">
     <input type="text" name="search" th:value="${search}" placeholder="Поиск по фамилии..."
            class="border rounded-lg px-4 py-2 w-1/3 shadow-sm">
     <input type="text" name="job" th:value="${job}" placeholder="Фильтр по должности..."
            class="border rounded-lg px-4 py-2 w-1/4 shadow-sm">
+    <input type="text" name="department" th:value="${department}" placeholder="Фильтр по отделу..."
+           class="border rounded-lg px-4 py-2 w-1/4 shadow-sm">
     <select name="sort" class="border rounded-lg px-4 py-2 shadow-sm">
         <option value="">Без сортировки</option>
         <option value="surname" th:selected="${sort == 'surname'}">По фамилии</option>
         <option value="jobTitle" th:selected="${sort == 'jobTitle'}">По должности</option>
+        <option value="department" th:selected="${sort == 'department'}">По отделу</option>
         <option value="birthDay" th:selected="${sort == 'birthDay'}">По дате рождения</option>
         <option value="isVacated" th:selected="${sort == 'isVacated'}">По отпуску</option>
         <option value="isVacatedIn3Months" th:selected="${sort == 'isVacatedIn3Months'}">По отпуску в 3 мес.</option>
-        <option value="isCategoryNextYear" th:selected="${sort == 'isCategoryNextYear'}">По категории в след. году
-        </option>
+        <option value="isCategoryNextYear" th:selected="${sort == 'isCategoryNextYear'}">По категории в след. году</option>
         <option value="isTrainNextMonth" th:selected="${sort == 'isTrainNextMonth'}">По стажировке</option>
         <option value="isEccNextMonth" th:selected="${sort == 'isEccNextMonth'}">По ЭКК</option>
-        <option value="isQualificationNextMonth" th:selected="${sort == 'isQualificationNextMonth'}">По квалификации
-        </option>
-        <option value="isCategoryNext3Month" th:selected="${sort == 'isCategoryNext3Month'}">По категории в 3 мес.
-        </option>
+        <option value="isQualificationNextMonth" th:selected="${sort == 'isQualificationNextMonth'}">По квалификации</option>
+        <option value="isCategoryNext3Month" th:selected="${sort == 'isCategoryNext3Month'}">По категории в 3 мес.</option>
         <option value="isBday5" th:selected="${sort == 'isBday5'}">По юбилею (5 лет)</option>
     </select>
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition">
@@ -54,12 +53,16 @@
         <!-- Должность -->
         <p class="text-gray-600 mb-2" th:text="${worker.jobTitle}"></p>
 
+        <!-- Отдел -->
+        <p class="text-gray-600 mb-2">🏢 <span th:text="${worker.department}"></span></p>
+
         <!-- День рождения + возраст -->
         <p class="text-gray-700 mb-2">
             🎂 День рождения:
             <span th:text="${#temporals.format(worker.birthDay, 'dd.MM.yyyy')}"></span>
             (<span th:text="${#temporals.createNow().year - worker.birthDay.year}"></span>)
         </p>
+
 
         <!-- Количество дней до конца категории -->
         <p th:if="${lastCategoryEndDates[worker.id] != null}"

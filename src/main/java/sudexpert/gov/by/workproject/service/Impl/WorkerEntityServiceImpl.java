@@ -166,6 +166,10 @@ public class WorkerEntityServiceImpl implements WorkerEntityService {
         } else if ("isBday5".equals(sort)) {
             spec = spec.and(hasFlag("isBday5"));
         }
+        else if ("department".equals(sort)) {
+            sortObj = Sort.by("department");
+        }
+
 
         return workerEntityRepository.findAll(spec, sortObj)
                 .stream()

@@ -68,7 +68,9 @@ public record WorkerEntityDTO(
         Boolean isCategoryNext3Month,
 
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-        Boolean isBday5
+        Boolean isBday5,
+
+        String  department
 
 ) {
 

@@ -22,11 +22,36 @@
         th:text="${worker.surname + ' ' + worker.name + ' ' + worker.patronymicName}"></h2>
     <p class="text-gray-600 mb-2" th:text="${worker.jobTitle}"></p>
 
-    <p class="text-gray-700 mb-4">
-        🎂 День рождения:
-        <span th:text="${#temporals.format(worker.birthDay, 'dd.MM.yyyy')}"></span>
-        (<span th:text="${#temporals.createNow().year - worker.birthDay.year}"></span> лет)
-    </p>
+    <div class="bg-white shadow-lg rounded-2xl p-6 border border-gray-200 mb-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-2"
+            th:text="${worker.surname + ' ' + worker.name + ' ' + worker.patronymicName}"></h2>
+
+        <!-- Должность -->
+        <p class="text-gray-600 mb-2" th:text="${worker.jobTitle}"></p>
+
+        <!-- Отдел -->
+        <p class="text-gray-600 mb-2">🏢 <span th:text="${worker.department}"></span></p>
+
+        <!-- День рождения + возраст -->
+        <p class="text-gray-700 mb-4">
+            🎂 День рождения:
+            <span th:text="${#temporals.format(worker.birthDay, 'dd.MM.yyyy')}"></span>
+            (<span th:text="${#temporals.createNow().year - worker.birthDay.year}"></span> лет)
+        </p>
+
+        <!-- Количество дней до конца категории -->
+        <p th:if="${lastCategoryEndDate != null}"
+           th:with="daysLeft=${T(java.time.temporal.ChronoUnit).DAYS.between(#temporals.createToday(), lastCategoryEndDate)},
+        colorClass=${daysLeft > 1095 ? 'bg-green-100 text-green-800 p-2 rounded-lg'
+                  : (daysLeft > 730 ? 'bg-yellow-100 text-yellow-800 p-2 rounded-lg'
+                  : 'bg-red-100 text-red-800 p-2 rounded-lg')}"
+           th:classappend="${colorClass}"
+           class="text-gray-700 mb-2">
+            🏆 Дата окончания категории:
+            <span th:text="${#temporals.format(lastCategoryEndDate, 'dd.MM.yyyy')}"></span>
+            (<span th:text="${daysLeft}"></span> дней до сдачи)
+        </p>
+    </div>
 
     <!-- Количество дней до конца категории -->
     <p th:if="${lastCategoryEndDate != null}"
