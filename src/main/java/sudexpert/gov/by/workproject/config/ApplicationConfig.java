@@ -16,8 +16,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import sudexpert.gov.by.workproject.security.JwtTokenFilter;
 import sudexpert.gov.by.workproject.security.JwtTokenProvider;
+import sudexpert.gov.by.workproject.security.RateLimitingFilter;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -29,6 +31,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class ApplicationConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final RateLimitingFilter rateLimitingFilter;
 
 
     @Bean
@@ -45,7 +48,7 @@ public class ApplicationConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .cors(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
@@ -54,6 +57,7 @@ public class ApplicationConfig {
                         .requestMatchers("/login", "/css/**", "/js/**","/api/v1/auth/**").permitAll() // публичные ресурсы
                         .anyRequest().hasRole("USER")
                 )
+                .addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
