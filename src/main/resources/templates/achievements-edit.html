@@ -8,34 +8,23 @@
 <body class="bg-gray-100 min-h-screen p-6">
 
 <h1 class="text-3xl font-bold text-gray-800 mb-6">
-    Редактировать достижение сотрудника:
-    <span th:text="${achievement.workerId}"></span>
+    Редактировать достижение сотрудника: <span th:text="${workerId}"></span>
 </h1>
 
-<form th:action="@{/workers/view/{workerId}/vacations/add(workerId=${worker.id})}"
-      th:object="${vacation}" method="post"
-      onsubmit="return validateDates()"
+<form th:action="@{/workers/view/{workerId}/achievements/{achievementId}/edit(workerId=${workerId}, achievementId=${achievement.id})}"
+      th:object="${achievement}" method="post"
       class="bg-white p-6 rounded-xl shadow-md w-1/2">
 
-    <!-- Заголовок -->
-    <label class="block mb-2 font-semibold text-gray-700">Название отпуска</label>
-    <input type="text" th:field="*{title}" placeholder="Например: Ежегодный отпуск"
-           class="w-full border rounded-lg px-3 py-2 mb-4 shadow-sm" required>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
-    <!-- Дата начала -->
-    <label class="block mb-2 font-semibold text-gray-700">Дата начала</label>
-    <input type="date" id="startDate" th:field="*{start}"
-           class="w-full border rounded-lg px-3 py-2 mb-4 shadow-sm" required>
-
-    <!-- Дата окончания -->
-    <label class="block mb-2 font-semibold text-gray-700">Дата окончания</label>
-    <input type="date" id="endDate" th:field="*{end}"
-           class="w-full border rounded-lg px-3 py-2 mb-4 shadow-sm" required>
-
-    <!-- Описание (необязательное) -->
+    <!-- Описание -->
     <label class="block mb-2 font-semibold text-gray-700">Описание</label>
-    <textarea th:field="*{description}" placeholder="(необязательно)"
-              class="w-full border rounded-lg px-3 py-2 mb-4 shadow-sm"></textarea>
+    <input type="text" th:field="*{description}" placeholder="Описание достижения"
+           class="w-full border rounded-lg px-3 py-2 mb-4 shadow-sm" required>
+
+    <!-- Дата -->
+    <label class="block mb-2 font-semibold text-gray-700">Дата</label>
+    <input type="date" th:field="*{date}" class="w-full border rounded-lg px-3 py-2 mb-4 shadow-sm" required>
 
     <!-- Кнопки -->
     <div class="flex gap-4 mt-4">
@@ -43,26 +32,12 @@
                 class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition">
             💾 Сохранить
         </button>
-        <a th:href="@{/workers/view/{workerId}/vacations(workerId=${worker.id})}"
+        <a th:href="@{/workers/view/{workerId}/achievements(workerId=${workerId})}"
            class="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition">
             ❌ Отмена
         </a>
     </div>
 </form>
-
-<script>
-    function validateDates() {
-        const start = document.getElementById("startDate").value;
-        const end = document.getElementById("endDate").value;
-
-        if (start && end && new Date(end) < new Date(start)) {
-            alert("Дата окончания отпуска не может быть раньше даты начала!");
-            return false; // отменяем отправку формы
-        }
-        return true;
-    }
-</script>
-
 
 </body>
 </html>

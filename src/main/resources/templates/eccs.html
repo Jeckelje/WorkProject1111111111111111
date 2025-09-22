@@ -37,6 +37,7 @@
                class="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700">✏️</a>
             <form th:action="@{/workers/view/{workerId}/eccs/{eccId}/delete(workerId=${worker.id}, eccId=${ecc.id})}"
                   method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <button type="submit"
                         class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">🗑️
                 </button>

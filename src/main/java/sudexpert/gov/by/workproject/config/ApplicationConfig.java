@@ -54,7 +54,7 @@ public class ApplicationConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 // Настройка form login
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login", "/css/**", "/js/**","/api/v1/auth/**").permitAll() // публичные ресурсы
+                        .requestMatchers("/login", "/css/", "/js/","/api/v1/auth/**").permitAll() // публичные ресурсы
                         .anyRequest().hasRole("USER")
                 )
                 .addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class)
