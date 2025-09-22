@@ -70,6 +70,7 @@ public record WorkerEntityDTO(
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         Boolean isBday5,
 
+        @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
         String  department
 
 ) {

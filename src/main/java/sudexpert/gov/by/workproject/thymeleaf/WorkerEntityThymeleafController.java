@@ -11,6 +11,7 @@ import sudexpert.gov.by.workproject.dto.WorkerEntityDTO;
 import sudexpert.gov.by.workproject.mapper.WorkerEntityMapper;
 import sudexpert.gov.by.workproject.service.AchievementService;
 import sudexpert.gov.by.workproject.service.CategoryService;
+import sudexpert.gov.by.workproject.service.VacationService;
 import sudexpert.gov.by.workproject.service.WorkerEntityService;
 
 import java.time.LocalDate;
@@ -25,7 +26,7 @@ public class WorkerEntityThymeleafController {
 
     WorkerEntityService workerEntityService;
     CategoryService categoryService;
-
+    VacationService vacationService;
     /**
      * Страница со списком сотрудников (карточки)
      */
@@ -40,11 +41,33 @@ public class WorkerEntityThymeleafController {
         model.addAttribute("workers", workers);
 
         Map<Long, LocalDate> lastCategoryEndDates = new HashMap<>();
+        Map<Long, LocalDate> vacationStartDates = new HashMap<>();
+        Map<Long, LocalDate> vacationEndDates = new HashMap<>();
+        Map<Long, LocalDate> nowOnVacationEndDates = new HashMap<>();
+
         for (WorkerEntityDTO w : workers) {
+            // Категория
             var lastCategory = categoryService.getLastCategoryForWorker(w.id());
             lastCategoryEndDates.put(w.id(), lastCategory != null ? lastCategory.end() : null);
+
+            // Отпуск
+            var vacation = vacationService.getNearestVacationForWorker(w.id());
+            if (vacation != null) {
+                vacationStartDates.put(w.id(), vacation.start());
+                vacationEndDates.put(w.id(), vacation.end());
+            }
+
+            var vacationNow = vacationService.getNowOnVacationForWorker(w.id());
+            if (vacationNow != null){
+                nowOnVacationEndDates.put(w.id(), vacationNow.end());
+            }
         }
+
         model.addAttribute("lastCategoryEndDates", lastCategoryEndDates);
+
+        model.addAttribute("vacationStartDates", vacationStartDates);
+        model.addAttribute("vacationEndDates", vacationEndDates);
+        model.addAttribute("nowOnVacationEndDates", nowOnVacationEndDates);
 
         // Чтобы при возврате на страницу фильтры сохранялись
         model.addAttribute("search", search);
@@ -55,21 +78,92 @@ public class WorkerEntityThymeleafController {
         return "workers"; // workers.html
     }
 
-
-    /**
-     * Страница одного сотрудника
-     */
     @GetMapping("/workers/view/{workerId}")
     public String viewWorkerDetail(@PathVariable Long workerId, Model model) {
         var worker = workerEntityService.getWorkerEntityById(workerId);
         model.addAttribute("worker", worker);
 
-        // Получаем последнюю категорию через сервис
+        // Категория
         var lastCategory = categoryService.getLastCategoryForWorker(workerId);
         model.addAttribute("lastCategoryEndDate", lastCategory != null ? lastCategory.end() : null);
+
+        // Отпуск
+        var vacation = vacationService.getNearestVacationForWorker(workerId);
+        if (vacation != null) {
+            model.addAttribute("vacationStartDate", vacation.start());
+            model.addAttribute("vacationEndDate", vacation.end());
+        }
+
+        var vacationNow = vacationService.getNowOnVacationForWorker(workerId);
+        if (vacationNow != null){
+            model.addAttribute("nowOnVacationEndDates", vacationNow.end());
+        }
 
         return "worker-detail"; // worker-detail.html
     }
 
+
+    /**
+     * Страница одного сотрудника
+     */
+
+
+    // Отображение формы добавления нового сотрудника
+    @GetMapping("/workers/add")
+    public String addWorkerForm(Model model) {
+        model.addAttribute("worker", new WorkerEntityDTO(
+                null,
+                "",
+                "",
+                "",
+                "",
+                LocalDate.now(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "" // department
+        ));
+        return "worker-form"; // worker-form.html
+    }
+
+    // Сохранение нового сотрудника
+    @PostMapping("/workers/save")
+    public String saveWorker(@ModelAttribute("worker") WorkerEntityDTO workerDTO) {
+        workerEntityService.createWorkerEntity(workerDTO); // Используем существующий метод
+        return "redirect:/workers/view";
+    }
+
+    // Отобразить форму редактирования
+    @GetMapping("/workers/edit/{workerId}")
+    public String editWorkerForm(@PathVariable Long workerId, Model model) {
+        WorkerEntityDTO worker = workerEntityService.getWorkerEntityById(workerId);
+        model.addAttribute("worker", worker);
+        return "worker-form"; // используем ту же форму, что и для добавления
+    }
+
+    // Сохранение изменений после редактирования
+    @PostMapping("/workers/edit/{workerId}")
+    public String saveEditedWorker(@PathVariable Long workerId,
+                                   @ModelAttribute("worker") WorkerEntityDTO workerDTO) {
+        workerEntityService.updateWorkerEntity(workerId, workerDTO);
+        return "redirect:/workers/view/" + workerId;
+    }
+
+    // Удаление сотрудника
+    @PostMapping("/workers/delete/{workerId}")
+    public String deleteWorker(@PathVariable Long workerId) {
+        workerEntityService.deleteWorkerEntity(workerId);
+        return "redirect:/workers/view";
+    }
 
 }

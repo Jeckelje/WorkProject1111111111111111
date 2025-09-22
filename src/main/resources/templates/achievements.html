@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Достижения сотрудника</title>
+    <title>Достижения</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen p-6">
@@ -12,66 +12,36 @@
     <span th:text="${worker.surname + ' ' + worker.name + ' ' + worker.patronymicName}"></span>
 </h1>
 
-<!-- Сортировка -->
-<form method="get" th:action="@{/workers/view/{workerId}/achievements(workerId=${worker.id})}" class="mb-4 flex gap-4 items-center">
-    <label class="font-semibold">Сортировать по дате:</label>
-    <select name="sort" class="border rounded-lg px-4 py-2 shadow-sm">
-        <option value="asc" th:selected="${sort == 'asc'}">По возрастанию</option>
-        <option value="desc" th:selected="${sort == 'desc'}">По убыванию</option>
-    </select>
-    <button type="submit"
-            class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition">
-        Применить
-    </button>
-</form>
+<a th:href="@{/workers/view/{workerId}/achievements/add(workerId=${worker.id})}"
+   class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition mb-4 inline-block">
+    ➕ Добавить достижение
+</a>
 
-<!-- Добавить новое -->
-<div class="mb-4">
-    <a th:href="@{/workers/view/{workerId}/achievements/add(workerId=${worker.id})}"
-       class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
-        ➕ Добавить новое
-    </a>
-</div>
-
-<!-- Таблица достижений -->
-<div class="bg-white shadow-md rounded-xl p-4 border border-gray-200">
-    <h3 class="text-lg font-semibold text-gray-800 mb-3">Список достижений</h3>
-    <table class="w-full text-sm text-center border border-gray-300">
-        <thead>
-        <tr class="bg-gray-200">
-            <th class="px-3 py-2 border border-gray-300">Описание</th>
-            <th class="px-3 py-2 border border-gray-300">Дата</th>
-            <th class="px-3 py-2 border border-gray-300">Действия</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="achievement : ${achievements}">
-            <td class="px-3 py-2 border border-gray-300 text-left"
-                th:text="${achievement.description}"></td>
-            <td class="px-3 py-2 border border-gray-300"
-                th:text="${#temporals.format(achievement.date, 'dd.MM.yyyy')}"></td>
-            <td class="px-3 py-2 border border-gray-300 flex gap-2 justify-center">
-                <a th:href="@{/workers/view/{workerId}/achievements/{achievementId}/edit(workerId=${worker.id}, achievementId=${achievement.id})}"
-                   class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-lg shadow">
-                    ✏️ Редактировать
-                </a>
-                <form th:action="@{/workers/view/{workerId}/achievements/{achievementId}/delete(workerId=${worker.id}, achievementId=${achievement.id})}"
-                      method="post" onsubmit="return confirm('Вы уверены, что хотите удалить это достижение?');">
-                    <button type="submit"
-                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg shadow">
-                        🗑️ Удалить
-                    </button>
-                </form>
-            </td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(achievements)}">
-            <td colspan="3" class="px-3 py-2 border border-gray-300 text-center text-gray-500 italic">
-                Достижений пока нет
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<table class="min-w-full bg-white shadow rounded-lg overflow-hidden">
+    <thead class="bg-gray-200">
+    <tr>
+        <th class="px-4 py-2">Описание</th>
+        <th class="px-4 py-2">Дата</th>
+        <th class="px-4 py-2">Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="achievement : ${achievements}">
+        <td class="border px-4 py-2 text-left" th:text="${achievement.description}"></td>
+        <td class="border px-4 py-2" th:text="${#temporals.format(achievement.date, 'dd.MM.yyyy')}"></td>
+        <td class="border px-4 py-2 flex gap-2 justify-center">
+            <a th:href="@{/workers/view/{workerId}/achievements/{achievementId}/edit(workerId=${worker.id}, achievementId=${achievement.id})}"
+               class="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700">✏️</a>
+            <form th:action="@{/workers/view/{workerId}/achievements/{achievementId}/delete(workerId=${worker.id}, achievementId=${achievement.id})}"
+                  method="post"
+                  onsubmit="return confirm('Вы уверены, что хотите удалить это достижение?');">
+                <button type="submit"
+                        class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">🗑️</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 <!-- Кнопка "Назад к сотруднику" -->
 <div class="mt-2 mb-6">
@@ -80,3 +50,6 @@
         ← Назад к сотруднику
     </a>
 </div>
+
+</body>
+</html>
