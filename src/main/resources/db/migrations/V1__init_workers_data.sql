@@ -25,9 +25,33 @@ CREATE TABLE IF NOT EXISTS workers_schema.workers (
                                                       b_day DATE
 );
 
+create table workers_schema.users
+(
+    id       bigserial primary key,
+    username varchar(255) not null unique,
+    password varchar(255) not null
+);
+
+create table workers_schema.users_roles
+(
+    user_id bigint       not null,
+    roles   varchar(255) not null,
+    primary key (user_id, roles),
+    constraint fk_users_roles_users foreign key (user_id) references workers_schema.users (id) on delete cascade on update no action
+);
+
 TRUNCATE TABLE workers_schema.workers RESTART IDENTITY CASCADE;
 ALTER SEQUENCE workers_schema.workers_id_seq RESTART WITH 1;
 
+
+insert into workers_schema.users (username, password)
+values ('users', '$2a$10$20nAsN7bcXgxYsDMMdkKJO4qROJLupugHXCDbpMuwAHK3oJLonm/.'),
+       ('manager', '$2a$10$TJ3X3l3wIqWqi8xfCb0gzOWd8R3yFp.GIz8mnRoORbPZtre0rEKoe');--manager
+
+insert into workers_schema.users_roles(user_id, roles)
+values (1, 'ROLE_USER'),
+       (2, 'ROLE_USER'),
+       (2, 'ROLE_ADMIN');
 -- 10 сотрудников, флаги выставлены по событиям
 INSERT INTO workers_schema.workers
 (name, surname, patronymic_name, job_title, department,
