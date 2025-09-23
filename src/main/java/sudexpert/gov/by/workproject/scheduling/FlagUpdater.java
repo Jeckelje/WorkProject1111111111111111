@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sudexpert.gov.by.workproject.model.Vacation;
 import sudexpert.gov.by.workproject.model.WorkerEntity;
 import sudexpert.gov.by.workproject.repository.VacationRepository;
 import sudexpert.gov.by.workproject.repository.WorkerEntityRepository;
@@ -24,7 +23,7 @@ public class FlagUpdater {
     WorkerEntityRepository workerEntityRepository;
     VacationRepository vacationRepository;
 
-    @Scheduled(fixedRate = 30000) // каждые 30 секунд
+    @Scheduled(fixedRate = 300000000) // каждые 30 секунд
     @Transactional
     public void updateAllFlags() {
         LocalDate today = LocalDate.now();

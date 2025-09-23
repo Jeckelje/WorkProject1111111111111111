@@ -55,12 +55,14 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String createRefreshToken( String username) {
+    public String createRefreshToken( Authentication authentication) {
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Date now = new Date();
         Date validity = new Date(now.getTime() + jwtProperties.getRefresh());
 
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(key)

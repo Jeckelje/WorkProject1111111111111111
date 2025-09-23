@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/WorkersDB
     username: postgres
-    password: 12345678
+    password: 1111
     driver-class-name: org.postgresql.Driver
   flyway:
     enabled: true
@@ -31,3 +31,6 @@ logging:
     org.springframework.web: DEBUG
     org.hibernate: DEBUG
     root: DEBUG
+server:
+  address: 0.0.0.0
+  port: 8080

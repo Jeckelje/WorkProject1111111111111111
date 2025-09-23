@@ -3,8 +3,6 @@ package sudexpert.gov.by.workproject.dto.error;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
-import java.time.LocalDateTime;
-
 @Builder
 @Schema(description = "Error response model")
 public record AppError
@@ -16,7 +14,7 @@ public record AppError
                 String message,
 
                 @Schema(description = "Timestamp of the error", example = "2024-06-28T08:26:53.025Z")
-                LocalDateTime timestamp
+                String timestamp
 
         ) {
 }

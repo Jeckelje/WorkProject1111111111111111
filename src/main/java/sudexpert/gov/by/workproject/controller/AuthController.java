@@ -43,6 +43,7 @@ public class AuthController {
 
             // Генерация JWT
             String token = jwtTokenProvider.createToken(authentication);
+            String refreshToken = jwtTokenProvider.createRefreshToken(authentication);
 
             // Можно положить JWT в cookie (HTTP-only, чтобы JS не читал)
             Cookie jwtCookie = new Cookie("JWT_TOKEN", token);
@@ -51,8 +52,15 @@ public class AuthController {
             jwtCookie.setMaxAge(60 * 60); // 1 час
             response.addCookie(jwtCookie);
 
+            // Refresh token cookie (живет дольше, например 7 дней)
+            Cookie refreshCookie = new Cookie("REFRESH_TOKEN", refreshToken);
+            refreshCookie.setHttpOnly(true);
+            refreshCookie.setPath("/");
+            refreshCookie.setMaxAge(60 * 60 * 24 * 3); // 7 дней
+            response.addCookie(refreshCookie);
+
             // Или передать токен через JS в HTML
-            model.addAttribute("token", token);
+           // model.addAttribute("token", token);
 
             // Перенаправляем на домашнюю страницу
             return "redirect:/workers/view"; // Thymeleaf-шаблон home.html
@@ -61,5 +69,24 @@ public class AuthController {
             model.addAttribute("error", true);
             return "login";
         }
+    }
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        // Удаляем Access токен
+        Cookie accessCookie = new Cookie("JWT_TOKEN", null);
+        accessCookie.setHttpOnly(true);
+        accessCookie.setPath("/");
+        accessCookie.setMaxAge(0); // удалить
+        response.addCookie(accessCookie);
+
+        // Удаляем Refresh токен
+        Cookie refreshCookie = new Cookie("REFRESH_TOKEN", null);
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setPath("/");
+        refreshCookie.setMaxAge(0); // удалить
+        response.addCookie(refreshCookie);
+
+        return "redirect:/login";
+
     }
 }

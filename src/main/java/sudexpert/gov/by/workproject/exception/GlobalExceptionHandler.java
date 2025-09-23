@@ -122,7 +122,7 @@ public class GlobalExceptionHandler {
         AppError error = AppError.builder()
                 .status(status.value())
                 .message(message)
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().toString())
                 .build();
         return ResponseEntity.status(status).body(error);
     }

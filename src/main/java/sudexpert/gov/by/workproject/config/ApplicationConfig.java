@@ -52,11 +52,17 @@ public class ApplicationConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                // Настройка form login
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login", "/css/", "/js/","/api/v1/auth/**").permitAll() // публичные ресурсы
+                        .requestMatchers("/login","/logout", "/css/**", "/js/**","/api/v1/auth/**").permitAll() // публичные ресурсы
                         .anyRequest().hasRole("USER")
-                )
+                ) .exceptionHandling(configurer -> configurer
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            // Редирект на страницу логина
+                            response.sendRedirect("/login");
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.sendRedirect("/login");
+                        }))
                 .addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
