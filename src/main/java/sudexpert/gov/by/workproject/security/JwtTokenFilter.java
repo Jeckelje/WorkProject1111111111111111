@@ -105,12 +105,14 @@ public class JwtTokenFilter extends GenericFilterBean {
                 log.info("Access token refreshed via refresh token");
             } else {
                 log.error("Refresh token invalid or missing.");
+                response.sendRedirect("/login");
                 AppError appError = new AppError(401, "expired or invalid refresh token", LocalDateTime.now().toString());
                 response.getWriter().write(objectMapper.writeValueAsString(appError));
                 return;
             }
         }catch (Exception e){
             log.error("Exception occurred while processing refresh token");
+            response.sendRedirect("/login");
             AppError appError = new AppError(401, "expired or invalid refresh token", LocalDateTime.now().toString());
             response.getWriter().write(objectMapper.writeValueAsString(appError));
         }
@@ -131,6 +133,7 @@ public class JwtTokenFilter extends GenericFilterBean {
             appError = new AppError(401, "Invalid JWT", LocalDateTime.now().toString());
             log.error("JWT is invalid.");
         }
+        response.sendRedirect("/login");
 
         response.getWriter().write(objectMapper.writeValueAsString(appError));
     }
