@@ -1,62 +1,199 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
-        <link rel="icon" type="image/png" href="/images/ico.png">
-
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Авторизация</title>
+    <link rel="icon" type="image/png" href="/images/ico.png">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
         }
+
+        /* Часы + дата */
+        .clock {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            backdrop-filter: blur(6px);
+            letter-spacing: 1px;
+            animation: fadeIn 1s ease-in-out;
+            text-align: center;
+        }
+
+        .clock-time {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .clock-date {
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 4px;
+            opacity: 0.9;
+        }
+
         .login-container {
-            width: 300px;
-            margin: 100px auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            width: 380px;
+            padding: 40px 35px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            animation: fadeIn 0.8s ease-in-out;
         }
-        input[type=text], input[type=password] {
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .input-group input {
             width: 100%;
-            padding: 10px;
-            margin: 8px 0 16px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
         }
+
+        .input-group input:focus {
+            border-color: #6a11cb;
+            box-shadow: 0 0 8px rgba(106, 17, 203, 0.3);
+            outline: none;
+        }
+
         button {
             width: 100%;
-            background-color: #4CAF50;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
             color: white;
-            padding: 12px;
             border: none;
-            border-radius: 4px;
+            border-radius: 10px;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
+
         button:hover {
-            background-color: #ff00e5;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 117, 252, 0.4);
         }
+
         .error {
-            color: red;
+            color: #e63946;
+            background: #ffe5e7;
+            padding: 10px;
+            border-radius: 6px;
             margin-bottom: 16px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .success {
+            color: #2a9d8f;
+            background: #e0f7f5;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
+<!-- Часы -->
+<div class="clock">
+    <div class="clock-time" id="clock-time">00:00:00</div>
+    <div class="clock-date" id="clock-date">1 января 1970</div>
+</div>
+
 <div class="login-container">
-    <h2>Login</h2>
-    <div th:if="${param.error}" class="error">Invalid username or password</div>
-    <div th:if="${param.logout}" class="success">You have been logged out</div>
+    <h2>Авторизация</h2>
+    <div th:if="${param.error}" class="error">Вы не авторизованы</div>
+    <div th:if="${param.logout}" class="success">Вы вышли из системы</div>
+
     <form th:action="@{/login}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" placeholder="Enter username" required>
+        <div class="input-group">
+            <i class="fa fa-user"></i>
+            <input type="text" id="username" name="username" placeholder="Имя пользователя" required>
+        </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter password" required>
+        <div class="input-group">
+            <i class="fa fa-lock"></i>
+            <input type="password" id="password" name="password" placeholder="Пароль" required>
+        </div>
 
-        <button type="submit">Login</button>
+        <button type="submit">Войти</button>
     </form>
 </div>
+
+<script>
+    function updateClock() {
+        const now = new Date();
+
+        // Время
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById("clock-time").textContent = `${hours}:${minutes}:${seconds}`;
+
+        // Дата
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        const formattedDate = now.toLocaleDateString('ru-RU', options);
+        document.getElementById("clock-date").textContent = formattedDate;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock(); // запуск сразу при загрузке
+</script>
 </body>
 </html>

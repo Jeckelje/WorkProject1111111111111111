@@ -86,7 +86,7 @@ public class AuthController {
         refreshCookie.setMaxAge(0); // удалить
         response.addCookie(refreshCookie);
 
-        return "redirect:/login";
+        return "redirect:/login?logout";
 
     }
 }
