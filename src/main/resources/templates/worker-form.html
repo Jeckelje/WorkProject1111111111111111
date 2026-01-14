@@ -3,56 +3,748 @@
 <head>
     <meta charset="UTF-8">
     <title>Добавить сотрудника</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        /* Встроенный Tailwind для оффлайн работы */
+        tailwind.config = {
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <style>
+        /* Минимальные стили Tailwind */
+        .block { display: block; }
+        .inline-block { display: inline-block; }
+        .flex { display: flex; }
+        .hidden { display: none; }
+        .font-bold { font-weight: 700; }
+        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+        .text-white { color: white; }
+        .bg-gray-100 { background-color: #f3f4f6; }
+        .bg-white { background-color: white; }
+        .bg-blue-600 { background-color: #2563eb; }
+        .bg-gray-500 { background-color: #6b7280; }
+        .hover\:bg-blue-700:hover { background-color: #1d4ed8; }
+        .hover\:bg-gray-600:hover { background-color: #4b5563; }
+        .text-gray-800 { color: #1f2937; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .p-6 { padding: 1.5rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .max-w-lg { max-width: 32rem; }
+        .w-full { width: 100%; }
+        .border { border-width: 1px; }
+        .transition { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .gap-4 { gap: 1rem; }
+        .font-semibold { font-weight: 600; }
+        .min-h-screen { min-height: 100vh; }
+    </style>
     <link rel="icon" type="image/png" href="/images/ico.png">
+    <style>
+        /* Запрет на выделение текста */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: default;
+        }
 
+        /* Разрешить выделение для полей ввода */
+        input, textarea, select, .glass-input, .glass-select {
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            -ms-user-select: auto;
+            user-select: auto;
+            cursor: text;
+        }
+
+        /* Разрешить курсор pointer для кнопок и ссылок */
+        button, a, .btn-primary, .btn-secondary, .btn-cancel, .logout-btn {
+            cursor: pointer;
+        }
+    </style>
+    <link rel="preload" href="/fonts/PoiretOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
 </head>
-<body class="bg-gray-100 min-h-screen p-6">
+<style>
+    @font-face{
+        font-family: 'Font_1';
+        src: url("/fonts/PoiretOne-Regular.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
 
-<h1 class="text-3xl font-bold text-gray-800 mb-6">Добавить сотрудника</h1>
+    body {
+        font-family: 'Font_1', sans-serif;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        min-height: 100vh;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+        color: white;
+        margin: 0;
+        padding: 0;
 
-<form th:action="@{/workers/save}" th:object="${worker}" method="post" class="bg-white p-6 rounded-xl shadow-lg max-w-lg">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <div class="mb-4">
-        <label class="block mb-1 font-semibold">Имя</label>
-        <input type="text" th:field="*{name}" class="border rounded-lg px-4 py-2 w-full"/>
-    </div>
-    <div class="mb-4">
-        <label class="block mb-1 font-semibold">Фамилия</label>
-        <input type="text" th:field="*{surname}" class="border rounded-lg px-4 py-2 w-full"/>
-    </div>
-    <div class="mb-4">
-        <label class="block mb-1 font-semibold">Отчество</label>
-        <input type="text" th:field="*{patronymicName}" class="border rounded-lg px-4 py-2 w-full"/>
-    </div>
-    <div class="mb-4">
-        <label class="block mb-1 font-semibold">Должность</label>
-        <select th:field="*{jobTitle}" class="border rounded-lg px-4 py-2 w-full">
-            <option value="">Выберите должность</option>
-            <option value="Эксперт" th:selected="${worker.jobTitle == 'Эксперт'}">Эксперт</option>
-            <option value="Главный эксперт" th:selected="${worker.jobTitle == 'Главный эксперт'}">Главный эксперт</option>
-            <option value="Эксперт-стажёр" th:selected="${worker.jobTitle == 'Эксперт-стажёр'}">Эксперт-стажёр</option>
-            <option value="Начальник отдела" th:selected="${worker.jobTitle == 'Начальник отдела'}">Начальник отдела</option>
-            <option value="Зам. начальника отдела" th:selected="${worker.jobTitle == 'Зам. начальника отдела'}">Зам. начальника отдела</option>
-        </select>
-    </div>
-    <div class="mb-4">
-        <label class="block mb-1 font-semibold">Дата рождения</label>
-        <input type="date" th:field="*{birthDay}" class="border rounded-lg px-4 py-2 w-full"/>
-    </div>
-    <div class="mb-4">
-        <label class="block mb-1 font-semibold">Отдел</label>
-        <input type="text" th:field="*{department}" class="border rounded-lg px-4 py-2 w-full"/>
-    </div>
-    <div class="flex gap-4">
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-            Сохранить
-        </button>
-        <a th:href="@{/workers/view}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition">
-            Отмена
-        </a>
-    </div>
-</form>
+    }
 
+    /* Фон с эффектом стекла */
+    .glass-background {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background:
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        z-index: 0;
+    }
+
+    /* Часы в стиле линзы */
+    .clock-container {
+        position: fixed;
+        top: 20px;
+        right: 120px;
+        font-family: 'Font_1', sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        padding: 15px 20px;
+        text-align: center;
+        z-index: 100;
+
+        background: radial-gradient(
+                ellipse at center,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.1) 70%,
+                rgba(255, 255, 255, 0) 100%
+        );
+
+        backdrop-filter: blur(20px) brightness(1.1);
+        -webkit-backdrop-filter: blur(20px) brightness(1.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 40px;
+
+        box-shadow:
+                0 0 40px rgba(59, 130, 246, 0.3),
+                0 0 80px rgba(139, 92, 246, 0.2),
+                inset 0 0 30px rgba(255, 255, 255, 0.1),
+                inset 0 0 60px rgba(255, 255, 255, 0.05),
+                0 0 0 1px rgba(255, 255, 255, 0.15);
+
+        animation: pulseGlow 4s infinite ease-in-out;
+
+        /* Запрет выделения для часов */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .clock-time {
+        font-size: 20px;
+        font-weight: 700;
+        text-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.3),
+                0 0 15px rgba(59, 130, 246, 0.3);
+        letter-spacing: 1.5px;
+        margin-bottom: 2px;
+    }
+
+    .clock-date {
+        font-size: 13px;
+        font-weight: 400;
+        opacity: 0.9;
+        text-shadow:
+                0 1px 4px rgba(0, 0, 0, 0.2),
+                0 0 8px rgba(139, 92, 246, 0.2);
+    }
+
+    @keyframes pulseGlow {
+        0%, 100% {
+            box-shadow:
+                    0 0 30px rgba(59, 130, 246, 0.3),
+                    0 0 60px rgba(139, 92, 246, 0.2),
+                    inset 0 0 20px rgba(255, 255, 255, 0.1),
+                    inset 0 0 40px rgba(255, 255, 255, 0.05),
+                    0 0 0 1px rgba(255, 255, 255, 0.15);
+        }
+        50% {
+            box-shadow:
+                    0 0 40px rgba(59, 130, 246, 0.4),
+                    0 0 80px rgba(139, 92, 246, 0.3),
+                    inset 0 0 25px rgba(255, 255, 255, 0.15),
+                    inset 0 0 50px rgba(255, 255, 255, 0.1),
+                    0 0 0 1px rgba(255, 255, 255, 0.2);
+        }
+    }
+
+    /* Стили для кнопки выхода */
+    .logout-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        background: linear-gradient(
+                135deg,
+                rgba(239, 68, 68, 0.8),
+                rgba(220, 38, 38, 0.8)
+        );
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 40px;
+        cursor: pointer;
+        font-family: 'Font_1', sans-serif;
+        font-weight: 600;
+        font-size: 20px;
+        transition: all 0.3s ease;
+        z-index: 100;
+        text-decoration: none;
+        box-shadow:
+                0 8px 25px rgba(239, 68, 68, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .logout-btn:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(
+                135deg,
+                rgba(220, 38, 38, 0.9),
+                rgba(185, 28, 28, 0.9)
+        );
+        box-shadow:
+                0 12px 35px rgba(239, 68, 68, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    /* Основной контент - БЕЗ SCROLL */
+    .main-content {
+        position: relative;
+        z-index: 1;
+        padding: 0px;
+        max-width: 1200px;
+        margin: 0 auto;
+        height: calc(100vh - 30px);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    /* Контейнер заголовка и формы */
+    .content-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        padding-top: 10px;
+    }
+
+    /* Контейнер формы */
+    .form-container {
+        flex: 1;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        overflow: hidden;
+        padding: 0;
+        min-height: 0;
+    }
+
+    /* Стеклянная форма */
+    .glass-form {
+
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px) saturate(180%);
+        -webkit-backdrop-filter: blur(15px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-top: 1px solid rgba(255, 255, 255, 0.25);
+        border-left: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 16px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.3),
+                0 10px 25px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+                0 0 40px rgba(59, 130, 246, 0.12),
+                0 0 60px rgba(139, 92, 246, 0.08);
+        max-width: 520px;
+        width: 100%;
+        margin: 70px;
+        max-height: 590px;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    /* Заголовок внутри формы */
+    .form-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        text-align: center;
+        margin: 0 0 20px 0;
+        padding-bottom: 12px;
+        text-shadow:
+                0 1px 8px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(59, 130, 246, 0.4);
+        position: relative;
+    }
+
+    .form-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 2px;
+        background: linear-gradient(90deg,
+        rgba(59, 130, 246, 0.8),
+        rgba(139, 92, 246, 0.8));
+        border-radius: 1px;
+        box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+    }
+
+    .glass-form:hover {
+        transform: translateY(-8px) scale(1.02);
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.4),
+                0 15px 35px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+                0 0 50px rgba(59, 130, 246, 0.2),
+                0 0 70px rgba(139, 92, 246, 0.15);
+    }
+
+    /* Формы ввода - УМЕНЬШЕНЫ */
+    .glass-input {
+        background: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1.5px solid rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        padding: 10px 14px;
+        color: white;
+        font-family: 'Font_1', sans-serif;
+        font-size: 16px;
+        transition: all 0.2s ease;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .glass-input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 16px;
+    }
+
+    .glass-input:focus {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.25);
+        box-shadow:
+                0 0 0 2px rgba(255, 255, 255, 0.06),
+                0 8px 20px rgba(0, 0, 0, 0.2);
+        outline: none;
+    }
+
+    .glass-select {
+        background: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1.5px solid rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        padding: 10px 14px;
+        color: white;
+        font-family: 'Font_1', sans-serif;
+        font-size: 16px;
+        transition: all 0.2s ease;
+        width: 100%;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.5)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        box-sizing: border-box;
+    }
+
+    .glass-select option {
+        background: #1e293b;
+        color: white;
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    .glass-select:focus {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.25);
+        box-shadow:
+                0 0 0 2px rgba(255, 255, 255, 0.06),
+                0 8px 20px rgba(0, 0, 0, 0.2);
+        outline: none;
+    }
+
+    /* Кнопки - УМЕНЬШЕНЫ */
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        background: linear-gradient(
+                135deg,
+                rgba(34, 197, 94, 0.8),
+                rgba(21, 128, 61, 0.8)
+        );
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        font-family: 'Font_1', sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        box-shadow:
+                0 6px 20px rgba(34, 197, 94, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        cursor: pointer;
+        border: none;
+        flex: 1;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(
+                135deg,
+                rgba(21, 128, 61, 0.9),
+                rgba(34, 197, 94, 0.9)
+        );
+        box-shadow:
+                0 10px 25px rgba(34, 197, 94, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-cancel {
+        display: inline-block;
+        padding: 10px 20px;
+        text-align: center;
+        background: linear-gradient(
+                135deg,
+                rgba(239, 68, 68, 0.8),
+                rgba(220, 38, 38, 0.8)
+        );
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        font-family: 'Font_1', sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        box-shadow:
+                0 6px 20px rgba(239, 68, 68, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        cursor: pointer;
+        border: none;
+        flex: 1;
+    }
+
+    .btn-cancel:hover {
+        transform: translateY(-2px);
+        box-shadow:
+                0 10px 25px rgba(239, 68, 68, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    /* Лейблы - УМЕНЬШЕНЫ */
+    .form-label {
+        display: block;
+        margin-bottom: 5px;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        font-size: 16px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Группы форм - УМЕНЬШЕНЫ */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    /* Кнопки группы */
+    .form-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 25px;
+        justify-content: stretch;
+    }
+
+    /* Скрыть скроллбар формы */
+    .glass-form::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .glass-form::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 2px;
+    }
+
+    .glass-form::-webkit-scrollbar-thumb {
+        background: rgba(59, 130, 246, 0.4);
+        border-radius: 2px;
+    }
+
+    .glass-form::-webkit-scrollbar-thumb:hover {
+        background: rgba(59, 130, 246, 0.6);
+    }
+
+    /* Для Firefox скрыть скроллбар */
+    .glass-form {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(59, 130, 246, 0.4) rgba(255, 255, 255, 0.03);
+    }
+
+    /* Адаптивность для маленьких экранов */
+    @media (max-width: 768px) {
+        .main-content {
+            padding: 10px;
+            height: calc(100vh - 20px);
+        }
+
+        .clock-container {
+            right: 15px;
+            top: 60px;
+            font-size: 12px;
+            padding: 8px 12px;
+        }
+
+        .clock-time {
+            font-size: 14px;
+        }
+
+        .clock-date {
+            font-size: 10px;
+        }
+
+        .logout-btn {
+            top: 10px;
+            right: 10px;
+            padding: 6px 12px;
+            font-size: 11px;
+        }
+
+        .glass-form {
+            padding: 20px;
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 14px;
+            margin: 10px;
+        }
+
+        .form-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+        }
+
+        .form-buttons {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .glass-input, .glass-select {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        .btn-primary, .btn-cancel {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+    }
+
+    @media (max-height: 600px) {
+        .glass-form {
+            padding: 15px;
+            max-height: 450px;
+        }
+
+        .form-title {
+            font-size: 20px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-buttons {
+            margin-top: 20px;
+        }
+
+        .glass-input, .glass-select {
+            padding: 7px 10px;
+            font-size: 11px;
+        }
+
+        .btn-primary, .btn-cancel {
+            padding: 7px 14px;
+            font-size: 11px;
+        }
+    }
+
+    /* Полное отключение скролла на body */
+    html, body {
+        overflow: hidden !important;
+        height: 100% !important;
+        width: 100% !important;
+        position: fixed !important;
+    }
+</style>
+<body>
+<!-- Фон с эффектом стекла -->
+<div class="glass-background"></div>
+
+<!-- Часы -->
+<div class="clock-container">
+    <div class="clock-time" id="clock-time">00:00:00</div>
+    <div class="clock-date" id="clock-date">1 января 1970</div>
+</div>
+
+<!-- Кнопка выхода -->
+<a th:href="@{/logout}" class="logout-btn">
+    Выйти
+</a>
+
+<!-- Основной контент -->
+<div class="main-content">
+    <div class="content-wrapper">
+        <!-- Контейнер формы -->
+        <div class="form-container">
+            <!-- Форма с заголовком внутри -->
+            <form th:action="@{/workers/save}" th:object="${worker}" method="post" class="glass-form" id="employeeForm">
+                <!-- Заголовок внутри формы -->
+                <div class="form-title">
+                    Добавить сотрудника
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Имя</label>
+                    <input type="text" th:field="*{name}" class="glass-input" placeholder="Введите имя" required/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Фамилия</label>
+                    <input type="text" th:field="*{surname}" class="glass-input" placeholder="Введите фамилию" required/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Отчество</label>
+                    <input type="text" th:field="*{patronymicName}" class="glass-input" placeholder="Введите отчество" required/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Должность</label>
+                    <select th:field="*{jobTitle}" class="glass-select" required>
+                        <option value="">Выберите должность</option>
+                        <option value="Эксперт">Эксперт</option>
+                        <option value="Главный эксперт">Главный эксперт</option>
+                        <option value="Эксперт-стажёр">Эксперт-стажёр</option>
+                        <option value="Начальник отдела">Начальник отдела</option>
+                        <option value="Зам. начальника отдела">Зам. начальника отдела</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Дата рождения</label>
+                    <input type="date" th:field="*{birthDay}" class="glass-input" required/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Отдел</label>
+                    <select th:field="*{department}" class="glass-select" required>
+                        <option value="">Выберите отдел</option>
+                        <option value="Отдел ЭКСиТФиЛЭ">Отдел ЭКСиТФиЛЭ</option>
+                        <option value="Отдел СТТиЭЭ">Отдел СТТиЭЭ</option>
+                    </select>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-primary">
+                        Сохранить
+                    </button>
+                    <a th:href="@{/workers/view}" class="btn-cancel">
+                        Отмена
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Скрипт для часов -->
+<script>
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById("clock-time").textContent = `${hours}:${minutes}:${seconds}`;
+
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        document.getElementById("clock-date").textContent = now.toLocaleDateString('ru-RU', options);
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Установка максимальной даты для поля даты рождения
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.querySelector('input[type="date"]');
+        if (dateInput) {
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.setAttribute('max', today);
+        }
+
+        // Полное отключение скролла на всем документе
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+
+        // Предотвращаем скролл колесиком мыши
+        document.addEventListener('wheel', function(e) {
+            if (!e.target.closest('.glass-form')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Предотвращаем touch-скролл на мобильных
+        document.addEventListener('touchmove', function(e) {
+            if (!e.target.closest('.glass-form')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    });
+
+    // Предотвращаем выделение текста при двойном клике
+    document.addEventListener('mousedown', function(e) {
+        if (e.detail > 1) {
+            e.preventDefault();
+        }
+    });
+</script>
 </body>
 </html>

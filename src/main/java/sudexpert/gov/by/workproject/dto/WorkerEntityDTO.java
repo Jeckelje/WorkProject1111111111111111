@@ -3,6 +3,7 @@ package sudexpert.gov.by.workproject.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 import sudexpert.gov.by.workproject.dto.validation.OnCreate;
 import sudexpert.gov.by.workproject.dto.validation.OnUpdate;
 import sudexpert.gov.by.workproject.model.WorkerEntity;
@@ -29,6 +30,7 @@ public record WorkerEntityDTO(
 
 
         @NotNull(message = "", groups = {OnUpdate.class, OnCreate.class})
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate birthDay,
 
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)

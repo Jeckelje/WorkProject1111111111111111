@@ -37,7 +37,6 @@
             <form th:action="@{/workers/view/{workerId}/achievements/{achievementId}/delete(workerId=${worker.id}, achievementId=${achievement.id})}"
                   method="post"
                   onsubmit="return confirm('Вы уверены, что хотите удалить это достижение?');">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <button type="submit"
                         class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">🗑️</button>
             </form>

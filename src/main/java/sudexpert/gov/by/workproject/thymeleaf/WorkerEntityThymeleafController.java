@@ -148,7 +148,7 @@ public class WorkerEntityThymeleafController {
     public String editWorkerForm(@PathVariable Long workerId, Model model) {
         WorkerEntityDTO worker = workerEntityService.getWorkerEntityById(workerId);
         model.addAttribute("worker", worker);
-        return "worker-form"; // используем ту же форму, что и для добавления
+        return "worker-edit-form"; // используем ту же форму, что и для добавления
     }
 
     // Сохранение изменений после редактирования

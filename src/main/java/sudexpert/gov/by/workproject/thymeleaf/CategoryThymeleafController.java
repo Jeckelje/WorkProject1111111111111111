@@ -67,6 +67,8 @@ public class CategoryThymeleafController {
     public String showAddForm(@PathVariable Long workerId, Model model) {
         CategoryDTO categoryDTO = new CategoryDTO(null, workerId, "", null, null, "");
         model.addAttribute("category", categoryDTO);
+        WorkerEntityDTO worker = workerEntityService.getWorkerEntityById(workerId);
+        model.addAttribute("worker", worker);
         return "categories-add";
     }
 
