@@ -10,7 +10,6 @@
     <link rel="preload" href="/fonts/PoiretOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
 </head>
 <style>
-
     body, .main-content, .filter-panel,
     .btn-primary, .btn-secondary, .btn-reset, .logout-btn {
         user-select: none;
@@ -19,7 +18,6 @@
         -ms-user-select: none;
     }
 
-    /* Но разрешите выделение для текстовых полей ввода */
     .glass-input, .glass-select, input, textarea, select {
         user-select: auto;
         -webkit-user-select: auto;
@@ -27,7 +25,6 @@
         -ms-user-select: auto;
     }
 
-    /* И для текста внутри карточек (если нужно) */
     .glass-card h2, .glass-card p, .glass-card span {
         cursor: default;
     }
@@ -52,10 +49,8 @@
         position: relative;
         overflow-x: hidden;
         color: white;
-
     }
 
-    /* Фон с эффектом стекла */
     .glass-background {
         position: fixed;
         width: 100%;
@@ -66,7 +61,6 @@
         z-index: 0;
     }
 
-    /* Часы в стиле линзы */
     .clock-container {
         position: fixed;
         top: 20px;
@@ -84,21 +78,16 @@
                 rgba(255, 255, 255, 0.1) 70%,
                 rgba(255, 255, 255, 0) 100%
         );
-
         backdrop-filter: blur(20px) brightness(1.1);
         -webkit-backdrop-filter: blur(20px) brightness(1.1);
-
         border: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: 40px;
-
         box-shadow:
                 0 0 40px rgba(59, 130, 246, 0.4),
                 0 0 80px rgba(139, 92, 246, 0.3),
                 inset 0 0 30px rgba(255, 255, 255, 0.15),
                 inset 0 0 60px rgba(255, 255, 255, 0.1),
                 0 0 0 1px rgba(255, 255, 255, 0.2);
-
-        animation: pulseGlow 4s infinite ease-in-out;
     }
 
     .clock-time {
@@ -120,26 +109,6 @@
                 0 0 8px rgba(139, 92, 246, 0.3);
     }
 
-    .clock-time, .clock-date {
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-    }
-    @keyframes pulseGlow {
-        0%, 100% {
-            box-shadow: /* упростите тени для производительности */
-                    0 0 20px rgba(59, 130, 246, 0.3),
-                    inset 0 0 15px rgba(255, 255, 255, 0.1);
-        }
-        50% {
-            box-shadow:
-                    0 0 30px rgba(59, 130, 246, 0.5),
-                    inset 0 0 20px rgba(255, 255, 255, 0.15);
-        }
-    }
-
-    /* Стили для кнопки выхода */
     .logout-btn {
         position: fixed;
         top: 20px;
@@ -179,7 +148,6 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
-    /* Основной контент */
     .main-content {
         position: relative;
         z-index: 1;
@@ -188,7 +156,6 @@
         margin: 0 auto;
     }
 
-    /* Заголовок страницы */
     .page-title {
         font-size: 42px;
         font-weight: 700;
@@ -215,7 +182,6 @@
         box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
     }
 
-    /* Стеклянные карточки */
     .glass-card {
         background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(20px) saturate(180%);
@@ -236,8 +202,8 @@
         cursor: pointer;
         height: 100%;
         text-decoration: none !important;
-        will-change: transform, box-shadow; /* Ускоряет анимации */
-        transform: translateZ(0); /* Включает аппаратное ускорение */
+        will-change: transform, box-shadow;
+        transform: translateZ(0);
         backface-visibility: hidden;
     }
 
@@ -254,12 +220,10 @@
         border-color: rgba(255, 255, 255, 0.25);
     }
 
-    /* Убираем подчеркивание во всех элементах карточки */
     .glass-card * {
         text-decoration: none !important;
     }
 
-    /* Кнопки */
     .btn-primary {
         display: inline-block;
         padding: 14px 28px;
@@ -355,7 +319,6 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
-    /* Формы ввода */
     .glass-input {
         background: rgba(255, 255, 255, 0.07);
         backdrop-filter: blur(10px);
@@ -412,64 +375,317 @@
         outline: none;
     }
 
-    /* Бейджи для событий */
+    /* НЕОНОВЫЕ БЕЙДЖИ БЕЗ АНИМАЦИИ */
     .badge {
         display: inline-block;
-        padding: 8px 16px;
-        border-radius: 20px;
+        padding: 10px 18px;
+        border-radius: 25px;
         font-size: 18px;
         font-weight: 600;
-        margin: 4px 6px 4px 0;
+        margin: 6px 8px 6px 0;
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        border: 2px solid;
         text-decoration: none !important;
+        transition: all 0.3s ease;
+        position: relative;
+        text-shadow: 0 0 5px currentColor;
     }
 
+    .badge:hover {
+        transform: translateY(-2px);
+    }
+
+    /* В отпуске - СИНИЙ НЕОН */
     .badge-blue {
-        background: rgba(59, 130, 246, 0.3);
-        color: rgba(191, 219, 254, 1);
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+        background: linear-gradient(135deg,
+        rgba(59, 130, 246, 0.25),
+        rgba(37, 99, 235, 0.35));
+        color: #60a5fa;
+        border-color: #3b82f6;
+        box-shadow:
+                0 0 20px rgba(59, 130, 246, 0.5),
+                0 0 30px rgba(59, 130, 246, 0.3),
+                inset 0 0 10px rgba(59, 130, 246, 0.2);
     }
 
+    .badge-blue:hover {
+        box-shadow:
+                0 0 25px rgba(59, 130, 246, 0.6),
+                0 0 35px rgba(59, 130, 246, 0.4);
+    }
+
+    /* Отпуск в ближайшие 3 месяца - ЗЕЛЕНЫЙ НЕОН */
     .badge-green {
-        background: rgba(34, 197, 94, 0.3);
-        color: rgba(187, 247, 208, 1);
-        box-shadow: 0 4px 15px rgba(34, 197, 94, 0.2);
+        background: linear-gradient(135deg,
+        rgba(34, 197, 94, 0.25),
+        rgba(21, 128, 61, 0.35));
+        color: #4ade80;
+        border-color: #22c55e;
+        box-shadow:
+                0 0 20px rgba(34, 197, 94, 0.5),
+                0 0 30px rgba(34, 197, 94, 0.3),
+                inset 0 0 10px rgba(34, 197, 94, 0.2);
     }
 
+    .badge-green:hover {
+        box-shadow:
+                0 0 25px rgba(34, 197, 94, 0.6),
+                0 0 35px rgba(34, 197, 94, 0.4);
+    }
+
+    /* Категория в следующем году - ЖЕЛТЫЙ НЕОН */
     .badge-yellow {
-        background: rgba(234, 179, 8, 0.3);
-        color: rgba(254, 240, 138, 1);
-        box-shadow: 0 4px 15px rgba(234, 179, 8, 0.2);
+        background: linear-gradient(135deg,
+        rgba(234, 179, 8, 0.25),
+        rgba(202, 138, 4, 0.35));
+        color: #facc15;
+        border-color: #eab308;
+        box-shadow:
+                0 0 20px rgba(234, 179, 8, 0.5),
+                0 0 30px rgba(234, 179, 8, 0.3),
+                inset 0 0 10px rgba(234, 179, 8, 0.2);
     }
 
+    .badge-yellow:hover {
+        box-shadow:
+                0 0 25px rgba(234, 179, 8, 0.6),
+                0 0 35px rgba(234, 179, 8, 0.4);
+    }
+
+    /* Стажировка - ОРАНЖЕВЫЙ НЕОН */
     .badge-red {
-        background: rgba(239, 68, 68, 0.3);
-        color: rgba(254, 202, 202, 1);
-        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+        background: linear-gradient(135deg,
+        rgba(249, 115, 22, 0.25),
+        rgba(217, 119, 6, 0.35));
+        color: #fb923c;
+        border-color: #f97316;
+        box-shadow:
+                0 0 20px rgba(249, 115, 22, 0.5),
+                0 0 30px rgba(249, 115, 22, 0.3),
+                inset 0 0 10px rgba(249, 115, 22, 0.2);
     }
 
-    .badge-orange {
-        background: rgba(249, 115, 22, 0.3);
-        color: rgba(255, 237, 213, 1);
-        box-shadow: 0 4px 15px rgba(249, 115, 22, 0.2);
+    .badge-red:hover {
+        box-shadow:
+                0 0 25px rgba(249, 115, 22, 0.6),
+                0 0 35px rgba(249, 115, 22, 0.4);
     }
 
-    .badge-purple {
-        background: rgba(168, 85, 247, 0.3);
-        color: rgba(233, 213, 255, 1);
-        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
-    }
-
+    /* ЭКК - КРАСНЫЙ НЕОН */
     .badge-red-bold {
-        background: rgba(239, 68, 68, 0.4);
-        color: rgba(254, 226, 226, 1);
+        background: linear-gradient(135deg,
+        rgba(239, 68, 68, 0.3),
+        rgba(220, 38, 38, 0.4));
+        color: #fca5a5;
+        border-color: #ef4444;
         font-weight: 700;
-        box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+        box-shadow:
+                0 0 25px rgba(239, 68, 68, 0.6),
+                0 0 35px rgba(239, 68, 68, 0.4),
+                inset 0 0 15px rgba(239, 68, 68, 0.25);
     }
 
-    /* Панель фильтров */
+    .badge-red-bold:hover {
+        box-shadow:
+                0 0 30px rgba(239, 68, 68, 0.7),
+                0 0 40px rgba(239, 68, 68, 0.5);
+    }
+
+    /* Категория в ближайшие 3 месяца - ОРАНЖЕВЫЙ НЕОН */
+    .badge-orange {
+        background: linear-gradient(135deg,
+        rgba(249, 115, 22, 0.25),
+        rgba(217, 119, 6, 0.35));
+        color: #fb923c;
+        border-color: #f97316;
+        box-shadow:
+                0 0 20px rgba(249, 115, 22, 0.5),
+                0 0 30px rgba(249, 115, 22, 0.3),
+                inset 0 0 10px rgba(249, 115, 22, 0.2);
+    }
+
+    .badge-orange:hover {
+        box-shadow:
+                0 0 25px rgba(249, 115, 22, 0.6),
+                0 0 35px rgba(249, 115, 22, 0.4);
+    }
+
+    /* Юбилейный день рождения - ФИОЛЕТОВЫЙ НЕОН */
+    .badge-purple {
+        background: linear-gradient(135deg,
+        rgba(168, 85, 247, 0.25),
+        rgba(147, 51, 234, 0.35));
+        color: #c084fc;
+        border-color: #a855f7;
+        box-shadow:
+                0 0 20px rgba(168, 85, 247, 0.5),
+                0 0 30px rgba(168, 85, 247, 0.3),
+                inset 0 0 10px rgba(168, 85, 247, 0.2);
+    }
+
+    .badge-purple:hover {
+        box-shadow:
+                0 0 25px rgba(168, 85, 247, 0.6),
+                0 0 35px rgba(168, 85, 247, 0.4);
+    }
+
+    /* НЕОНОВЫЕ СТИЛИ ДЛЯ КАТЕГОРИЙ */
+
+    /* Категория с неоновым эффектом */
+    .category-neon {
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 2px solid;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category-neon::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+        opacity: 0.3;
+        z-index: 1;
+    }
+
+    /* Зеленая категория (больше 1095 дней) - ЗЕЛЕНЫЙ НЕОН */
+    .category-green-neon {
+        background: linear-gradient(135deg,
+        rgba(34, 197, 94, 0.2),
+        rgba(21, 128, 61, 0.3));
+        border-color: rgba(34, 197, 94, 0.6);
+        box-shadow:
+                0 0 20px rgba(34, 197, 94, 0.4),
+                0 0 30px rgba(34, 197, 94, 0.25),
+                inset 0 0 10px rgba(34, 197, 94, 0.15);
+        color: #bbf7d0;
+    }
+
+    .category-green-neon:hover {
+        box-shadow:
+                0 0 25px rgba(34, 197, 94, 0.5),
+                0 0 35px rgba(34, 197, 94, 0.35);
+    }
+
+    /* Желтая категория (730-1095 дней) - ЖЕЛТЫЙ НЕОН */
+    .category-yellow-neon {
+        background: linear-gradient(135deg,
+        rgba(234, 179, 8, 0.2),
+        rgba(202, 138, 4, 0.3));
+        border-color: rgba(234, 179, 8, 0.6);
+        box-shadow:
+                0 0 20px rgba(234, 179, 8, 0.4),
+                0 0 30px rgba(234, 179, 8, 0.25),
+                inset 0 0 10px rgba(234, 179, 8, 0.15);
+        color: #fef08a;
+    }
+
+    .category-yellow-neon:hover {
+        box-shadow:
+                0 0 25px rgba(234, 179, 8, 0.5),
+                0 0 35px rgba(234, 179, 8, 0.35);
+    }
+
+    /* Красная категория (меньше 730 дней) - КРАСНЫЙ НЕОН */
+    .category-red-neon {
+        background: linear-gradient(135deg,
+        rgba(239, 68, 68, 0.2),
+        rgba(220, 38, 38, 0.3));
+        border-color: rgba(239, 68, 68, 0.6);
+        box-shadow:
+                0 0 20px rgba(239, 68, 68, 0.4),
+                0 0 30px rgba(239, 68, 68, 0.25),
+                inset 0 0 10px rgba(239, 68, 68, 0.15);
+        color: #fecaca;
+    }
+
+    .category-red-neon:hover {
+        box-shadow:
+                0 0 25px rgba(239, 68, 68, 0.5),
+                0 0 35px rgba(239, 68, 68, 0.35);
+    }
+
+    /* НЕОНОВЫЕ СТИЛИ ДЛЯ ОТПУСКОВ */
+
+    /* Ближайший отпуск - СИНИЙ НЕОН */
+    .vacation-future-neon {
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        background: linear-gradient(135deg,
+        rgba(59, 130, 246, 0.2),
+        rgba(37, 99, 235, 0.3));
+        border: 2px solid rgba(59, 130, 246, 0.6);
+        box-shadow:
+                0 0 20px rgba(59, 130, 246, 0.4),
+                0 0 30px rgba(59, 130, 246, 0.25),
+                inset 0 0 10px rgba(59, 130, 246, 0.15);
+        color: #bfdbfe;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .vacation-future-neon::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+        opacity: 0.3;
+        z-index: 1;
+    }
+
+    .vacation-future-neon:hover {
+        box-shadow:
+                0 0 25px rgba(59, 130, 246, 0.5),
+                0 0 35px rgba(59, 130, 246, 0.35);
+    }
+
+    /* Текущий отпуск - ЯРКИЙ СИНИЙ НЕОН */
+    .vacation-current-neon {
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        background: linear-gradient(135deg,
+        rgba(59, 130, 246, 0.3),
+        rgba(37, 99, 235, 0.4));
+        border: 2px solid rgba(59, 130, 246, 0.8);
+        box-shadow:
+                0 0 25px rgba(59, 130, 246, 0.5),
+                0 0 35px rgba(59, 130, 246, 0.35),
+                inset 0 0 15px rgba(59, 130, 246, 0.2);
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .vacation-current-neon::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent);
+        opacity: 0.4;
+        z-index: 1;
+    }
+
+    .vacation-current-neon:hover {
+        box-shadow:
+                0 0 30px rgba(59, 130, 246, 0.6),
+                0 0 40px rgba(59, 130, 246, 0.45);
+    }
+
     .filter-panel {
         background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(20px) saturate(180%);
@@ -550,14 +766,12 @@
         flex-wrap: wrap;
     }
 
-    /* Сетка */
     .grid-3 {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
         gap: 25px;
     }
 
-    /* Адаптивность */
     @media (max-width: 1200px) {
         .filter-grid-top {
             grid-template-columns: repeat(2, 1fr);
@@ -611,36 +825,28 @@
 
 </style>
 <body>
-<!-- Фон с эффектом стекла -->
 <div class="glass-background"></div>
 
-<!-- Часы над кнопкой выхода -->
 <div class="clock-container">
     <div class="clock-time" id="clock-time">00:00:00</div>
     <div class="clock-date" id="clock-date">1 января 1970</div>
 </div>
 
-<!-- Кнопка выхода -->
 <a th:href="@{/logout}" class="logout-btn">
     Выйти
 </a>
 
-<!-- Основной контент -->
 <div class="main-content">
-    <!-- Заголовок -->
     <h1 class="page-title">Сотрудники</h1>
 
-    <!-- Кнопка добавления нового сотрудника -->
     <div class="mb-8">
         <a th:href="@{/workers/add}" class="btn-primary">
             + Добавить сотрудника
         </a>
     </div>
 
-    <!-- Панель фильтров -->
     <div class="filter-panel">
         <form method="get" th:action="@{/workers/view}">
-            <!-- Верхняя строка: 3 поля -->
             <div class="filter-grid-top">
                 <div class="filter-section">
                     <div class="filter-label">Поиск по фамилии</div>
@@ -673,7 +879,6 @@
                 </div>
             </div>
 
-            <!-- Нижняя строка: сортировка и кнопки -->
             <div class="filter-grid-bottom">
                 <div class="filter-controls">
                     <div class="filter-sort-section">
@@ -706,22 +911,18 @@
         </form>
     </div>
 
-    <!-- Список сотрудников -->
     <div class="grid-3">
         <a th:each="worker : ${workers}"
            th:href="@{/workers/view/{workerId}(workerId=${worker.id})}"
            class="glass-card block">
-            <!-- ФИО -->
             <h2 class="text-2xl font-bold text-white mb-3"
                 th:text="${worker.surname + ' ' + worker.name + ' ' + worker.patronymicName}"></h2>
 
-            <!-- Должность и отдел -->
             <div class="mb-4">
                 <p class="text-gray-300 mb-2" th:text="${worker.jobTitle}"></p>
                 <p class="text-gray-300">🏢 <span th:text="${worker.department}"></span></p>
             </div>
 
-            <!-- День рождения + возраст -->
             <div class="mb-4">
                 <p class="text-gray-200">
                     🎂 День рождения:
@@ -730,22 +931,22 @@
                 </p>
             </div>
 
-            <!-- Дата окончания категории -->
+            <!-- Дата окончания категории с неоновым эффектом -->
             <div th:if="${lastCategoryEndDates[worker.id] != null}"
                  th:with="daysLeft=${T(java.time.temporal.ChronoUnit).DAYS.between(#temporals.createToday(), lastCategoryEndDates[worker.id])}"
-                 class="mb-4 p-3 rounded-xl"
-                 th:classappend="${daysLeft > 1095 ? 'bg-green-900/20 border border-green-500/30' : (daysLeft > 730 ? 'bg-yellow-900/20 border border-yellow-500/30' : 'bg-red-900/20 border border-red-500/30')}">
-                <p class="text-gray-200">
+                 class="mb-4 p-3 rounded-xl category-neon"
+                 th:classappend="${daysLeft > 730 ? 'category-green-neon' : (daysLeft > 365 ? 'category-yellow-neon' : 'category-red-neon')}">
+                <p class="font-semibold" style="position: relative; z-index: 2;">
                     🏆 Дата окончания категории:
-                    <span th:text="${#temporals.format(lastCategoryEndDates[worker.id], 'dd.MM.yyyy')}" class="font-semibold"></span>
-                    (<span th:text="${daysLeft}" class="font-bold"></span> дней до сдачи)
+                    <span th:text="${#temporals.format(lastCategoryEndDates[worker.id], 'dd.MM.yyyy')}" class="font-bold"></span>
+                    (<span th:text="${daysLeft}" class="font-extrabold"></span> дней до сдачи)
                 </p>
             </div>
 
-            <!-- Ближайший отпуск -->
+            <!-- Ближайший отпуск с неоновым эффектом -->
             <div th:if="${vacationStartDates[worker.id]} != null"
-                 class="mb-4 p-3 rounded-xl bg-blue-900/20 border border-blue-500/30">
-                <p class="text-gray-200">
+                 class="mb-4 p-3 rounded-xl vacation-future-neon">
+                <p style="position: relative; z-index: 2;">
                     🌴 Ближайший отпуск:
                     <span th:text="${#temporals.format(vacationStartDates[worker.id], 'dd.MM.yyyy')}" class="font-semibold"></span>
                     –
@@ -753,10 +954,10 @@
                 </p>
             </div>
 
-            <!-- Сотрудник в отпуске -->
+            <!-- Сотрудник в отпуске с неоновым эффектом -->
             <div th:if="${worker.isVacated and nowOnVacationEndDates[worker.id] != null}"
-                 class="mb-4 p-3 rounded-xl bg-blue-600/30 border border-blue-400/50 shadow-lg">
-                <p class="text-white font-semibold">
+                 class="mb-4 p-3 rounded-xl vacation-current-neon">
+                <p class="font-semibold" style="position: relative; z-index: 2;">
                     🌴 Сотрудник в отпуске до
                     <span th:text="${#temporals.format(nowOnVacationEndDates[worker.id], 'dd.MM.yyyy')}" class="font-bold"></span>
                 </p>
@@ -780,7 +981,6 @@
     </div>
 </div>
 
-<!-- Скрипт для часов -->
 <script>
     function updateClock() {
         const now = new Date();
@@ -796,12 +996,10 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Сохраняем позицию при уходе со страницы
     window.addEventListener("beforeunload", function () {
         localStorage.setItem("scrollPosition", window.scrollY);
     });
 
-    // Восстанавливаем позицию при загрузке страницы
     window.addEventListener("load", function () {
         const scrollPos = localStorage.getItem("scrollPosition");
         if (scrollPos !== null) {

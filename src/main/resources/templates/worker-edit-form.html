@@ -615,6 +615,7 @@
         width: 100% !important;
         position: fixed !important;
     }
+
 </style>
 <body>
 <!-- Фон с эффектом стекла -->
@@ -637,10 +638,15 @@
         <!-- Контейнер формы -->
         <div class="form-container">
             <!-- Форма с заголовком внутри -->
-            <form th:action="@{/workers/save}" th:object="${worker}" method="post" class="glass-form" id="employeeForm">
+            <form th:action="@{/workers/edit/{workerId}(workerId=${worker.id})}"
+                  th:object="${worker}"
+                  method="post"
+                  class="glass-form"
+                  id="employeeForm">
+
                 <!-- Заголовок внутри формы -->
                 <div class="form-title">
-                    Добавить сотрудника
+                    Редактирование сотрудника
                 </div>
 
                 <div class="form-group">
@@ -672,7 +678,10 @@
 
                 <div class="form-group">
                     <label class="form-label">Дата рождения</label>
-                    <input type="date" th:field="*{birthDay}" class="glass-input" required/>
+                    <!-- Для поля даты нужно преобразовать LocalDate в строку формата yyyy-MM-dd -->
+                    <input type="date"
+                           th:field="*{birthDay}"
+                           class="glass-input" required/>
                 </div>
 
                 <div class="form-group">
@@ -688,7 +697,7 @@
                     <button type="submit" class="btn-primary">
                         Сохранить
                     </button>
-                    <a th:href="@{/workers/view}" class="btn-cancel">
+                    <a th:href="@{/workers/view/{workerId}(workerId=${worker.id})}" class="btn-cancel">
                         Отмена
                     </a>
                 </div>

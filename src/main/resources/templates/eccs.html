@@ -3,59 +3,954 @@
 <head>
     <meta charset="UTF-8">
     <title>ЭКК</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="/images/ico.png">
+    <link rel="preload" href="/fonts/PoiretOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <style>
+        @font-face{
+            font-family: 'Font_1';
+            src: url("/fonts/PoiretOne-Regular.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
 
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: default;
+        }
+
+        body {
+            font-family: 'Font_1', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .glass-background {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background:
+                    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        /* Часы в стиле линзы */
+        .clock-container {
+            position: fixed;
+            top: 20px;
+            right: 120px;
+            font-family: 'Font_1', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            z-index: 100;
+
+            background: radial-gradient(
+                    ellipse at center,
+                    rgba(255, 255, 255, 0.25) 0%,
+                    rgba(255, 255, 255, 0.1) 70%,
+                    rgba(255, 255, 255, 0) 100%
+            );
+
+            backdrop-filter: blur(20px) brightness(1.1);
+            -webkit-backdrop-filter: blur(20px) brightness(1.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 40px;
+
+            box-shadow:
+                    0 0 40px rgba(59, 130, 246, 0.3),
+                    0 0 80px rgba(139, 92, 246, 0.2),
+                    inset 0 0 30px rgba(255, 255, 255, 0.1),
+                    inset 0 0 60px rgba(255, 255, 255, 0.05),
+                    0 0 0 1px rgba(255, 255, 255, 0.15);
+
+            animation: pulseGlow 4s infinite ease-in-out;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .clock-time {
+            font-size: 20px;
+            font-weight: 700;
+            text-shadow:
+                    0 2px 8px rgba(0, 0, 0, 0.3),
+                    0 0 15px rgba(59, 130, 246, 0.3);
+            letter-spacing: 1.5px;
+            margin-bottom: 2px;
+        }
+
+        .clock-date {
+            font-size: 13px;
+            font-weight: 400;
+            opacity: 0.9;
+            text-shadow:
+                    0 1px 4px rgba(0, 0, 0, 0.2),
+                    0 0 8px rgba(139, 92, 246, 0.2);
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow:
+                        0 0 30px rgba(59, 130, 246, 0.3),
+                        0 0 60px rgba(139, 92, 246, 0.2),
+                        inset 0 0 20px rgba(255, 255, 255, 0.1),
+                        inset 0 0 40px rgba(255, 255, 255, 0.05),
+                        0 0 0 1px rgba(255, 255, 255, 0.15);
+            }
+            50% {
+                box-shadow:
+                        0 0 40px rgba(59, 130, 246, 0.4),
+                        0 0 80px rgba(139, 92, 246, 0.3),
+                        inset 0 0 25px rgba(255, 255, 255, 0.15),
+                        inset 0 0 50px rgba(255, 255, 255, 0.1),
+                        0 0 0 1px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        /* Кнопка выхода */
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: linear-gradient(
+                    135deg,
+                    rgba(239, 68, 68, 0.9),
+                    rgba(220, 38, 38, 0.9)
+            );
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 40px;
+            cursor: pointer;
+            font-family: 'Font_1', sans-serif;
+            font-weight: 600;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            text-decoration: none;
+            box-shadow:
+                    0 8px 25px rgba(239, 68, 68, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                    0 0 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(
+                    135deg,
+                    rgba(220, 38, 38, 1),
+                    rgba(185, 28, 28, 1)
+            );
+            box-shadow:
+                    0 12px 35px rgba(239, 68, 68, 0.6),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                    0 0 30px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Основной контент */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            padding: 30px 100px 100px 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            height: auto;
+            overflow-y: auto;
+        }
+
+        /* Заголовок страницы */
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            margin: 0 0 25px 0;
+            text-shadow:
+                    0 1px 8px rgba(0, 0, 0, 0.3),
+                    0 0 20px rgba(59, 130, 246, 0.4);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 180px;
+            height: 3px;
+            background: linear-gradient(90deg,
+            rgba(59, 130, 246, 0.9),
+            rgba(139, 92, 246, 0.9));
+            border-radius: 2px;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+        }
+
+        /* Стеклянная карточка */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.09);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-top: 1px solid rgba(255, 255, 255, 0.25);
+            border-left: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow:
+                    0 15px 40px rgba(0, 0, 0, 0.4),
+                    0 10px 25px rgba(0, 0, 0, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+                    0 0 40px rgba(59, 130, 246, 0.15),
+                    0 0 60px rgba(139, 92, 246, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow:
+                    0 20px 50px rgba(0, 0, 0, 0.5),
+                    0 15px 35px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+                    0 0 50px rgba(59, 130, 246, 0.2),
+                    0 0 70px rgba(139, 92, 246, 0.15);
+        }
+
+        /* Кнопка "Назад к сотруднику" */
+        .back-btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: linear-gradient(
+                    135deg,
+                    rgba(107, 114, 128, 0.9),
+                    rgba(75, 85, 99, 0.9)
+            );
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            font-family: 'Font_1', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            box-shadow:
+                    0 8px 25px rgba(75, 85, 99, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                    0 0 15px rgba(75, 85, 99, 0.2);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(
+                    135deg,
+                    rgba(75, 85, 99, 1),
+                    rgba(55, 65, 81, 1)
+            );
+            box-shadow:
+                    0 12px 35px rgba(75, 85, 99, 0.5),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+                    0 0 25px rgba(75, 85, 99, 0.3);
+        }
+
+        /* Кнопка "Добавить ЭКК" */
+        .add-btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: linear-gradient(
+                    135deg,
+                    rgba(34, 197, 94, 0.9),
+                    rgba(21, 128, 61, 0.9)
+            );
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            font-family: 'Font_1', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            margin-left: 15px;
+            box-shadow:
+                    0 8px 25px rgba(34, 197, 94, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                    0 0 15px rgba(34, 197, 94, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(
+                    135deg,
+                    rgba(21, 128, 61, 1),
+                    rgba(34, 197, 94, 1)
+            );
+            box-shadow:
+                    0 12px 35px rgba(34, 197, 94, 0.5),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+                    0 0 25px rgba(34, 197, 94, 0.3);
+        }
+
+        /* Стеклянная таблица */
+        .glass-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow:
+                    0 8px 32px rgba(0, 0, 0, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-table thead tr {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .glass-table th {
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: white;
+            font-size: 16px;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.4);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(
+                    to bottom,
+                    rgba(59, 130, 246, 0.2),
+                    rgba(30, 41, 59, 0.8)
+            );
+            white-space: nowrap;
+        }
+
+        .glass-table td {
+            padding: 16px 15px;
+            color: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(30, 41, 59, 0.6);
+            font-size: 15px;
+            vertical-align: center;
+        }
+
+        /* Стили для ячеек с текстом (перенос текста) */
+        .glass-table td:nth-child(1), /* Название */
+        .glass-table td:nth-child(4) { /* Описание */
+            max-width: 250px;
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            line-height: 1.5;
+        }
+
+        /* Ячейки с датами - показываем только одну колонку */
+        .glass-table td:nth-child(2) {
+            white-space: nowrap;
+            min-width: 120px;
+        }
+
+        /* Скрываем колонку "Конец" */
+        .glass-table th:nth-child(3),
+        .glass-table td:nth-child(3) {
+            display: none;
+        }
+
+        .glass-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .glass-table tbody tr:nth-child(even) td {
+            background: rgba(30, 41, 59, 0.7);
+        }
+
+        .glass-table tbody tr:hover td {
+            background: rgba(59, 130, 246, 0.15);
+            color: white;
+        }
+
+        /* Кнопки действий в таблице */
+        .action-btns {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: 'Font_1', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 2px solid;
+            box-shadow:
+                    0 4px 15px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+        }
+
+        .action-btn.edit {
+            background: linear-gradient(
+                    135deg,
+                    rgba(59, 130, 246, 0.3),
+                    rgba(37, 99, 235, 0.3)
+            );
+            color: white;
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        .action-btn.delete {
+            background: linear-gradient(
+                    135deg,
+                    rgba(239, 68, 68, 0.3),
+                    rgba(220, 38, 38, 0.3)
+            );
+            color: white;
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                    0 6px 20px rgba(0, 0, 0, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .action-btn.edit:hover {
+            background: linear-gradient(
+                    135deg,
+                    rgba(59, 130, 246, 0.5),
+                    rgba(37, 99, 235, 0.5)
+            );
+            border-color: rgba(59, 130, 246, 0.7);
+        }
+
+        .action-btn.delete:hover {
+            background: linear-gradient(
+                    135deg,
+                    rgba(239, 68, 68, 0.5),
+                    rgba(220, 38, 38, 0.5)
+            );
+            border-color: rgba(239, 68, 68, 0.7);
+        }
+
+        /* Иконки */
+        .icon {
+            font-size: 20px;
+            margin-right: 8px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        /* Заголовок сотрудника */
+        .employee-header {
+            font-size: 24px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .employee-header strong {
+            color: white;
+            font-weight: 700;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Кнопки в строке */
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        /* Сообщение об отсутствии данных */
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+            font-size: 16px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 70px 15px 15px 15px;
+            }
+
+            .clock-container {
+                right: 15px;
+                top: 15px;
+                font-size: 12px;
+                padding: 10px 15px;
+            }
+
+            .clock-time {
+                font-size: 14px;
+            }
+
+            .logout-btn {
+                top: 15px;
+                right: 15px;
+                padding: 10px 18px;
+                font-size: 16px;
+            }
+
+            .page-title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .glass-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .glass-table th,
+            .glass-table td {
+                padding: 14px 12px;
+                font-size: 14px;
+            }
+
+            .glass-table td:nth-child(1),
+            .glass-table td:nth-child(4) {
+                max-width: 150px;
+            }
+
+            .button-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .back-btn, .add-btn {
+                width: 100%;
+                text-align: center;
+                margin-left: 0;
+                margin-bottom: 15px;
+            }
+
+            .action-btns {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .action-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .employee-header {
+                font-size: 18px;
+                padding: 12px 15px;
+            }
+
+            .glass-table th,
+            .glass-table td {
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+
+            .glass-table td:nth-child(1),
+            .glass-table td:nth-child(4) {
+                max-width: 120px;
+            }
+        }
+
+        /* Стили для выделения текста в полях */
+        input, textarea, select, button, a {
+            cursor: pointer;
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            -ms-user-select: auto;
+            user-select: auto;
+        }
+
+        /* Включаем скролл для страницы */
+        html, body {
+            overflow-y: auto;
+            height: auto;
+            min-height: 100vh;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow:
+                    0 25px 80px rgba(0, 0, 0, 0.5),
+                    0 15px 40px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+                    0 0 60px rgba(59, 130, 246, 0.2),
+                    0 0 80px rgba(139, 92, 246, 0.15);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-message {
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            font-size: 17px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-family: 'Font_1', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .modal-btn.confirm {
+            background: linear-gradient(
+                    135deg,
+                    rgba(239, 68, 68, 0.9),
+                    rgba(220, 38, 38, 0.9)
+            );
+            color: white;
+            box-shadow:
+                    0 8px 25px rgba(239, 68, 68, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn.cancel {
+            background: linear-gradient(
+                    135deg,
+                    rgba(107, 114, 128, 0.9),
+                    rgba(75, 85, 99, 0.9)
+            );
+            color: white;
+            box-shadow:
+                    0 8px 25px rgba(75, 85, 99, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                    0 12px 35px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .modal-btn.confirm:hover {
+            background: linear-gradient(
+                    135deg,
+                    rgba(220, 38, 38, 1),
+                    rgba(185, 28, 28, 1)
+            );
+            box-shadow:
+                    0 12px 35px rgba(239, 68, 68, 0.5),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .modal-btn.cancel:hover {
+            background: linear-gradient(
+                    135deg,
+                    rgba(75, 85, 99, 1),
+                    rgba(55, 65, 81, 1)
+            );
+            box-shadow:
+                    0 12px 35px rgba(75, 85, 99, 0.5),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen p-6">
+<body>
+<!-- Фон с эффектом стекла -->
+<div class="glass-background"></div>
 
-<h1 class="text-3xl font-bold text-gray-800 mb-6">
-    ЭКК сотрудника: <span th:text="${worker.surname + ' ' + worker.name + ' ' + worker.patronymicName}"></span>
-</h1>
+<!-- Часы -->
+<div class="clock-container">
+    <div class="clock-time" id="clock-time">00:00:00</div>
+    <div class="clock-date" id="clock-date">1 января 1970</div>
+</div>
 
-<a th:href="@{/workers/view/{workerId}/eccs/add(workerId=${worker.id})}"
-   class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition mb-4 inline-block">
-    ➕ Добавить ЭКК
+<!-- Кнопка выхода -->
+<a th:href="@{/logout}" class="logout-btn">
+    Выйти
 </a>
 
-<table class="min-w-full bg-white shadow rounded-lg overflow-hidden">
-    <thead class="bg-gray-200">
-    <tr>
-        <th class="px-4 py-2">Название</th>
-        <th class="px-4 py-2">Начало</th>
-        <th class="px-4 py-2">Конец</th>
-        <th class="px-4 py-2">Описание</th>
-        <th class="px-4 py-2">Действия</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="ecc : ${eccs}">
-        <td class="border px-4 py-2" th:text="${ecc.title}"></td>
-        <td class="border px-4 py-2" th:text="${#temporals.format(ecc.start, 'dd.MM.yyyy')}"></td>
-        <td class="border px-4 py-2" th:text="${#temporals.format(ecc.end, 'dd.MM.yyyy')}"></td>
-        <td class="border px-4 py-2" th:text="${ecc.description}"></td>
-        <td class="border px-4 py-2 flex gap-2">
-            <a th:href="@{/workers/view/{workerId}/eccs/{eccId}/edit(workerId=${worker.id}, eccId=${ecc.id})}"
-               class="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700">✏️</a>
-            <form th:action="@{/workers/view/{workerId}/eccs/{eccId}/delete(workerId=${worker.id}, eccId=${ecc.id})}"
-                  method="post">
+<!-- Основной контент -->
+<div class="main-content">
+    <!-- Заголовок -->
+    <h1 class="page-title">ЭКК сотрудника</h1>
 
-                <button type="submit"
-                        class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">🗑️
-                </button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <!-- Заголовок с ФИО сотрудника -->
+    <div class="employee-header">
+        <span>📄 Сотрудник: </span>
+        <strong th:text="${worker.surname + ' ' + worker.name + ' ' + worker.patronymicName}"></strong>
+    </div>
 
-<!-- Кнопка "Назад к сотруднику" -->
-<div class="mt-2 mb-6">
-    <a th:href="@{/workers/view/{workerId}(workerId=${worker.id})}"
-       class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">
-        ← Назад к сотруднику
-    </a>
+    <!-- Кнопки действий -->
+    <div class="button-row">
+        <a th:href="@{/workers/view/{workerId}(workerId=${worker.id})}" class="back-btn">
+            ← Назад к сотруднику
+        </a>
+
+        <a th:href="@{/workers/view/{workerId}/eccs/add(workerId=${worker.id})}" class="add-btn">
+            <span>➕</span> Добавить ЭКК
+        </a>
+    </div>
+
+    <!-- Таблица ЭКК -->
+    <div class="glass-card">
+        <table class="glass-table">
+            <thead>
+            <tr>
+                <th style="padding-left: 20px;">Название</th>
+                <th style="padding-left: 40px">Дата</th>
+                <!-- Колонка "Конец" скрыта, но оставлена для совместимости -->
+                <th style="display: none;">Конец</th>
+                <th style="padding-left: 100px">Описание</th>
+                <th style="padding-left: 130px;">Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ecc : ${eccs}">
+                <td style="padding-left: 20px; font-weight: 500;" th:text="${ecc.title}"></td>
+                <td th:text="${#temporals.format(ecc.start, 'dd.MM.yyyy')}"></td>
+                <!-- Ячейка для даты окончания скрыта, но оставлена для совместимости -->
+                <td style="display: none;" th:text="${#temporals.format(ecc.end, 'dd.MM.yyyy')}"></td>
+                <td th:text="${ecc.description}"></td>
+                <td style="padding-left: 20px;">
+                    <div class="action-btns">
+                        <a th:href="@{/workers/view/{workerId}/eccs/{eccId}/edit(workerId=${worker.id}, eccId=${ecc.id})}"
+                           class="action-btn edit">
+                            ✏️ Редактировать
+                        </a>
+                        <form th:action="@{/workers/view/{workerId}/eccs/{eccId}/delete(workerId=${worker.id}, eccId=${ecc.id})}"
+                              method="post"
+                              style="display: none;"
+                              th:id="'deleteForm-' + ${ecc.id}">
+                        </form>
+                        <button type="button" class="action-btn delete"
+                                th:data-id="${ecc.id}"
+                                th:data-title="${ecc.title}"
+                                onclick="showDeleteModalForButton(this)">
+                            🗑️ Удалить
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(eccs)}">
+                <td colspan="5" class="empty-message">
+                    📭 ЭКК не найдены
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<!-- Скрипт для часов -->
+<script>
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById("clock-time").textContent = `${hours}:${minutes}:${seconds}`;
+
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        document.getElementById("clock-date").textContent = now.toLocaleDateString('ru-RU', options);
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
+
+<!-- Модальное окно подтверждения удаления -->
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-container">
+        <h3 class="modal-title">⚠️ Подтверждение удаления</h3>
+        <div class="modal-message" id="modalMessage">
+            Вы уверены, что хотите удалить эту запись?
+        </div>
+        <div class="modal-buttons">
+            <button type="button" class="modal-btn cancel" onclick="hideModal()">
+                Отмена
+            </button>
+            <button type="button" class="modal-btn confirm" onclick="confirmDelete()">
+                Удалить
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Глобальная переменная для хранения формы, которую нужно удалить
+    let currentDeleteForm = null;
+
+    function showDeleteModal(form, itemTitle = '') {
+        currentDeleteForm = form;
+        const modalMessage = document.getElementById('modalMessage');
+
+        // Добавляем название ЭКК к сообщению
+        if (itemTitle) {
+            modalMessage.innerHTML = `Вы уверены, что хотите удалить ЭКК <strong style="color: #f87171;">"${itemTitle}"</strong>?<br>Это действие нельзя отменить.`;
+        } else {
+            modalMessage.textContent = `Вы уверены, что хотите удалить эту ЭКК? Это действие нельзя отменить.`;
+        }
+
+        const modal = document.getElementById('deleteModal');
+        modal.style.display = 'flex';
+
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            modal.style.transform = 'scale(1)';
+        }, 10);
+    }
+
+    function hideModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.style.opacity = '0';
+        modal.style.transform = 'scale(0.9)';
+
+        setTimeout(() => {
+            modal.style.display = 'none';
+            currentDeleteForm = null;
+        }, 300);
+    }
+
+    function confirmDelete() {
+        if (currentDeleteForm) {
+            console.log('Submitting form:', currentDeleteForm);
+            currentDeleteForm.submit();
+        } else {
+            console.error('No form to delete!');
+        }
+        hideModal();
+    }
+
+    function showDeleteModalForButton(button) {
+        console.log('showDeleteModalForButton called');
+        const id = button.getAttribute('data-id');
+        const title = button.getAttribute('data-title');
+        console.log('ID:', id, 'Title:', title);
+
+        // Ищем форму с правильным ID
+        const formId = 'deleteForm-' + id;
+        console.log('Looking for form with ID:', formId);
+
+        const form = document.getElementById(formId);
+
+        if (form) {
+            console.log('Found form:', form);
+            console.log('Form action:', form.action);
+            showDeleteModal(form, title);
+        } else {
+            console.error('Form not found for id:', formId);
+            // Выведем все формы на странице для отладки
+            const allForms = document.querySelectorAll('form');
+            console.log('All forms on page:');
+            allForms.forEach((f, i) => {
+                console.log(`Form ${i}: id="${f.id}", action="${f.action}"`);
+            });
+        }
+    }
+
+    // Закрытие модального окна при клике на фон
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            hideModal();
+        }
+    });
+
+    // Закрытие модального окна при нажатии Esc
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            hideModal();
+        }
+    });
+
+    // Проверяем, что функция доступна глобально
+    console.log('Functions loaded:', {
+        showDeleteModal: typeof showDeleteModal,
+        showDeleteModalForButton: typeof showDeleteModalForButton,
+        hideModal: typeof hideModal,
+        confirmDelete: typeof confirmDelete
+    });
+</script>
 
 </body>
 </html>

@@ -278,7 +278,7 @@
             gap: 8px;
         }
 
-        /* Стеклянная таблица событий - БОЛЬШЕ КОНТРАСТА */
+        /* Стеклянная таблица событий */
         .glass-table {
             width: 100%;
             border-collapse: separate;
@@ -335,7 +335,7 @@
             color: white;
         }
 
-        /* Кнопки меню - ЯРКИЕ С ПОДСВЕТКОЙ */
+        /* Кнопки меню */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -400,7 +400,7 @@
             opacity: 1;
         }
 
-        /* Цвета кнопок с яркой подсветкой */
+        /* Цвета кнопок */
         .menu-btn.blue {
             border-color: rgba(59, 130, 246, 0.5);
             background: linear-gradient(
@@ -560,7 +560,7 @@
                     0 0 25px rgba(75, 85, 99, 0.3);
         }
 
-        /* Кнопки действий - В СТИЛИСТИКЕ ПРИЛОЖЕНИЯ */
+        /* Кнопки действий */
         .action-buttons {
             display: flex;
             gap: 20px;
@@ -677,7 +677,7 @@
                     0 0 25px rgba(239, 68, 68, 0.3);
         }
 
-        /* Бейджи статусов */
+        /* Бейджи статусов - УЛУЧШЕННЫЕ С ЯРКИМИ ЦВЕТАМИ */
         .status-badge {
             display: inline-block;
             padding: 8px 16px;
@@ -688,24 +688,54 @@
             min-width: 70px;
             border: 2px solid;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
         }
 
+        /* ЯРКИЕ ЦВЕТА ДЛЯ "ДА" */
         .status-yes {
             background: linear-gradient(135deg,
-            rgba(34, 197, 94, 0.3),
-            rgba(21, 128, 61, 0.3));
-            color: rgb(187, 247, 208);
-            border-color: rgba(34, 197, 94, 0.5);
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            rgba(34, 197, 94, 0.8),    /* Зеленый цвет */
+            rgba(21, 128, 61, 0.8));
+            color: white;
+            border-color: rgba(34, 197, 94, 1);
+            box-shadow:
+                    0 4px 12px rgba(34, 197, 94, 0.3),
+                    0 0 15px rgba(34, 197, 94, 0.2);
         }
 
+        .status-yes:hover {
+            background: linear-gradient(135deg,
+            rgba(34, 197, 94, 0.9),
+            rgba(21, 128, 61, 0.9));
+            border-color: rgba(34, 197, 94, 1);
+            box-shadow:
+                    0 6px 18px rgba(34, 197, 94, 0.4),
+                    0 0 20px rgba(34, 197, 94, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* ЯРКИЕ ЦВЕТА ДЛЯ "НЕТ" */
         .status-no {
             background: linear-gradient(135deg,
-            rgba(239, 68, 68, 0.3),
-            rgba(220, 38, 38, 0.3));
-            color: rgb(254, 202, 202);
-            border-color: rgba(239, 68, 68, 0.5);
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            rgba(239, 68, 68, 0.8),    /* Красный цвет */
+            rgba(220, 38, 38, 0.8));
+            color: white;
+            border-color: rgba(239, 68, 68, 1);
+            box-shadow:
+                    0 4px 12px rgba(239, 68, 68, 0.3),
+                    0 0 15px rgba(239, 68, 68, 0.2);
+        }
+
+        .status-no:hover {
+            background: linear-gradient(135deg,
+            rgba(239, 68, 68, 0.9),
+            rgba(220, 38, 38, 0.9));
+            border-color: rgba(239, 68, 68, 1);
+            box-shadow:
+                    0 6px 18px rgba(239, 68, 68, 0.4),
+                    0 0 20px rgba(239, 68, 68, 0.3);
+            transform: translateY(-2px);
         }
 
         /* Иконки */
@@ -715,7 +745,7 @@
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
 
-        /* Цветные бейджи для дней до конца категории */
+        /* Цветные бейджи для дней до конца категории - УЛУЧШЕННЫЕ */
         .days-badge {
             display: inline-block;
             padding: 8px 16px;
@@ -724,30 +754,84 @@
             margin-left: 10px;
             border: 2px solid;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
         }
 
+        @keyframes pulseDays {
+            0%, 100% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+            50% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2),
+                0 0 15px currentColor;
+            }
+        }
+
+        /* БОЛЬШЕ 3 ЛЕТ (>730 дней) - ЗЕЛЕНЫЙ */
         .days-green {
             background: linear-gradient(135deg,
-            rgba(34, 197, 94, 0.25),
-            rgba(21, 128, 61, 0.25));
-            color: rgb(187, 247, 208);
+            rgba(34, 197, 94, 0.5),    /* Яркий зеленый */
+            rgba(21, 128, 61, 0.2));
+            color: white;
             border-color: rgba(34, 197, 94, 0.5);
+            box-shadow:
+                    0 4px 12px rgba(34, 197, 94, 0.3),
+                    0 0 15px rgba(34, 197, 94, 0.2);
         }
 
+        /* ОТ 2 ДО 3 ЛЕТ (365-730 дней) - ЖЕЛТЫЙ/ОРАНЖЕВЫЙ */
         .days-yellow {
             background: linear-gradient(135deg,
-            rgba(234, 179, 8, 0.25),
-            rgba(202, 138, 4, 0.25));
-            color: rgb(254, 240, 138);
-            border-color: rgba(234, 179, 8, 0.5);
+            rgba(245, 158, 11, 0.5),   /* Оранжевый цвет */
+            rgba(217, 119, 6, 0.2));
+            color: white;
+            border-color: rgba(245, 158, 11, 0.5);
+            box-shadow:
+                    0 4px 12px rgba(245, 158, 11, 0.3),
+                    0 0 15px rgba(245, 158, 11, 0.2);
         }
 
+        /* МЕНЬШЕ 2 ЛЕТ (менее 365 дней) - КРАСНЫЙ */
         .days-red {
             background: linear-gradient(135deg,
-            rgba(239, 68, 68, 0.25),
-            rgba(220, 38, 38, 0.25));
-            color: rgb(254, 202, 202);
+            rgba(239, 68, 68, 0.5),    /* Яркий красный */
+            rgba(220, 38, 38, 0.2));
+            color: white;
             border-color: rgba(239, 68, 68, 0.5);
+            box-shadow:
+                    0 4px 12px rgba(239, 68, 68, 0.3),
+                    0 0 15px rgba(239, 68, 68, 0.2);
+        }
+
+        @keyframes pulseWarning {
+            0%, 100% {
+                box-shadow:
+                        0 4px 12px rgba(239, 68, 68, 0.3),
+                        0 0 15px rgba(239, 68, 68, 0.2);
+            }
+            50% {
+                box-shadow:
+                        0 4px 12px rgba(239, 68, 68, 0.4),
+                        0 0 25px rgba(239, 68, 68, 0.3);
+            }
+        }
+
+        /* Подсветка строк в зависимости от статуса */
+        .event-row {
+            transition: all 0.3s ease;
+        }
+
+        .event-row:hover {
+            background: rgba(59, 130, 246, 0.1) !important;
+        }
+
+        .event-row.yes-event {
+            border-left: 4px solid rgba(34, 197, 94, 0.5);
+        }
+
+        .event-row.no-event {
+            border-left: 4px solid rgba(239, 68, 68, 0.5);
         }
 
         /* Адаптивность */
@@ -841,29 +925,129 @@
             height: auto;
             min-height: 100vh;
         }
-        /* Заголовок раздела */
-        .section-title {
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow:
+                    0 25px 80px rgba(0, 0, 0, 0.5),
+                    0 15px 40px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+                    0 0 60px rgba(59, 130, 246, 0.2),
+                    0 0 80px rgba(139, 92, 246, 0.15);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-title {
             font-size: 24px;
             font-weight: 700;
             color: white;
+            text-align: center;
             margin-bottom: 20px;
-            text-shadow: 0 1px 8px rgba(0,0,0,0.3);
-            position: relative;
-            padding-bottom: 10px;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
         }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 120px;
-            height: 3px;
-            background: linear-gradient(90deg,
-            rgba(59, 130, 246, 0.9),
-            rgba(139, 92, 246, 0.9));
-            border-radius: 2px;
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+        .modal-message {
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            font-size: 17px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-family: 'Font_1', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .modal-btn.confirm {
+            background: linear-gradient(
+                    135deg,
+                    rgba(239, 68, 68, 0.9),
+                    rgba(220, 38, 38, 0.9)
+            );
+            color: white;
+            box-shadow:
+                    0 8px 25px rgba(239, 68, 68, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn.cancel {
+            background: linear-gradient(
+                    135deg,
+                    rgba(107, 114, 128, 0.9),
+                    rgba(75, 85, 99, 0.9)
+            );
+            color: white;
+            box-shadow:
+                    0 8px 25px rgba(75, 85, 99, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                    0 12px 35px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .modal-btn.confirm:hover {
+            background: linear-gradient(
+                    135deg,
+                    rgba(220, 38, 38, 1),
+                    rgba(185, 28, 28, 1)
+            );
+            box-shadow:
+                    0 12px 35px rgba(239, 68, 68, 0.5),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .modal-btn.cancel:hover {
+            background: linear-gradient(
+                    135deg,
+                    rgba(75, 85, 99, 1),
+                    rgba(55, 65, 81, 1)
+            );
+            box-shadow:
+                    0 12px 35px rgba(75, 85, 99, 0.5),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
     </style>
 </head>
@@ -927,10 +1111,10 @@
                 <span class="icon">🏆</span>
                 Дата окончания категории:
                 <span th:text="${#temporals.format(lastCategoryEndDate, 'dd.MM.yyyy')}"></span>
-                <span th:classappend="${daysLeft > 1095 ? 'days-badge days-green'
-                              : (daysLeft > 730 ? 'days-badge days-yellow'
+                <span th:classappend="${daysLeft > 730 ? 'days-badge days-green'
+                              : (daysLeft > 365 ? 'days-badge days-yellow'
                               : 'days-badge days-red')}"
-                      th:text="'(' + ${daysLeft} + ' дней до сдачи)'"></span>
+                      th:text="'(' + ${daysLeft} + ' дней)'"></span>
             </p>
         </div>
 
@@ -1004,56 +1188,56 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr th:classappend="${worker.isVacated} ? 'event-row yes-event' : 'event-row no-event'">
                 <td style="padding-left: 20px; font-weight: 500;">Находится в отпуске</td>
                 <td style="text-align: center;">
                     <span th:classappend="${worker.isVacated} ? 'status-badge status-yes' : 'status-badge status-no'"
                           th:text="${worker.isVacated ? 'Да' : 'Нет'}"></span>
                 </td>
             </tr>
-            <tr>
+            <tr th:classappend="${worker.isVacatedIn3Months} ? 'event-row yes-event' : 'event-row no-event'">
                 <td style="padding-left: 20px; font-weight: 500;">Будет в отпуске в ближайшие 3 месяца</td>
                 <td style="text-align: center;">
                     <span th:classappend="${worker.isVacatedIn3Months} ? 'status-badge status-yes' : 'status-badge status-no'"
                           th:text="${worker.isVacatedIn3Months ? 'Да' : 'Нет'}"></span>
                 </td>
             </tr>
-            <tr>
+            <tr th:classappend="${worker.isCategoryNextYear} ? 'event-row yes-event' : 'event-row no-event'">
                 <td style="padding-left: 20px; font-weight: 500;">Повышение категории в ближайшие 365 дней</td>
                 <td style="text-align: center;">
                     <span th:classappend="${worker.isCategoryNextYear} ? 'status-badge status-yes' : 'status-badge status-no'"
                           th:text="${worker.isCategoryNextYear ? 'Да' : 'Нет'}"></span>
                 </td>
             </tr>
-            <tr>
+            <tr th:classappend="${worker.isTrainNextMonth} ? 'event-row yes-event' : 'event-row no-event'">
                 <td style="padding-left: 20px; font-weight: 500;">Стажировка в ближайшие 30 дней</td>
                 <td style="text-align: center;">
                     <span th:classappend="${worker.isTrainNextMonth} ? 'status-badge status-yes' : 'status-badge status-no'"
                           th:text="${worker.isTrainNextMonth ? 'Да' : 'Нет'}"></span>
                 </td>
             </tr>
-            <tr>
+            <tr th:classappend="${worker.isEccNextMonth} ? 'event-row yes-event' : 'event-row no-event'">
                 <td style="padding-left: 20px; font-weight: 500;">ЭКК в ближайшие 30 дней</td>
                 <td style="text-align: center;">
                     <span th:classappend="${worker.isEccNextMonth} ? 'status-badge status-yes' : 'status-badge status-no'"
                           th:text="${worker.isEccNextMonth ? 'Да' : 'Нет'}"></span>
                 </td>
             </tr>
-            <tr>
+            <tr th:classappend="${worker.isQualificationNextMonth} ? 'event-row yes-event' : 'event-row no-event'">
                 <td style="padding-left: 20px; font-weight: 500;">Повышение квалификации в ближайшие 30 дней</td>
                 <td style="text-align: center;">
                     <span th:classappend="${worker.isQualificationNextMonth} ? 'status-badge status-yes' : 'status-badge status-no'"
                           th:text="${worker.isQualificationNextMonth ? 'Да' : 'Нет'}"></span>
                 </td>
             </tr>
-            <tr>
+            <tr th:classappend="${worker.isCategoryNext3Month} ? 'event-row yes-event' : 'event-row no-event'">
                 <td style="padding-left: 20px; font-weight: 500;">Категория в ближайшие 3 месяца</td>
                 <td style="text-align: center;">
                     <span th:classappend="${worker.isCategoryNext3Month} ? 'status-badge status-yes' : 'status-badge status-no'"
                           th:text="${worker.isCategoryNext3Month ? 'Да' : 'Нет'}"></span>
                 </td>
             </tr>
-            <tr>
+            <tr th:classappend="${worker.isBday5} ? 'event-row yes-event' : 'event-row no-event'">
                 <td style="padding-left: 20px; font-weight: 500;">День рождения кратен 5</td>
                 <td style="text-align: center;">
                     <span th:classappend="${worker.isBday5} ? 'status-badge status-yes' : 'status-badge status-no'"
@@ -1075,13 +1259,13 @@
 
         <!-- Удалить -->
         <form th:action="@{/workers/delete/{workerId}(workerId=${worker.id})}" method="post"
-              onsubmit="return confirm('Вы уверены, что хотите удалить этого сотрудника?');"
-              style="display: contents;">
-            <button type="submit" class="action-btn delete">
-                <span style="font-size: 20px;">🗑️</span>
-                Удалить
-            </button>
+              style="display: none;"
+              id="deleteForm">
         </form>
+        <button type="button" class="action-btn delete" onclick="showDeleteModal()">
+            <span style="font-size: 20px;">🗑️</span>
+            Удалить
+        </button>
     </div>
 </div>
 
@@ -1101,5 +1285,92 @@
     setInterval(updateClock, 1000);
     updateClock();
 </script>
+
+<!-- Модальное окно подтверждения удаления -->
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-container">
+        <h3 class="modal-title">⚠️ Подтверждение удаления</h3>
+        <div class="modal-message" id="modalMessage">
+            Вы уверены, что хотите удалить сотрудника?
+        </div>
+        <div class="modal-buttons">
+            <button type="button" class="modal-btn cancel" onclick="hideModal()">
+                Отмена
+            </button>
+            <button type="button" class="modal-btn confirm" onclick="confirmDelete()">
+                Удалить
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Глобальная переменная для хранения формы
+    let currentDeleteForm = null;
+
+    function showDeleteModal() {
+        const employeeName = document.querySelector('.employee-name').textContent;
+        const modalMessage = document.getElementById('modalMessage');
+
+        // Добавляем ФИО сотрудника к сообщению
+        if (employeeName) {
+            modalMessage.innerHTML = `Вы уверены, что хотите удалить сотрудника <strong style="color: #f87171;">"${employeeName}"</strong>?<br><strong style="color: #fca5a5;">Это действие удалит все связанные записи (категории, ЭКК, квалификации, стажировки, отпуски) и его нельзя будет отменить!</strong>`;
+        } else {
+            modalMessage.textContent = `Вы уверены, что хотите удалить этого сотрудника? Это действие нельзя отменить.`;
+        }
+
+        currentDeleteForm = document.getElementById('deleteForm');
+        const modal = document.getElementById('deleteModal');
+        modal.style.display = 'flex';
+
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            modal.style.transform = 'scale(1)';
+        }, 10);
+    }
+
+    function hideModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.style.opacity = '0';
+        modal.style.transform = 'scale(0.9)';
+
+        setTimeout(() => {
+            modal.style.display = 'none';
+            currentDeleteForm = null;
+        }, 300);
+    }
+
+    function confirmDelete() {
+        if (currentDeleteForm) {
+            console.log('Submitting form:', currentDeleteForm);
+            currentDeleteForm.submit();
+        } else {
+            console.error('No form to delete!');
+        }
+        hideModal();
+    }
+
+    // Закрытие модального окна при клике на фон
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            hideModal();
+        }
+    });
+
+    // Закрытие модального окна при нажатии Esc
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            hideModal();
+        }
+    });
+
+    // Проверяем, что функция доступна глобально
+    console.log('Functions loaded:', {
+        showDeleteModal: typeof showDeleteModal,
+        hideModal: typeof hideModal,
+        confirmDelete: typeof confirmDelete
+    });
+</script>
+
 </body>
 </html>

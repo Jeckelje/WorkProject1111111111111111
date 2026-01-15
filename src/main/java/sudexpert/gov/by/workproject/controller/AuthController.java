@@ -1,10 +1,12 @@
 package sudexpert.gov.by.workproject.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,22 +73,52 @@ public class AuthController {
         }
     }
     @GetMapping("/logout")
-    public String logout(HttpServletResponse response) {
-        // Удаляем Access токен
-        Cookie accessCookie = new Cookie("JWT_TOKEN", null);
-        accessCookie.setHttpOnly(true);
-        accessCookie.setPath("/");
-        accessCookie.setMaxAge(0); // удалить
-        response.addCookie(accessCookie);
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        SecurityContextHolder.clearContext();
 
-        // Удаляем Refresh токен
-        Cookie refreshCookie = new Cookie("REFRESH_TOKEN", null);
-        refreshCookie.setHttpOnly(true);
-        refreshCookie.setPath("/");
-        refreshCookie.setMaxAge(0); // удалить
-        response.addCookie(refreshCookie);
+        // Получаем текущий контекст и протокол
+        String contextPath = request.getContextPath();
+        String domain = request.getServerName();
+        boolean isSecure = request.isSecure(); // true для HTTPS
+
+        // Используем RAW Set-Cookie заголовки
+        String cookieTemplate = "%s=; Path=%s; HttpOnly; Max-Age=0; %sSameSite=Strict";
+
+        // Удаляем JWT_TOKEN
+        String accessCookie = String.format(cookieTemplate,
+                "JWT_TOKEN",
+                contextPath.isEmpty() ? "/" : contextPath,
+                isSecure ? "Secure; " : ""
+        );
+        response.addHeader("Set-Cookie", accessCookie);
+
+        // Удаляем REFRESH_TOKEN
+        String refreshCookie = String.format(cookieTemplate,
+                "REFRESH_TOKEN",
+                contextPath.isEmpty() ? "/" : contextPath,
+                isSecure ? "Secure; " : ""
+        );
+        response.addHeader("Set-Cookie", refreshCookie);
+
+        // Дополнительно удаляем через Cookie объект
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("JWT_TOKEN") ||
+                        cookie.getName().equals("REFRESH_TOKEN")) {
+                    Cookie deleteCookie = new Cookie(cookie.getName(), null);
+                    deleteCookie.setPath(cookie.getPath());
+                    deleteCookie.setMaxAge(0);
+                    if (cookie.getDomain() != null) {
+                        deleteCookie.setDomain(cookie.getDomain());
+                    }
+                    deleteCookie.setHttpOnly(cookie.isHttpOnly());
+                    deleteCookie.setSecure(cookie.getSecure());
+                    response.addCookie(deleteCookie);
+                }
+            }
+        }
 
         return "redirect:/login?logout";
-
     }
 }

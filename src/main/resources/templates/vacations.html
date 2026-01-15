@@ -350,6 +350,7 @@
                     rgba(59, 130, 246, 0.2),
                     rgba(30, 41, 59, 0.8)
             );
+            white-space: nowrap;
         }
 
         .glass-table td {
@@ -358,6 +359,25 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             background: rgba(30, 41, 59, 0.6);
             font-size: 15px;
+            vertical-align: center;
+        }
+
+        /* Стили для ячеек с текстом */
+        .glass-table td:nth-child(1), /* Название */
+        .glass-table td:nth-child(4) { /* Описание */
+            max-width: 250px;
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            line-height: 1.5;
+        }
+
+        /* Ячейки с датами */
+        .glass-table td:nth-child(2),
+        .glass-table td:nth-child(3) {
+            white-space: nowrap;
+            min-width: 120px;
         }
 
         .glass-table tbody tr:last-child td {
@@ -378,7 +398,8 @@
             display: flex;
             gap: 20px;
             justify-content: center;
-            margin-right: 100px ;
+            margin-right: 10px;
+            flex-wrap: wrap;
         }
 
         .action-btn {
@@ -393,6 +414,7 @@
             box-shadow:
                     0 4px 15px rgba(0, 0, 0, 0.2),
                     inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
         }
 
         .action-btn.edit {
@@ -475,9 +497,16 @@
             margin-bottom: 30px;
             align-items: center;
         }
-        .glass-table td:nth-child(5) {
-            padding-left: 100px; /* или другое значение для смещения вправо */
+
+        /* Сообщение об отсутствии данных */
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+            font-size: 16px;
         }
+
         /* Адаптивность */
         @media (max-width: 768px) {
             .main-content {
@@ -518,6 +547,11 @@
                 font-size: 14px;
             }
 
+            .glass-table td:nth-child(1),
+            .glass-table td:nth-child(4) {
+                max-width: 150px;
+            }
+
             .button-row {
                 flex-direction: column;
                 align-items: flex-start;
@@ -531,7 +565,7 @@
             }
 
             .action-btns {
-                margin: 100px;
+                margin: 0;
                 flex-direction: column;
                 gap: 8px;
             }
@@ -553,6 +587,11 @@
                 padding: 12px 10px;
                 font-size: 13px;
             }
+
+            .glass-table td:nth-child(1),
+            .glass-table td:nth-child(4) {
+                max-width: 120px;
+            }
         }
 
         /* Стили для выделения текста в полях */
@@ -569,6 +608,132 @@
             overflow-y: auto;
             height: auto;
             min-height: 100vh;
+        }
+
+        /* Стили модального окна */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow:
+                    0 25px 80px rgba(0, 0, 0, 0.5),
+                    0 15px 40px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+                    0 0 60px rgba(59, 130, 246, 0.2),
+                    0 0 80px rgba(139, 92, 246, 0.15);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-message {
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            font-size: 17px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-family: 'Font_1', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .modal-btn.confirm {
+            background: linear-gradient(
+                    135deg,
+                    rgba(239, 68, 68, 0.9),
+                    rgba(220, 38, 38, 0.9)
+            );
+            color: white;
+            box-shadow:
+                    0 8px 25px rgba(239, 68, 68, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn.cancel {
+            background: linear-gradient(
+                    135deg,
+                    rgba(107, 114, 128, 0.9),
+                    rgba(75, 85, 99, 0.9)
+            );
+            color: white;
+            box-shadow:
+                    0 8px 25px rgba(75, 85, 99, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                    0 12px 35px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .modal-btn.confirm:hover {
+            background: linear-gradient(
+                    135deg,
+                    rgba(220, 38, 38, 1),
+                    rgba(185, 28, 28, 1)
+            );
+            box-shadow:
+                    0 12px 35px rgba(239, 68, 68, 0.5),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .modal-btn.cancel:hover {
+            background: linear-gradient(
+                    135deg,
+                    rgba(75, 85, 99, 1),
+                    rgba(55, 65, 81, 1)
+            );
+            box-shadow:
+                    0 12px 35px rgba(75, 85, 99, 0.5),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
     </style>
 </head>
@@ -635,17 +800,20 @@
                         </a>
                         <form th:action="@{/workers/view/{workerId}/vacations/{vacationId}/delete(workerId=${worker.id}, vacationId=${vacation.id})}"
                               method="post"
-                              style="display: inline;"
-                              onsubmit="return confirm('Вы уверены, что хотите удалить этот отпуск?');">
-                            <button type="submit" class="action-btn delete">
-                                🗑️ Удалить
-                            </button>
+                              style="display: none;"
+                              th:id="'deleteForm-' + ${vacation.id}">
                         </form>
+                        <button type="button" class="action-btn delete"
+                                th:data-id="${vacation.id}"
+                                th:data-title="${vacation.title}"
+                                onclick="showDeleteModalForButton(this)">
+                            🗑️ Удалить
+                        </button>
                     </div>
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(vacations)}">
-                <td colspan="5" style="text-align: center; padding: 30px; color: rgba(255, 255, 255, 0.6); font-style: italic;">
+                <td colspan="5" class="empty-message">
                     📭 Отпуски не найдены
                 </td>
             </tr>
@@ -670,5 +838,119 @@
     setInterval(updateClock, 1000);
     updateClock();
 </script>
+
+<!-- Модальное окно подтверждения удаления -->
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-container">
+        <h3 class="modal-title">⚠️ Подтверждение удаления</h3>
+        <div class="modal-message" id="modalMessage">
+            Вы уверены, что хотите удалить эту запись?
+        </div>
+        <div class="modal-buttons">
+            <button type="button" class="modal-btn cancel" onclick="hideModal()">
+                Отмена
+            </button>
+            <button type="button" class="modal-btn confirm" onclick="confirmDelete()">
+                Удалить
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Глобальная переменная для хранения формы, которую нужно удалить
+    let currentDeleteForm = null;
+
+    function showDeleteModal(form, itemTitle = '') {
+        currentDeleteForm = form;
+        const modalMessage = document.getElementById('modalMessage');
+
+        // Добавляем название отпуска к сообщению
+        if (itemTitle) {
+            modalMessage.innerHTML = `Вы уверены, что хотите удалить отпуск <strong style="color: #f87171;">"${itemTitle}"</strong>?<br>Это действие нельзя отменить.`;
+        } else {
+            modalMessage.textContent = `Вы уверены, что хотите удалить этот отпуск? Это действие нельзя отменить.`;
+        }
+
+        const modal = document.getElementById('deleteModal');
+        modal.style.display = 'flex';
+
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            modal.style.transform = 'scale(1)';
+        }, 10);
+    }
+
+    function hideModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.style.opacity = '0';
+        modal.style.transform = 'scale(0.9)';
+
+        setTimeout(() => {
+            modal.style.display = 'none';
+            currentDeleteForm = null;
+        }, 300);
+    }
+
+    function confirmDelete() {
+        if (currentDeleteForm) {
+            console.log('Submitting form:', currentDeleteForm);
+            currentDeleteForm.submit();
+        } else {
+            console.error('No form to delete!');
+        }
+        hideModal();
+    }
+
+    function showDeleteModalForButton(button) {
+        console.log('showDeleteModalForButton called');
+        const id = button.getAttribute('data-id');
+        const title = button.getAttribute('data-title');
+        console.log('ID:', id, 'Title:', title);
+
+        // Ищем форму с правильным ID
+        const formId = 'deleteForm-' + id;
+        console.log('Looking for form with ID:', formId);
+
+        const form = document.getElementById(formId);
+
+        if (form) {
+            console.log('Found form:', form);
+            console.log('Form action:', form.action);
+            showDeleteModal(form, title);
+        } else {
+            console.error('Form not found for id:', formId);
+            // Выведем все формы на странице для отладки
+            const allForms = document.querySelectorAll('form');
+            console.log('All forms on page:');
+            allForms.forEach((f, i) => {
+                console.log(`Form ${i}: id="${f.id}", action="${f.action}"`);
+            });
+        }
+    }
+
+    // Закрытие модального окна при клике на фон
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            hideModal();
+        }
+    });
+
+    // Закрытие модального окна при нажатии Esc
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            hideModal();
+        }
+    });
+
+    // Проверяем, что функция доступна глобально
+    console.log('Functions loaded:', {
+        showDeleteModal: typeof showDeleteModal,
+        showDeleteModalForButton: typeof showDeleteModalForButton,
+        hideModal: typeof hideModal,
+        confirmDelete: typeof confirmDelete
+    });
+</script>
+
 </body>
 </html>
